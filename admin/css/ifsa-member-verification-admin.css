@@ -1,0 +1,95 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+ /*Admin Membership plugin Log page styling*/
+ .ifsc_member_admin_email_container{
+    display: grid;
+    grid-template-columns: repeat(2,auto);
+    background: rgb(235, 235, 235);
+}
+
+.ifsc_member_admin_email_container .ifsc_member_admin_email-division {
+    margin: 20px 50px 20px 30px;
+}
+
+.ifsc_member_admin_email_container .ifsc_member_admin_email-division .ifsc_member_admin_email-division_heading{
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.ifsa_general_setting_date_container{
+    display: flex;
+    align-items: center;
+    margin: 30px auto;
+}
+
+.ifsa_general_setting_date_label{
+    margin-right: 20px;
+    font-size: 20px;
+}
+
+.ifsa-admin-settings-wrapper .nav-tab {padding: 5px 30px 5px 30px;}
+
+@media screen and (max-width:1024px) and (min-width:280px) {
+    .ifsc_member_admin_email_container{
+        grid-template-columns: auto;
+    }
+
+    .ifsc_member_admin_email_container .ifsc_member_admin_email-division{
+        margin: 20px;
+    }
+}
+
+section#dynamic_variable {
+   
+    background: #fff;
+   padding:25px;
+}
+
+section#dynamic_variable li{
+    font-size:14px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+section#dynamic_variable li strong{
+font-weight: 500;
+}
+.cls-searchbox {
+    width: 100%;
+    display: inline-block;
+    background: #fff;
+  
+    float: right;
+   
+}
+
+.cls-seperator_div2 {
+    display: inline-block;
+    width: 33%;
+    float: left;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+
+a.cls-seperator_download_user-btn {}
+
+p.search-box {
+    display: inline-block;
+    margin-top: 24px;
+    margin-right: 14px;
+}
+
+.cls-email-subject span {
+    font-weight: bold;
+    /* margin-bottom: 15px; */
+}
+
+.cls-email-subject {
+    margin-bottom: 20px;
+    margin-top: 10px;
+}

@@ -1,0 +1,247 @@
+/**
+ * All of the CSS for your public-facing functionality should be
+ * included in this file.
+ */
+
+/**
+* All of the CSS for your public-facing functionality should be
+* included in this file.
+*/
+
+body{font-family:"Open Sans";}
+#ifsa_submit-btn{visibility:hidden;}
+.ifsa_multistep_form-main-continer{max-width:1140px;min-height:700px;width:550px;padding:15px;margin:8% auto;position:relative;}
+.ifsa_multistep_form-main-continer #ifsa_form_1,
+.ifsa_multistep_form-main-continer #ifsa_form_2,
+.ifsa_multistep_form-main-continer #ifsa_form_3,
+.ifsa_multistep_form-main-continer #ifsa_form_4,
+.ifsa_multistep_form-main-continer #ifsa_form_5,
+.ifsa_multistep_form-main-continer #ifsa_form_6,
+.ifsa_multistep_form-main-continer #ifsa_form_7,
+.ifsa_multistep_form-main-continer #ifsa_final_step{position:absolute;max-width:100%;padding:20px;transition:all 0.5s;box-shadow:0px 0px 10px 0px rgb(0 0 0 / 20%);border-radius:10px;border:1px solid #e9eaee;left:0}
+@keyframes fadein{
+   0%{opacity:0;}
+   100%{opacity:1;}
+}
+#ifsa_form_1{left:0;top:0;background-color:#fff;}
+#ifsa_form_2{overflow-x:hidden;}
+#ifsa_form_2,
+#ifsa_form_3{left:0;visibility:hidden;background-color:#fff;}
+#ifsa_form_4,
+#ifsa_form_5,
+#ifsa_form_7{visibility:hidden;text-align:center;}
+#ifsa_form_7{top:0;left:0;right:0;}
+#ifsa_form_6{top:0;left:0;visibility:hidden;text-align:center;}
+#ifsa_form_4 h2{margin:50px;}
+#ifsa_form_4 button{margin:10px auto;padding:12px 50px;font-weight:300;text-transform:uppercase;color:#fff!important;background-color:#65bc7bd7!important;cursor:pointer;outline:0;border:0;}
+#ifsa_form_4 button:hover{background-color:#65bc7b!important;}
+#ifsa_form_4-error,
+#ifsa_form_4-success_btn{visibility:hidden;}
+#datepicker{max-width:300px;}
+.ifsa_multistep_form-main-continer  h3{margin:20px 0px;color:gray;text-align:center;}
+.ifsa_multistep_form-main-continer  h4{margin:20px 0px;color:gray;text-align:center;}
+.ifsa_multistep_form-body .ifsa_multistep_form-options{text-align:center;}
+.ifsa_multistep_form-body .ifsa_multistep_form-options label{position:relative;padding:10px 70px;font-weight:300;color:#fff;background-color:#65bc7bd7;border-radius:4px;cursor:pointer;}
+.ifsa_multistep_form-body .ifsa_multistep_form-options label:hover{background-color:#65bc7b;}
+.ifsa_multistep_form-body .ifsa_multistep_form-options  input{position:absolute;opacity:0;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options{margin:25px;display:flex;flex-direction:column;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options label{margin-top:10px;font-size:16px;color:gray;font-weight:300;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options select{outline:0;border:1px solid gray;border-radius:5px;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options  input{outline:0;border:0;border:1px solid gray;border-radius:5px;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options span{color:red;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options button{margin:10px auto;padding:12px 50px;font-weight:300;text-transform:uppercase;color:#fff!important;background-color:#65bc7bd7!important;cursor:pointer;outline:0;border:0;}
+.ifsa_multistep_form-body2 .ifsa_multistep_form-options button:hover{background-color:#65bc7b!important;}
+.ifsa_form_4_btn{padding:10px 50px;font-weight:300;color:#fff!important;background-color:#65bc7b!important;cursor:pointer;transition:all 0.5s;}
+.ifsa_form_4_btn:hover{transform:scale(1.1);}
+
+/* The Modal (background) */
+.modal{display:none; /* Hidden by default */position:fixed; /* Stay in place */z-index:1; /* Sit on top *//* padding-top:100px; */ /* Location of the box */left:0;/* top:44%!important; */width:100%; /* Full width */height:100%; /* Full height */overflow:auto; /* Enable scroll if needed */background-color:rgb(0,0,0); /* Fallback color */background-color:rgba(0,0,0,0.4); /* Black w/ opacity */}
+
+/* Modal Content */
+.modal-content{background-color:#fefefe;margin:auto;padding:20px;border:1px solid #888;width:80%;}
+
+/* The Close Button */
+.close{color:#aaaaaa;float:right;font-size:28px;font-weight:bold;}
+.close:hover,
+.close:focus{color:#000;text-decoration:none;cursor:pointer;}
+
+/* Table stylings */
+#table_id_wrapper label{display:none;}
+#table_id_filter{display:none;}
+table.dataTable.no-footer{border-bottom:1px solid #ddd!important}
+table.dataTable thead th,
+table.dataTable thead td{border:1px solid #ddd!important;}
+table.dataTable.row-border tbody th,
+table.dataTable.row-border tbody td,
+table.dataTable.display tbody th,
+table.dataTable.display tbody td{border:1px solid #ddd;border-bottom:none;text-align:center;}
+table.dataTable.order-column tbody tr>.sorting_1,
+table.dataTable.order-column tbody tr>.sorting_2,
+table.dataTable.order-column tbody tr>.sorting_3,
+table.dataTable.display tbody tr>.sorting_1,
+table.dataTable.display tbody tr>.sorting_2,
+table.dataTable.display tbody tr>.sorting_3{background-color:#fff!important;}
+table.dataTable.display tbody tr:hover>.sorting_1,
+table.dataTable.order-column.hover tbody tr:hover>.sorting_1{background-color:#65bc7b!important;color:#fff;}
+.dataTables_wrapper .dataTables_info{display:none;}
+.dataTables_wrapper .dataTables_paginate{margin:10px auto;padding:0!important;border:1px solid #ddd;}
+.dataTables_wrapper .dataTables_paginate .paginate_button{margin:0!important;border-right:1px solid #ddd!important;border-left:1px solid #ddd!important;}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current{background:#fff!important;border:1px solid transparent!important;}
+.dataTables_wrapper .dataTables_paginate .paginate_button:active,
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover{background:#65bc7b!important;border:1px solid transparent!important;}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover{background:#65bc7b!important;}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled{font-weight:600;cursor:pointer!important;}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active{background-color:#65bc7b!important;color:#fff;}
+#ifsa-verify_member-btn{margin-left:5px;padding:10px 15px;color:#fff;background:#006633!important;cursor:pointer;transition:all 0.5s;}
+#ifsa-verify_member-btn:hover{background:#006633e5!important;}
+.cls-seperator{margin-bottom:20px;max-width:800px;}
+.cls-seperator_body{display:grid;grid-template-columns:repeat(2,50%);}
+.cls-seperator_div1{border-right:1px solid #ddd;}
+.cls-seperator_div2{padding-left:50px;}
+.div_import label{position:relative;display:block;max-width:200px;margin-bottom:10px;padding:5px 15px;background:#006633;color:#fff;text-align:center;cursor:pointer;transition:all 0.5s;}
+.div_import label:hover{background:#006633e5;}
+#bulk_upload_file{position:absolute;left:0;top:0;visibility:hidden;}
+#bulk_upload{display:inline-block;width:200px;padding:10px 15px;background:#006633;color:#fff;outline:0;transition:all 0.5s;}
+#bulk_upload:hover{background:#006633e5;}
+.cls-seperator_download_user-btn{width:200px;padding:10px 15px;background:#006633;color:#fff;transition:all 0.5s;}
+.cls-seperator_download_user-btn:hover{background:#006633e5;color:#fff;}
+
+/*Stepper responsiveness*/
+@media screen and (max-width:1024px) and (min-width:680px){
+   #main{overflow:hidden;}
+}
+@media screen and (max-width:680px) and (min-width:280px){
+   #main{overflow:hidden;}
+   .ifsa_multistep_form-main-continer{width:100%;min-height:650px;margin:0 auto;}
+   .ifsa_multistep_form-body .ifsa_multistep_form-options{display:flex;flex-direction:column;width:100%;text-align:center;}
+   .ifsa_multistep_form-body .ifsa_multistep_form-options label{margin:5px 0px;}
+   #ifsa_multistep_form-loadermask #ifsa_loader{top:27%;left:29%;}
+}
+.ifsa_memebr_expiry_wrap{width:100%;max-width:553px;margin-top:17px;}
+.ifsa_memebr_expiry_wrap a.fusion-button.fusion-button-default.fusion-button-default-size.fusion-button-span-no{float:right;}
+
+/* Create an Account */
+.buddypress-wrap table.dataTable.display tbody tr:hover>.sorting_1,
+.buddypress-wrap table.dataTable.order-column.hover tbody tr:hover>.sorting_1{background-color:#f6f6f6!important;color:#747474;}
+.buddypress-wrap table.dataTable.display tbody tr.odd>.sorting_1,
+.buddypress-wrap table.dataTable.order-column.stripe tbody tr.odd>.sorting_1{background-color:#f6f6f6!important;}
+.buddypress-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.buddypress-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active,
+.buddypress-wrap .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.buddypress-wrap .dataTables_wrapper .dataTables_paginate .paginate_button:active,
+.buddypress-wrap .dataTables_wrapper .dataTables_paginate .paginate_button:hover{color:#fff!important;}
+.buddypress-wrap .modal-content{width:500px;max-width:90%;}
+.buddypress-wrap .modal-content .ul_reason input{margin:-2px 4px 0 0!important;}
+.buddypress-wrap .modal-content .ul_reason .final_reject{background:#006633;color:#ffffff;padding:13px 29px;line-height:17px;font-size:14px;display:inline-block;margin-top:20px;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-body2 .ifsa_multistep_form-options input,
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-body2 .ifsa_multistep_form-options select{border-radius:0;border-color:#d6d6d6;height:35px;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-body2 .ifsa_multistep_form-options label{font-size:15px;margin-top:20px;color:#333;font-size:15px;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-body2 .ifsa_multistep_form-options button{background:#006633!important;padding:13px 29px;border:0;margin:30px auto 0;line-height:17px;text-transform:capitalize;border-radius:2px;font-size:15px;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-body .ifsa_multistep_form-options label{background:#006633!important;border:0;line-height:17px;font-size:15px;border-radius:2px;text-align:center;padding:13px 70px;margin-top:15px;margin-bottom:15px;display:inline-block;}
+.ifsa_multistep_form-main-continer h3.ifsa_multistep_form-heading{font-size:26px;color:#333;margin:0 0 15px 0;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-subheading{color:#333;margin:0 0 15px 0;font-size:17px;text-align:center;}
+@media only screen and (max-width:480px){
+   .buddypress-wrap.extended-default-reg .register-page .layout-wrap .user-pass1-wrap .wp-pwd{flex-direction:column;align-items:flex-start;}
+   .buddypress-wrap.extended-default-reg .register-page .layout-wrap .user-pass1-wrap .wp-pwd .password-input-wrapper{width:100%;padding-right:0;}
+}
+.ifsa_renewal_form-container h3.ifsa_renewal_form-heading{font-size:26px;color:#333;margin:0 0 15px 0;}
+.ifsa_renewal_form-container .ifsa_renewal_form-subheading{color:#333;margin:0 0 15px 0;font-size:17px;text-align:center;}
+.ifsa_renewal_form-container #ifsa_renewal_form-1 .ifsa_renewal_form-options label{background:#006633!important;border:0;line-height:17px;font-size:15px;border-radius:2px;text-align:center;padding:13px 70px;margin-top:15px;margin-bottom:15px;}
+span.cls-total-record{display:inline-block;}
+.buddypress-wrap .div_import label[for="bulk_upload_file"]{display:none;}
+.buddypress-wrap .div_import #bulk_upload_file{font-size:15px;position:static;visibility:visible;margin-bottom:20px;cursor:pointer;}
+.buddypress-wrap .div_import #bulk_upload_file::-webkit-file-upload-button{background:#006633e5;color:#fff;width:150px;height:37px;border:0;cursor:pointer;}
+.buddypress-wrap .div_import #bulk_upload_file::file-selector-button{background:#006633e5;color:#fff;width:150px;height:37px;border:0;cursor:pointer;}
+.ifsa_renewal_form-container #ifsa_renewal_form-2 #ifsa_renewal_form-success_btn,
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-options #ifsa_form_4-success_btn{background:#006633!important;padding:13px 29px;border:0;margin:30px auto 15px;font-size:15px;border-radius:2px;text-transform:capitalize;}
+.field-visibility-settings-toggle{display:none!important;}
+.field-visibility-settings-notoggle{display:none;}
+div#basic-details-section h2.bp-heading.fusion-responsive-typography-calculated{display:none;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-options #ifsa_form_4-success_btn{background:#006633!important;padding:13px 29px;border:0;margin:20px auto;line-height:17px;text-transform:capitalize;border-radius:2px;}
+.ifsa_multistep_form-main-continer div[class^="ifsa_multistep_form-body"]{width:100%;}
+.buddypress-wrap.extended-default-reg .register-page .layout-wrap #basic-details-section{padding-right:0;}
+.buddypress-wrap.extended-default-reg .register-page .layout-wrap #basic-details-section h2{font-size:26px;color:#000;margin:0 0 15px 0;}
+.ifsa_multistep_form-main-continer #ifsa_form_4-success #ifsa_form_4-success_btn,
+.ifsa_multistep_form-main-continer #ifsa_form_4-success #ifsa_form_4-success_btn-back{background:#006633!important;padding:13px 29px;border:0;margin:30px auto 0;line-height:17px;text-transform:capitalize;border-radius:2px;font-size:15px;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-options #datepicker{height:35px;margin-top:20px;}
+.ifsa_renewal_form-container #ifsa_renewal_form-2 #ifsa_renewal_form-success_btn{margin-top:15px;}
+.ifsa_multistep_form-main-continer #ifsa_form_4{left:0;}
+@media only screen and (max-width:870px){
+   .buddypress-wrap table#table_id thead{display:none;}
+   .buddypress-wrap table#table_id{border-top:1px solid #ddd;}
+   .buddypress-wrap table#table_id,
+   .buddypress-wrap table#table_id tbody,
+   .buddypress-wrap table#table_id tbody tr,
+   .buddypress-wrap table#table_id tbody tr td{display:block;}
+   .buddypress-wrap table#table_id tbody tr td{text-align:left;padding-left:50%;position:relative;word-break:break-word;}
+   .buddypress-wrap table#table_id tbody tr td:before{content:attr(data-title);}
+   .buddypress-wrap table#table_id tbody tr td:before{content:attr(data-title);position:absolute;left:0;top:50%;transform:translateY(-50%);padding:8px 10px;font-weight:bold;word-break:break-word;width:calc(50% - 20px);}
+   .buddypress-wrap table#table_id tbody tr td.dataTables_empty{padding-left:10px;text-align:center;}
+	 .ifsa_multistep_form-body2 .ifsa_multistep_form-options{margin:0 !important;}
+}
+
+/* New changes */
+table.dataTable.display tbody td .cls-reject,
+table.dataTable.display tbody td .cls-approve,
+table.dataTable.display tbody td .cls-action-remove{background:#006633!important;padding:4px 15px 7px;border:0;margin:30px auto 0;text-transform:capitalize;border-radius:2px;font-size:15px;color:#fff;line-height:1;margin:5px;display:inline-block;}
+.ifsa_multistep_form-main-continer .ifsa_multistep_form-body2 .ifsa_multistep_form-options .cls-back{text-align:center;}
+.buddypress-wrap.extended-default-reg .register-page .layout-wrap input[type="radio"]{margin-right:7px!important;}
+.ifsa_multistep_form-main-continer #ifsa_final_step label{margin-top:10px;color:#333;font-size:15px;display:block;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group span{color:red;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group .formbuilder-radio-inline{display:inline-block;vertical-align:middle;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group .description{margin-bottom:5px;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group .formbuilder-radio-inline input{margin:0 5px 0 0;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group .formbuilder-radio-inline label{display:inline-block;margin:0;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group #ifsa_terms-error{display:block;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .submit input#register-button{background:#006633!important;padding:13px 29px;border:0;margin:30px auto 0;line-height:17px;text-transform:capitalize;border-radius:2px;font-size:15px;color:#fff;cursor:pointer;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .submit{text-align:center;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group select{width:100%;}
+.ifsa_final_step_active .ifsa_multistep_form-main-continer{min-height:1100px;}
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group select, 
+.ifsa_multistep_form-main-continer #ifsa_final_step .form-group input{border-radius:0;border-color:#d6d6d6;height:35px;}
+.ifsa_multistep_form-main-continer #ifsa_final_step #ifsa-loading-register{display:inline-block;vertical-align:middle;margin-top:35px;margin-left:5px;}
+.cls-lcbanner {
+   padding: 10px;
+   background: #ccc;
+}
+
+.cls-lcbanner p {
+   margin: 0 !important;
+}
+
+.cls-lcbanner {
+   background: #1e6633;
+   color: #fff;
+   font-weight: 600;
+   text-align: center;
+}
+.cls-lcbanner a {
+   color: #fff !important;
+   text-decoration: underline !important;
+}
+
+
+.buddypress-wrap .modal-content .ul_reason .final_remove{background:#006633;color:#ffffff;padding:13px 29px;line-height:17px;font-size:14px;display:inline-block;margin-top:20px;}
+/* The Close Button */
+.close-r{color:#aaaaaa;float:right;font-size:28px;font-weight:bold;}
+.close-r:hover,
+.close-r:focus{color:#000;text-decoration:none;cursor:pointer;}
+button#ifsa_form_last-btn-back {
+   background: #006633!important;
+   padding: 13px 29px;
+   border: 0;
+   margin: 30px auto 0;
+   line-height: 17px;
+   text-transform: capitalize;
+   border-radius: 2px;
+   font-size: 15px;
+   color: #fff;
+   cursor: pointer;
+   display: inline-block;
+   vertical-align: middle;
+}
+.modal-content {
+  
+    transform: translateY(50%) !important;
+}

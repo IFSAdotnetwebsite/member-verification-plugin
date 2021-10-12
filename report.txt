@@ -1,0 +1,508 @@
+
+FILE: .../ifsa-member-verification/public/class-ifsa-member-verification-public.php
+--------------------------------------------------------------------------------
+FOUND 87 ERRORS AND 93 WARNINGS AFFECTING 107 LINES
+--------------------------------------------------------------------------------
+  283 | WARNING | Usage of a direct database call is discouraged.
+  283 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  284 | WARNING | This comment is 60% valid code; is this commented out code?
+  364 | WARNING | This comment is 50% valid code; is this commented out code?
+  366 | WARNING | Usage of a direct database call is discouraged.
+  366 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  367 | WARNING | This comment is 60% valid code; is this commented out code?
+  410 | WARNING | This comment is 75% valid code; is this commented out code?
+  431 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  431 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  446 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  446 | WARNING | Found: !=. Use strict comparisons (=== or !==).
+  449 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  449 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  515 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  520 | WARNING | Usage of a direct database call is discouraged.
+  520 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  525 | WARNING | Unused variable `$index`.
+  531 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  561 | WARNING | Detected usage of meta_key, possible slow query.
+  562 | WARNING | Detected usage of meta_value, possible slow query.
+  573 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  573 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  574 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  582 | WARNING | Usage of a direct database call is discouraged.
+  582 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  582 | ERROR   | Usage of users/usermeta tables is highly discouraged in VIP
+      |         | context, For storing user additional user metadata, you
+      |         | should look at User Attributes.
+  585 | ERROR   | Use placeholders and $wpdb->prepare(); found $query
+  587 | WARNING | Usage of a direct database call is discouraged.
+  587 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  587 | ERROR   | Use placeholders and $wpdb->prepare(); found $sql
+  595 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  595 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  596 | WARNING | Unused variable `$stepperForm`.
+  597 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  597 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  598 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  599 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  599 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  600 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  600 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  601 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  601 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  602 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  602 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  603 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  603 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  604 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  604 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  606 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+  672 | WARNING | This comment is 75% valid code; is this commented out code?
+  691 | WARNING | Usage of a direct database call is discouraged.
+  691 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  706 | WARNING | Unused variable `$reason`.
+  708 | WARNING | This comment is 64% valid code; is this commented out code?
+  712 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  712 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  714 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  714 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  715 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  715 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  731 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  731 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  732 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  732 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  733 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  733 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  734 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  734 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  735 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  735 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+  748 | WARNING | This comment is 75% valid code; is this commented out code?
+  753 | ERROR   | Detected usage of a non-sanitized input variable: $_POST
+  771 | WARNING | Usage of a direct database call is discouraged.
+  771 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  771 | ERROR   | Use placeholders and $wpdb->prepare(); found interpolated
+      |         | variable $lcmembertable at "UPDATE {$lcmembertable} SET
+      |         | member_status = '0', action_date = %s, reason = %s WHERE id =
+      |         | %d AND user_id = %d"
+  803 | WARNING | This comment is 75% valid code; is this commented out code?
+  806 | ERROR   | Detected usage of a non-sanitized input variable: $_POST
+  823 | WARNING | Variable $output is undefined.
+  827 | WARNING | Variable $output is undefined.
+  827 | ERROR   | All output should be run through an escaping function (see
+      |         | the Security sections in the WordPress Developer Handbooks),
+      |         | found '$output'.
+  837 | WARNING | This comment is 60% valid code; is this commented out code?
+  854 | ERROR   | Detected usage of a non-validated input variable: $_FILES
+  860 | WARNING | File operations should use WP_Filesystem methods instead of
+      |         | direct PHP filesystem calls. Found: fopen()
+  860 | ERROR   | Detected usage of a non-sanitized input variable: $_FILES
+  863 | WARNING | This comment is 36% valid code; is this commented out code?
+  867 | WARNING | Variable assignment found within a condition. Did you mean to
+      |         | do a comparison?
+  890 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+  890 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+  911 | WARNING | Unused variable `$reason`.
+  931 | WARNING | Unused global variable `$bp`.
+  934 | WARNING | Processing form data without nonce verification.
+  934 | WARNING | Processing form data without nonce verification.
+  934 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+  938 | WARNING | Usage of a direct database call is discouraged.
+  938 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+  947 | WARNING | File operations should use WP_Filesystem methods instead of
+      |         | direct PHP filesystem calls. Found: fopen()
+  950 | ERROR   | Filesystem writes are forbidden, please do not use fputcsv().
+  967 | ERROR   | Filesystem writes are forbidden, please do not use fputcsv().
+  972 | WARNING | File operations should use WP_Filesystem methods instead of
+      |         | direct PHP filesystem calls. Found: fclose()
+  978 | WARNING | File operations should use WP_Filesystem methods instead of
+      |         | direct PHP filesystem calls. Found: readfile()
+  983 | WARNING | Unused variable `$memberid`.
+  983 | WARNING | Unused variable `$reason`.
+  997 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+  997 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1015 | ERROR   | Header "REMOTE_ADDR" is user-controlled and should be
+      |         | properly validated before use.
+ 1015 | ERROR   | Detected usage of a non-validated input variable: $_SERVER
+ 1015 | WARNING | Due to using Batcache, server side based client related logic
+      |         | will not work, use JS instead.
+ 1024 | ERROR   | Use placeholders and $wpdb->prepare(); found $query
+ 1026 | WARNING | Usage of a direct database call is discouraged.
+ 1026 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 1026 | ERROR   | Use placeholders and $wpdb->prepare(); found $sqllog
+ 1034 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 1038 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 1061 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1061 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1084 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1084 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1138 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 1139 | ERROR   | Processing form data without nonce verification.
+ 1139 | ERROR   | Processing form data without nonce verification.
+ 1146 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1146 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1152 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1152 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1187 | WARNING | This comment is 75% valid code; is this commented out code?
+ 1189 | WARNING | This comment is 50% valid code; is this commented out code?
+ 1192 | ERROR   | Detected usage of a non-sanitized input variable: $_POST
+ 1209 | WARNING | Usage of a direct database call is discouraged.
+ 1209 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 1232 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1232 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1244 | WARNING | This comment is 63% valid code; is this commented out code?
+ 1247 | WARNING | Usage of a direct database call is discouraged.
+ 1247 | WARNING | Direct database call without caching detected. Consider using
+      |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 1247 | ERROR   | Use placeholders and $wpdb->prepare(); found interpolated
+      |         | variable $lcmembertable at "SELECT * FROM  {$lcmembertable}
+      |         | where member_status = 1"
+ 1256 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1256 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1257 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1257 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1258 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1258 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1259 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1259 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1260 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1260 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1279 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1279 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1281 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1281 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1289 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1289 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1291 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1291 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1297 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1297 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1299 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1299 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1306 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1306 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1308 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1308 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1314 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1314 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1316 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1316 | ERROR   | update_user_meta() usage is highly discouraged on
+      |         | WordPress.com VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1339 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1339 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1361 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1361 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1382 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1382 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1403 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1403 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1424 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1424 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1463 | ERROR   | get_user_meta() usage is highly discouraged, check VIP
+      |         | documentation on "Working with wp_users"
+ 1463 | ERROR   | get_user_meta() usage is highly discouraged on WordPress.com
+      |         | VIP due to it being a multisite, please see
+      |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 1471 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+ 1471 | WARNING | `wp_mail` should be used sparingly. For any bulk emailing
+      |         | should be handled by a 3rd party service, in order to prevent
+      |         | domain or IP addresses being flagged as spam.
+--------------------------------------------------------------------------------
+
+
+FILE: ...gins/ifsa-member-verification/public/js/ifsa-member-verification-public.js
+--------------------------------------------------------------------------------
+FOUND 1 ERROR AND 5 WARNINGS AFFECTING 6 LINES
+--------------------------------------------------------------------------------
+ 125 | WARNING | Any HTML passed to `html` gets executed. Make sure it's
+     |         | properly escaped.
+ 274 | ERROR   | Data from JS global "window.location.href" may contain
+     |         | user-supplied values and should be sanitized before output to
+     |         | prevent XSS.
+ 338 | WARNING | Any HTML passed to `append` gets executed. Make sure it's
+     |         | properly escaped.
+ 340 | WARNING | Any HTML passed to `append` gets executed. Make sure it's
+     |         | properly escaped.
+ 356 | WARNING | Any HTML passed to `html` gets executed. Make sure it's
+     |         | properly escaped.
+ 374 | WARNING | Any HTML passed to `html` gets executed. Make sure it's
+     |         | properly escaped.
+--------------------------------------------------------------------------------
+
+
+FILE: ...ugins/ifsa-member-verification/includes/class-ifsa-member-verification.php
+--------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 1 WARNING AFFECTING 1 LINE
+--------------------------------------------------------------------------------
+ 205 | WARNING | This comment is 69% valid code; is this commented out code?
+--------------------------------------------------------------------------------
+
+
+FILE: ...-member-verification/includes/class-ifsa-member-verification-activator.php
+--------------------------------------------------------------------------------
+FOUND 4 ERRORS AND 9 WARNINGS AFFECTING 7 LINES
+--------------------------------------------------------------------------------
+ 38 | WARNING | Unused variable `$tblname`.
+ 43 | WARNING | Usage of a direct database call is discouraged.
+ 43 | WARNING | Direct database call without caching detected. Consider using
+    |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 43 | WARNING | Found: !=. Use strict comparisons (=== or !==).
+ 45 | WARNING | Attempting a database schema change is discouraged.
+ 58 | ERROR   | All database modifications have to approved by the
+    |         | WordPress.com VIP team.
+ 58 | ERROR   | All database modifications have to approved by the
+    |         | WordPress.com VIP team.
+ 63 | WARNING | Usage of a direct database call is discouraged.
+ 63 | WARNING | Direct database call without caching detected. Consider using
+    |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 63 | WARNING | Found: !=. Use strict comparisons (=== or !==).
+ 65 | WARNING | Attempting a database schema change is discouraged.
+ 77 | ERROR   | All database modifications have to approved by the
+    |         | WordPress.com VIP team.
+ 77 | ERROR   | All database modifications have to approved by the
+    |         | WordPress.com VIP team.
+--------------------------------------------------------------------------------
+
+
+FILE: ...ber-verification/admin/partials/ifsa-member-verification-admin-display.php
+--------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 6 WARNINGS AFFECTING 6 LINES
+--------------------------------------------------------------------------------
+ 16 | WARNING | Processing form data without nonce verification.
+ 27 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 28 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 29 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 38 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 45 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+--------------------------------------------------------------------------------
+
+
+FILE: ...ins/ifsa-member-verification/admin/class-ifsa-member-verification-logs.php
+--------------------------------------------------------------------------------
+FOUND 0 ERRORS AND 15 WARNINGS AFFECTING 10 LINES
+--------------------------------------------------------------------------------
+ 106 | WARNING | Processing form data without nonce verification.
+ 106 | WARNING | Processing form data without nonce verification.
+ 111 | WARNING | Variable $delete_nonce is undefined.
+ 163 | WARNING | This comment is 50% valid code; is this commented out code?
+ 172 | WARNING | Usage of a direct database call is discouraged.
+ 172 | WARNING | Direct database call without caching detected. Consider using
+     |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 190 | WARNING | This comment is 86% valid code; is this commented out code?
+ 214 | WARNING | This comment is 50% valid code; is this commented out code?
+ 215 | WARNING | Usage of a direct database call is discouraged.
+ 215 | WARNING | Direct database call without caching detected. Consider using
+     |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 258 | WARNING | print_r() found. Debug code should not normally be used in
+     |         | production.
+ 273 | WARNING | Processing form data without nonce verification.
+ 273 | WARNING | Processing form data without nonce verification.
+ 278 | WARNING | Processing form data without nonce verification.
+ 278 | WARNING | Processing form data without nonce verification.
+--------------------------------------------------------------------------------
+
+
+FILE: ...ns/ifsa-member-verification/admin/class-ifsa-member-verification-admin.php
+--------------------------------------------------------------------------------
+FOUND 13 ERRORS AND 18 WARNINGS AFFECTING 20 LINES
+--------------------------------------------------------------------------------
+  87 | WARNING | This comment is 55% valid code; is this commented out code?
+ 108 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 148 | ERROR   | Processing form data without nonce verification.
+ 148 | ERROR   | Processing form data without nonce verification.
+ 152 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+     |         | documentation on "Working with wp_users"
+ 152 | ERROR   | update_user_meta() usage is highly discouraged on
+     |         | WordPress.com VIP due to it being a multisite, please see
+     |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 155 | ERROR   | Processing form data without nonce verification.
+ 155 | ERROR   | Processing form data without nonce verification.
+ 157 | WARNING | This comment is 75% valid code; is this commented out code?
+ 163 | WARNING | This comment is 50% valid code; is this commented out code?
+ 166 | WARNING | Found: ==. Use strict comparisons (=== or !==).
+ 184 | WARNING | Usage of a direct database call is discouraged.
+ 184 | WARNING | Direct database call without caching detected. Consider using
+     |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 197 | WARNING | Unused variable `$fname`.
+ 198 | WARNING | Unused variable `$lname`.
+ 202 | ERROR   | Header "REMOTE_ADDR" is user-controlled and should be properly
+     |         | validated before use.
+ 202 | WARNING | Due to using Batcache, server side based client related logic
+     |         | will not work, use JS instead.
+ 202 | ERROR   | Header "REMOTE_ADDR" is user-controlled and should be properly
+     |         | validated before use.
+ 202 | WARNING | Due to using Batcache, server side based client related logic
+     |         | will not work, use JS instead.
+ 203 | ERROR   | Header "REMOTE_ADDR" is user-controlled and should be properly
+     |         | validated before use.
+ 203 | WARNING | Due to using Batcache, server side based client related logic
+     |         | will not work, use JS instead.
+ 207 | WARNING | Variable $flag is undefined.
+ 209 | ERROR   | Use placeholders and $wpdb->prepare(); found $query
+ 211 | WARNING | Usage of a direct database call is discouraged.
+ 211 | WARNING | Direct database call without caching detected. Consider using
+     |         | wp_cache_get() / wp_cache_set() or wp_cache_delete().
+ 211 | ERROR   | Use placeholders and $wpdb->prepare(); found $sqllog
+ 220 | ERROR   | update_user_meta() usage is highly discouraged, check VIP
+     |         | documentation on "Working with wp_users"
+ 220 | ERROR   | update_user_meta() usage is highly discouraged on
+     |         | WordPress.com VIP due to it being a multisite, please see
+     |         | https://lobby.vip.wordpress.com/wordpress-com-documentation/code-review-what-we-look-for/#wp_users-and-user_meta.
+ 231 | WARNING | This comment is 56% valid code; is this commented out code?
+ 245 | WARNING | Processing form data without nonce verification.
+ 356 | WARNING | This comment is 39% valid code; is this commented out code?
+--------------------------------------------------------------------------------
+
+

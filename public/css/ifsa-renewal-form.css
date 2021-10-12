@@ -1,0 +1,122 @@
+body{
+    overflow-x: hidden!important;
+    box-sizing: border-box;
+}
+
+.ifsa_renewal_form-container{
+    max-width: 1140px;
+    min-height: 320px;
+    width: 550px;
+    padding: 15px;
+    margin:8% auto;
+    position: relative;
+    text-align: center;
+    transition: all 0.5s;
+}
+
+.ifsa_renewal_form-container #ifsa_renewal_form-1,
+.ifsa_renewal_form-container #ifsa_renewal_form-2{
+    position: absolute;
+    max-width: 100%;
+    width: 100%;
+    padding: 20px;
+}
+
+#ifsa_renewal_form-1, 
+#ifsa_renewal_form-2{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color:#fff;
+    box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 20%);
+    border-radius: 10px;
+    border: 1px solid #e9eaee;
+}
+
+
+#ifsa_renewal_form-1 .ifsa_renewal_form-options{
+    display: flex;
+    justify-content: space-evenly;
+    width: 500px;
+    align-items: center;
+}
+
+.ifsa_renewal_form-container #ifsa_renewal_form-1 label{
+    position: relative;
+    padding: 10px 70px;
+    font-weight: 300;
+    color: #fff;
+    background-color: #65bc7bd7;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.ifsa_renewal_form-container #ifsa_renewal_form-1 label:hover{
+    background-color: #65bc7b;
+}
+
+.ifsa_renewal_form-container #ifsa_renewal_form-1 input{
+    position: absolute;
+    opacity: 0;
+}
+
+#ifsa_renewal_form-2{
+    visibility: hidden;
+}
+
+#ifsa_renewal_form-success_btn{
+    margin: 10px auto;
+    padding: 12px 50px;
+    font-weight: 300;
+    text-transform: uppercase;
+    color: #fff !important;
+    background-color: #65bc7bd7 !important;
+    cursor: pointer;
+    outline: 0;
+    border: 0;
+}
+
+#ifsa_renewal_form-success_btn:hover{
+    background-color: #65bc7b;
+}
+
+
+#ifsa_renewal_form-error,
+#ifsa_renewal_form-success_btn{
+    display: none;
+ }
+
+#ifsa_renewal_form-datepicker{
+    max-width: 300px;
+    height: 35px;
+    margin-bottom: 15px;
+}
+
+
+
+@media screen and (max-width:680px) and (min-width:280px) {
+
+    .ifsa_renewal_form-container{
+        width: 100%;
+    }
+
+    #ifsa_renewal_form-1 .ifsa_renewal_form-options{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    #ifsa_renewal_form-1 .ifsa_renewal_form-options label{
+        margin: 5px 0px;
+    }
+}
+.buddypress-wrap.extended-default-reg .register-page .layout-wrap {
+    display: block;
+    width: 50%;
+}
+div#profile-details-section h2 {
+    display: none;
+}
+div#ifsa-loading-renew-1{
+    margin-left: -45px;
+}
