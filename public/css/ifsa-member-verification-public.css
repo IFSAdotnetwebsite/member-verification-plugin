@@ -281,3 +281,9 @@ button#ifsa_form_last-btn-back {
    background: #000;
    color: #fff;
 }
+
+/* required fields in registration form */
+.required:after {
+   content:" *";
+   color: red;
+}

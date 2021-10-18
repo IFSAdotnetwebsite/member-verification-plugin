@@ -517,7 +517,7 @@ $nationals = array(
                 Are an IFSA member?
             </h3>
             <p>
-                Are you a member of an IFSA LC (Local Committee)?
+                Are you a member of an IFSA LC (Local Committee)
             </p>
             <p class="ifsa_multistep_form-subheading">
                 <?php echo get_option('ifsa_step_3_description'); ?>
@@ -574,7 +574,7 @@ $nationals = array(
             <div id="ifsa_form_5-error" class="ifsa_form_5-error">
                 <h3> Sorry you can't register as an IFSA member</h3>
                 If you are not an IFSA member you cannot register here.
-                Get in touch with the <a href="https://ifsa.net/team#regional-representatives" regional representives</a>
+                Get in touch with the <a href="https://ifsa.net/team#regional-representatives"> Regional Representatives </a>
                 of your region to discover how to become an IFSA member.
             </div>
         </div>
@@ -588,38 +588,38 @@ $nationals = array(
                 <p class="register-message" style="display:none"></p>
                 <div class="rendered-form">
                     <div class="formbuilder-text form-group field-txt-username">
-                        <label for="txt-username" class="formbuilder-text-label">Username (required)</label>
+                        <label for="txt-username" class="formbuilder-text-label required">Username</label>
                         <input type="text" class="form-control" name="txt-username" access="false" id="txt-username"
                                required="required" aria-required="true">
                         <span id="ifsa_username-error"></span>
                     </div>
                     <div class="formbuilder-text form-group field-txt-email">
-                        <label for="txt-email" class="formbuilder-text-label">Email (required)</label>
+                        <label for="txt-email" class="formbuilder-text-label required">Email</label>
                         <input type="email" class="form-control" name="txt-email" access="false" id="txt-email"
                                required="required" aria-required="true">
                         <span id="ifsa_email-error"></span>
                     </div>
                     <div class="formbuilder-text form-group field-txt-password">
-                        <label for="txt-password" class="formbuilder-text-label">Password (required)</label>
+                        <label for="txt-password" class="formbuilder-text-label required">Password</label>
                         <input type="password" class="form-control" name="txt-password" access="false" id="txt-password"
                                required="required" aria-required="true">
                         <span id="ifsa_password-error"></span>
                     </div>
                     <div class="formbuilder-text form-group field-txt-name">
-                        <label for="txt-name" class="formbuilder-text-label">Name (required)</label>
+                        <label for="txt-name" class="formbuilder-text-label required">Name</label>
                         <input type="text" class="form-control" name="txt-name" access="false" id="txt-name"
                                required="required" aria-required="true">
                         <span id="ifsa_fname-error"></span>
                     </div>
                     <div class="formbuilder-text form-group field-txt-surname">
-                        <label for="txt-surname" class="formbuilder-text-label">Surname (required)</label>
+                        <label for="txt-surname" class="formbuilder-text-label required">Surname</label>
                         <input type="text" class="form-control" name="txt-surname" access="false" id="txt-surname"
                                required="required" aria-required="true">
                         <span id="ifsa_lname-error"></span>
                     </div>
                     <div class="formbuilder-select form-group field-ddl-region">
-                        <label for="ddl-region" class="formbuilder-select-label">
-                            <div>IFSA Region (required)
+                        <label for="ddl-region" class="formbuilder-select-label required">
+                            <div>IFSA Region
                                 <br>
                             </div>
                         </label>
@@ -643,7 +643,7 @@ $nationals = array(
                         <span id="ifsa_region-error"></span>
                     </div>
                     <div class="formbuilder-select form-group field-ddl-lc">
-                        <label for="ddl-lc" class="formbuilder-select-label">IFSA Committee (required)</label>
+                        <label for="ddl-lc" class="formbuilder-select-label required">IFSA Committee</label>
                         <select class="form-control" name="field_213" id="field_213">
                             <option selected="true" value="" id="ddl-lc-0">Select Committee</option>
 
@@ -670,8 +670,7 @@ $nationals = array(
                         </select>
                     </div>
                     <div class="formbuilder-radio-group form-group field-ddl-terms">
-                        <label for="ddl-terms" class="formbuilder-radio-group-label">Terms and Conditions
-                            (required)</label>
+                        <label for="ddl-terms" class="formbuilder-radio-group-label required">Terms and Conditions</label>
                         <div class="radio-group">
                             <div class="formbuilder-radio-inline">
                                 <p class="description" tabindex="0">Check IFSA <a href="../terms">terms &amp;
@@ -680,7 +679,7 @@ $nationals = array(
                                 </p>
                                 <input name="ddl-terms" access="false" id="ddl-terms-0" required="required"
                                        aria-required="true" value="yes" type="checkbox">
-                                <label for="ddl-terms-0">Tagree to the terms and conditions and
+                                <label for="ddl-terms-0">I agree to the terms and conditions and
                                     privacy policy</label>
                                 <span id="ifsa_terms-error"></span>
                             </div>
