@@ -514,9 +514,11 @@ $nationals = array(
         </div>
         <div id="ifsa_form_3" class="ifsa_multistep_form-body">
             <h3 class="ifsa_multistep_form-heading">
-                Are you a member of an IFSA LC (Local Committee)
-                <?php echo IFSA_FORM_3_TITLE; ?>
+                Are an IFSA member?
             </h3>
+            <p>
+                Are you a member of an IFSA LC (Local Committee)?
+            </p>
             <p class="ifsa_multistep_form-subheading">
                 <?php echo get_option('ifsa_step_3_description'); ?>
             </p>
@@ -678,7 +680,7 @@ $nationals = array(
                                 </p>
                                 <input name="ddl-terms" access="false" id="ddl-terms-0" required="required"
                                        aria-required="true" value="yes" type="checkbox">
-                                <label for="ddl-terms-0">Yes, I have read and agree to the terms and conditions and
+                                <label for="ddl-terms-0">Tagree to the terms and conditions and
                                     privacy policy</label>
                                 <span id="ifsa_terms-error"></span>
                             </div>
@@ -704,8 +706,7 @@ $nationals = array(
     <p class="register-success" style="display:none">
     <h3 class="ifsa_multistep_form-heading-h3 ifsa_multistep_form-heading fusion-responsive-typography-calculated"
         data-fontsize="26" data-lineheight="46.8px" style="--fontSize:26; line-height: 1.8;display:none;">
-        Thank you for registering to the IFSA website! </h3>
-        You received a confirmation email and now need to wait for your LC to confirm your account
+        Thank you for registering to the IFSA website! You received a confirmation email and now need to wait for your LC to confirm your account</h3>
     <aside class="bp-feedback bp-messages info">
         <span class="bp-icon" aria-hidden="true"></span>
         <p class="register-success-p" style="text-align: center;"></p>

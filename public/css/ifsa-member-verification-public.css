@@ -253,31 +253,31 @@ button#ifsa_form_last-btn-back {
 }
 
 .ui-datepicker-header {
-   background-color: #006633;
+   background: #063;
 }
 
 .ui-datepicker-title {
    color: white;
 }
 
-.ui-datepicker .ui-widget-content .ui-state-default {
+.ui-widget-content .ui-state-default {
    border: 0px;
    text-align: center;
    background: #fff;
    font-weight: normal;
-   color: #000;
+   color: #000
 }
 
-.ui-datepicker .ui-widget-content .ui-state-default:hover {
+.ui-widget-content .ui-state-default:hover {
    border: 0px;
    text-align: center;
-   background: #000;
+   background: #006633;
    font-weight: normal;
    color: #fff;
 }
 
-.ui-datepicker .ui-widget-content .ui-state-active {
+.ui-widget-content .ui-state-active {
    border: 0px;
-   background: #006633;
+   background: #000;
    color: #fff;
 }
