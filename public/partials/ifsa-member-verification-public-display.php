@@ -551,7 +551,7 @@ $nationals = array(
         </div>
         <div id="ifsa_form_4" class="ifsa_multistep_form-body4">
             <h3 class="ifsa_multistep_form-heading">
-                When did you graduated?
+                When did you graduate?
             </h3>
             <p>
                 This information is needed because you can be an IFSA member only for 1 year after graduation.
@@ -619,9 +619,7 @@ $nationals = array(
                     </div>
                     <div class="formbuilder-select form-group field-ddl-region">
                         <label for="ddl-region" class="formbuilder-select-label required">
-                            <div>IFSA Region
-                                <br>
-                            </div>
+                            IFSA Region
                         </label>
                         <select class="form-control" name="field_209" id="field_209">
                             <option selected="true" value="" id="ddl-region-0">Select Region</option>
