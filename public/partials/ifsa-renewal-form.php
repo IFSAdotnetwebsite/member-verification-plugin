@@ -18,7 +18,7 @@ $roles = ( array ) $user->roles; // obtaining the role
  if (!is_user_logged_in() ||  $roles[0] != 'lc_member') { 
 $login = wp_login_url();
      ?>
-<p> Please <a href="<?php echo $login;?>">login</a> as LC member to renew your membership. </a>
+<p> Please <a href="<?php echo $login;?>">login</a> as LC member to renew your membership. </p>
  <?php }  else { ?>
 
 <div class="ifsa_renewal_form-container">
