@@ -464,7 +464,7 @@ $nationals = array(
             <h3 class="ifsa_multistep_form-heading">
                 <?php echo IFSA_FORM_1_TITLE; ?>
             </h3>
-            <p class="ifsa_multistep_form-subheading">
+            <p>
                 Answer yes if you are currently enrolled in a university, no otherwise
                 <?php echo get_option('ifsa_step_1_description'); ?>
             </p>
