@@ -579,7 +579,7 @@ class Ifsa_Member_Verification_Admin {
 						'remark'            => strip_tags($ifsa_log_data->remark),
 						'logged_in_user_id' => $lcadminname->display_name,
 						'member_id'         => $lcmembername->display_name,
-						'action_date'       =>  date( 'F j, Y', strtotime( $ifsa_log_data->action_date )) ,
+						'action_date'       =>  date( 'c', strtotime( $ifsa_log_data->action_date )) ,
 						'user_ip'           => $ifsa_log_data->user_ip,
 					);
 				

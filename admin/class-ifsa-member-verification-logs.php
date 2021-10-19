@@ -199,7 +199,7 @@ class Ifsa_List_Table extends WP_List_Table {
 	 * @return Array
 	 */
 	public function get_sortable_columns() {
-		return array( 'id' => array( 'id', true ) );
+		return array( 'action_date' => array( 'action_date', true ));
 	}
 	
 	/**
@@ -235,9 +235,9 @@ class Ifsa_List_Table extends WP_List_Table {
 	if( $users ) {
 	//	echo print_r($users,true );
 			$usersid = $users[0]->ID;
-			$results  = $wpdb->get_results($wpdb->prepare("SELECT * FROM  {$wpdb->prefix}ifsa_log WHERE member_id = $usersid OR logged_in_user_id = $usersid or log_action Like '%$search%' OR remark Like '%$search%' OR action_date Like '$dtsearch%' OR user_ip Like '%$search%' " )); 
+			$results  = $wpdb->get_results($wpdb->prepare("SELECT * FROM  {$wpdb->prefix}ifsa_log WHERE member_id = $usersid OR logged_in_user_id = $usersid or log_action Like '%$search%' OR remark Like '%$search%' OR action_date Like '$dtsearch%' OR user_ip Like '%$search%'" ));
 	}else  {
-		$results  = $wpdb->get_results($wpdb->prepare("SELECT * FROM  {$wpdb->prefix}ifsa_log WHERE  log_action Like '%$search%' OR remark Like '%$search%' OR action_date Like '$dtsearch%' OR user_ip Like '%$search%' " ));
+		$results  = $wpdb->get_results($wpdb->prepare("SELECT * FROM  {$wpdb->prefix}ifsa_log WHERE  log_action Like '%$search%' OR remark Like '%$search%' OR action_date Like '$dtsearch%' OR user_ip Like '%$search%'" ));
 	}
 
 	//echo print_r($wpdb,true);
@@ -259,7 +259,7 @@ class Ifsa_List_Table extends WP_List_Table {
 					'remark'            => $ifsa_log_data->remark,
 					'logged_in_user_id' => $lcadminname->display_name,
 					'member_id'         => $lcmembername->display_name,
-					'action_date'       =>  date( 'F j, Y', strtotime( $ifsa_log_data->action_date )) ,
+					'action_date'       =>  date( 'c', strtotime( $ifsa_log_data->action_date )) ,
 					'user_ip'           => $ifsa_log_data->user_ip,
 				);
 			}
