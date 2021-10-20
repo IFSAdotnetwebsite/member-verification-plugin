@@ -25,11 +25,11 @@ $login = wp_login_url();
     <form method="POST" action="<?php echo esc_url(site_url('/register'))?>" autocomplete="off">
         <div id="ifsa_renewal_form-1">
             <h3 class="ifsa_renewal_form-heading">
-            <?php echo esc_html_e('Student Step Title Goes Here','ifsa'); ?>
+            Confirm student status
 
             </h3>
             <p>
-            <?php echo esc_html_e('Student status','ifsa'); ?>
+            Are you still an enrolled student?
                  
 </p>
             <div class="ifsa_renewal_form-options">
