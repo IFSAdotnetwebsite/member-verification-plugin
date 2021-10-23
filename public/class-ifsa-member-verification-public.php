@@ -1131,9 +1131,17 @@ class Ifsa_Member_Verification_Public {
 		if ( isset( $welcome_email_after_verify_member ) && ! empty( $welcome_email_after_verify_member ) ) {
 			$adminobj                          = get_user_by( 'id', $user_id );
 			$adminobj->user_nicename           = ucfirst( $adminobj->user_nicename );
+            $expiry_settings = get_option( 'ifsa_general_setting_date_field', true );
+            if ( isset( $expiry_settings ) && ! empty( $expiry_settings ) ) {
+                $end = date( 'Y-m-d h:i:s', strtotime( $expiry_settings ) );
+            }
+            else {
+                $end = "31st August";
+            }
 			$welcome_email_after_verify_member = str_replace( "{lc_member}", "$fullname", $welcome_email_after_verify_member );
 			$welcome_email_after_verify_member = str_replace( "{lc_admin}", "$adminobj->user_nicename", $welcome_email_after_verify_member );
-			
+            $welcome_email_after_verify_member = str_replace( "{renew_date}", "$end", $welcome_email_after_verify_member );
+
 			$message    = $welcome_email_after_verify_member;
 			//$subject    = "Successfully verified to IFSA";
 			$subject = !empty( get_option('welcome_email_after_verify_member_subject')) ? get_option('welcome_email_after_verify_member_subject') : 'Successfully verified to IFSA';

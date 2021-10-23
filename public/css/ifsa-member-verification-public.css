@@ -287,3 +287,9 @@ button#ifsa_form_last-btn-back {
    content:" *";
    color: red;
 }
+
+.ifsa_multistep_form_counter {
+   float: right;
+   font-size: 10pt;
+   font-style: italic;
+}

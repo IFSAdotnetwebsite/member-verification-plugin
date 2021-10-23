@@ -24,7 +24,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'IFSA_MEMBER_VERIFICATION_VERSION', '1.0.2' );
+define( 'IFSA_MEMBER_VERIFICATION_VERSION', '1.0.3' );
 define( 'IFSA_MEMBER_VERIFICATION_HOME', plugin_dir_url( __FILE__ ) );
 
 // File, Path & Url.

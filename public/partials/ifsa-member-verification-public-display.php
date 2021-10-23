@@ -462,11 +462,18 @@ $nationals = array(
           enctype="multipart/form-data">
         <div id="ifsa_form_1" class="ifsa_multistep_form-body">
             <h3 class="ifsa_multistep_form-heading">
-                <?php echo IFSA_FORM_1_TITLE; ?>
+                Welcome to the IFSA member registration form
             </h3>
             <p>
+                This is a multistep registration form that will guide you to create an IFSA account.
+                <a href="https://ifsa.net/how-to-register">Learn more </a>  about the member verification system
+                or <a href="https://ifsa.net/how-to-register/feedback/"> contact us for questions or feedbacks </a>
+            </p>
+            <h4>
+                Are you a student?
+            </h4>
+            <p>
                 Answer yes if you are currently enrolled in a university, no otherwise
-                <?php echo get_option('ifsa_step_1_description'); ?>
             </p>
             <div class="ifsa_multistep_form-options">
                 <label for="form_1_toggle-no">No</label>
@@ -474,6 +481,10 @@ $nationals = array(
                 <label for="form_1_toggle-yes">Yes</label>
                 <input id="form_1_toggle-yes" name="toggle" value="Yes" type="radio">
             </div>
+            <p class="ifsa_multistep_form_counter">
+                1/4
+            </p>
+
         </div>
         <div id="ifsa_form_2" class="ifsa_multistep_form-body2">
             <h3 class="ifsa_multistep_form-heading">
@@ -484,10 +495,10 @@ $nationals = array(
                 <?php echo get_option('ifsa_step_2_description'); ?>
             </p>
             <div class="ifsa_multistep_form-options">
-                <label for="ifsa_universityname">University Name ( Required )</label>
+                <label for="ifsa_universityname" class="required">University Name</label>
                 <input id="ifsa_universityname" name="ifsa_universityname" type="text">
                 <span id="ifsa_universityname-error"></span>
-                <label for="ifsa_country"> University Country ( Required )</label>
+                <label for="ifsa_country" class="required"> University Country</label>
                 <select name="ifsa_country" id="ifsa_country">
                     <option value="">Select University Country</option>
                     <?php foreach ($countries as $key => $value) { ?>
@@ -495,7 +506,7 @@ $nationals = array(
                     <?php } ?>
                 </select>
                 <span id="ifsa_country-error"></span>
-                <label for="ifsa_universitylevel">University Level ( Required )</label>
+                <label for="ifsa_universitylevel" class="required">University Level</label>
                 <select name="ifsa_universitylevel" id="ifsa_universitylevel">
                     <option value="">Select University Level</option>
                     <option value="Bachelor Degree">Bachelor Degree</option>
@@ -503,7 +514,7 @@ $nationals = array(
                     <option value="PhD">PhD</option>
                 </select>
                 <span id="ifsa_universitylevel-error"></span>
-                <label for="ifsa_coursetopic">Course Topic ( Required )</label>
+                <label for="ifsa_coursetopic">Course Topic</label>
                 <input id="ifsa_coursetopic" name="ifsa_coursetopic" type="text">
                 <span id="ifsa_coursetopic-error"></span>
                 <div class="cls-back">
@@ -511,10 +522,13 @@ $nationals = array(
                     <button id="ifsa_form_2-btn" type="button">Continue</button>
                 </div>
             </div>
+            <p class="ifsa_multistep_form_counter">
+                2/4
+            </p>
         </div>
         <div id="ifsa_form_3" class="ifsa_multistep_form-body">
             <h3 class="ifsa_multistep_form-heading">
-                Are an IFSA member?
+                Are you an IFSA member?
             </h3>
             <p>
                 Are you a member of an IFSA LC (Local Committee)
@@ -528,6 +542,9 @@ $nationals = array(
                 <input id="toggle-no" name="toggle_3" value="No" type="radio">
                 <label for="toggle-no">No</label>
             </div>
+            <p class="ifsa_multistep_form_counter">
+                3/4
+            </p>
         </div>
         <div id="ifsa_form_6" class="ifsa_multistep_form-body">
             <h3 class="ifsa_multistep_form-heading">
@@ -542,6 +559,9 @@ $nationals = array(
                 <input id="toggle-no-6" name="toggle_6" value="No" type="radio">
                 <label for="toggle-no-6">No</label>
             </div>
+            <p class="ifsa_multistep_form_counter">
+                2/5
+            </p>
         </div>
         <div id="ifsa_form_7" class="ifsa_multistep_form-body">
             <div id="ifsa_form_7-error" class="ifsa_form_7-error">
@@ -695,7 +715,9 @@ $nationals = array(
                          title="loading"/>
                 </div>
             </div>
-
+            <p class="ifsa_multistep_form_counter">
+                4/4
+            </p>
 
         </div>
 

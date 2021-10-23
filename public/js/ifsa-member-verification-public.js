@@ -297,12 +297,7 @@ jQuery( document ).ready( function() {
 				$( '#ifsa_universitylevel-error').html( 'Please select university level' );
 				//$( '#ifsa_form_2-btn' ).hide();
 				$("#ifsa_form_2-btn").prop('disabled', true);
-			} else if ( $.trim( $( '#ifsa_coursetopic' ).val() ).length == 0 ) {
-
-				$( '#ifsa_coursetopic-error' ).html( 'Please add course topic' );
-				//$( '#ifsa_form_2-btn' ).hide();
-				$("#ifsa_form_2-btn").prop('disabled', true);
-			} 
+			}
 			
 			else {
 
