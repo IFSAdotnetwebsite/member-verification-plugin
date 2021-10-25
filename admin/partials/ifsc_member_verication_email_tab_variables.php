@@ -34,7 +34,7 @@ $content_ifsa_twentytwo_expire_date_id = get_option('twentytwo_days_after_expire
 $content_ifsa_thirty_days_before_renewal_date_id = get_option('thirty_days_before_renewal_date');
 $content_ifsa_thirty_days_after_expire_date_id = get_option('thirty_days_after_expire_date');
 $remove_member_content_id = get_option('remove_member_content');
-$setting = array('media_buttons' => false,'quicktags'=>false, 'textarea_rows' => 7);
+$setting = array('media_buttons' => false,'quicktags'=>true, 'textarea_rows' => 7);
 
 foreach ($ifsa_field_names as $key => $name) {
     ${$name} = $ifsa_field_names[$key];
