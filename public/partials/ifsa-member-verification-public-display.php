@@ -537,10 +537,10 @@ $nationals = array(
                 <?php echo get_option('ifsa_step_3_description'); ?>
             </p>
             <div class="ifsa_multistep_form-options">
-                <input id="toggle-yes" name="toggle_3" value="Yes" type="radio">
-                <label for="toggle-yes">Yes</label>
                 <input id="toggle-no" name="toggle_3" value="No" type="radio">
                 <label for="toggle-no">No</label>
+                <input id="toggle-yes" name="toggle_3" value="Yes" type="radio">
+                <label for="toggle-yes">Yes</label>
             </div>
             <p class="ifsa_multistep_form_counter">
                 3/4

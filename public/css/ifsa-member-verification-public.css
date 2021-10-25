@@ -184,7 +184,7 @@ div#basic-details-section h2.bp-heading.fusion-responsive-typography-calculated{
 /* New changes */
 table.dataTable.display tbody td .cls-reject,
 table.dataTable.display tbody td .cls-approve,
-table.dataTable.display tbody td .cls-action-remove{background:#006633!important;padding:4px 15px 7px;border:0;margin:30px auto 0;text-transform:capitalize;border-radius:2px;font-size:15px;color:#fff;line-height:1;margin:5px;display:inline-block;}
+table.dataTable.display tbody td .cls-action-remove{background:#006633;padding:4px 15px 7px;border:0;margin:30px auto 0;text-transform:capitalize;border-radius:2px;font-size:15px;color:#fff;line-height:1;margin:5px;display:inline-block;}
 .ifsa_multistep_form-main-continer .ifsa_multistep_form-body2 .ifsa_multistep_form-options .cls-back{text-align:center;}
 .buddypress-wrap.extended-default-reg .register-page .layout-wrap input[type="radio"]{margin-right:7px!important;}
 .ifsa_multistep_form-main-continer #ifsa_final_step label{margin-top:10px;color:#333;font-size:15px;display:block;}
@@ -292,4 +292,13 @@ button#ifsa_form_last-btn-back {
    float: right;
    font-size: 10pt;
    font-style: italic;
+}
+
+/* make the Reject/Remove button red */
+table.dataTable.display tbody td .cls-reject{
+   background: red;
+}
+
+cls-remove{
+   color:red;
 }
