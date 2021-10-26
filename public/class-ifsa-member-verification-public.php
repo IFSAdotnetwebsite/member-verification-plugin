@@ -289,7 +289,7 @@ class Ifsa_Member_Verification_Public {
 		$res     = $wpdb->get_results( $wpdb->prepare( "SELECT * FROM {$wpdb->prefix}ifsa_lc_member where lc_adminid = %d and member_status = 1", $user_id ) );
 		//$memberlistresults = $wpdb->get_results( $wpdb->prepare( "SELECT * from FROM {$lcmembertable} WHERE lc_adminid = $user_id" ) );
 		echo '<h2>Active Member List</h2>';
-		echo '<p>You can see list of all members who are currently active in your Local Community.</p>';
+		echo '<p>You can see list of all members who are currently active in your Local Committee.</p>';
 		if ( $res || ! is_wp_error( $res ) ) {
 			?>
 			
@@ -356,7 +356,7 @@ class Ifsa_Member_Verification_Public {
 					$Surname       = bp_get_profile_field_data( $args1 );
 					$the_user      = get_user_by( 'id', $memberlistresult->user_id ); // 54 is a user ID
 					$email         = $the_user->user_email;
-					$profileURL    = get_bloginfo( 'url' ) . '/members/' . $the_user->user_login . '/profile/';
+					$profileURL    = get_bloginfo( 'url' ) . '/members/' . bp_core_get_username($memberlistresult->user_id) . '/profile/';
 					$renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
 					if ( $renew_request == '1' ) {
 						$renew_request = 'Renewal';
