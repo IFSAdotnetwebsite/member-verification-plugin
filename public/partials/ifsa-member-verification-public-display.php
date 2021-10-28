@@ -15,6 +15,7 @@
 
 /* The country list is from here https://stefangabos.github.io/world_countries/ which follows the IS0-3166 standard
 it takes the dataset "world" which includes all countries and territories */
+/** @noinspection SpellCheckingInspection */
 $countries = array(
     "Afghanistan",
     "Åland Islands",
@@ -307,7 +308,8 @@ $countries = array(
             </h3>
             <p class="ifsa_multistep_form-subheading">
                 Add the information about your university
-                <?php echo get_option('ifsa_step_2_description'); ?>
+                <?php
+                echo get_option('ifsa_step_2_description'); ?>
             </p>
             <div class="ifsa_multistep_form-options">
                 <label for="ifsa_universityname" class="required">University Name</label>
@@ -317,7 +319,9 @@ $countries = array(
                 <select name="ifsa_country" id="ifsa_country">
                     <option value="">Select University Country</option>
                     <?php foreach ($countries as $key =>  $value) { ?>
-                        <option value="<?php echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php echo esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
+                        <option value="<?php
+                        echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php
+                            esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
                     <?php } ?>
                 </select>
                 <span id="ifsa_country-error"></span>
@@ -349,7 +353,8 @@ $countries = array(
                 Are you a member of an IFSA LC (Local Committee)
             </p>
             <p class="ifsa_multistep_form-subheading">
-                <?php echo get_option('ifsa_step_3_description'); ?>
+                <?php
+                echo get_option('ifsa_step_3_description'); ?>
             </p>
             <div class="ifsa_multistep_form-options">
                 <input id="toggle-no" name="toggle_3" value="No" type="radio">
@@ -392,6 +397,7 @@ $countries = array(
                 This information is needed because you can be an IFSA member only for 1 year after graduation.
             </p>
             <div class="ifsa_multistep_form-options">
+                <label for="datepicker">Select your graduation date</label>
                 <input id="datepicker" type="text" placeholder="mm-dd-yy">
                 <div id="ifsa_form_4-success" class="ifsa_form_4-success">
                     <button id="ifsa_form_4-success_btn-back" class="ifsa_form_4-success-back" type="button"
@@ -432,12 +438,12 @@ $countries = array(
                         </div>
                         <div class="formbuilder-text form-group field-txt-surname">
                             <label for="txt-surname" class="formbuilder-text-label required">Last Name</label>
-                            <input type="text" class="form-control" name="txt-surname" access="false" id="txt-surname"
+                            <input type="text" class="form-control" name="txt-surname" id="txt-surname"
                                    required="required" aria-required="true">
                             <span id="ifsa_lname-error"></span>
                         <div class="formbuilder-text form-group field-txt-username">
                             <label for="txt-username" class="formbuilder-text-label required">Username (nickname)</label>
-                            <input type="text" class="form-control" name="txt-username" access="false" id="txt-username"
+                            <input type="text" class="form-control" name="txt-username" id="txt-username"
                                    required="required" aria-required="true">
                             <span id="ifsa_username-error"></span>
                         </div>
@@ -449,7 +455,7 @@ $countries = array(
                         </div>
                         <div class="formbuilder-text form-group field-txt-password">
                             <label for="txt-password" class="formbuilder-text-label required">Password</label>
-                            <input type="password" class="form-control" name="txt-password" access="false" id="txt-password"
+                            <input type="password" class="form-control" name="txt-password" id="txt-password"
                                    required="required" aria-required="true">
                             <span id="ifsa_password-error"></span>
                         </div>
@@ -457,7 +463,7 @@ $countries = array(
                         <div class="formbuilder-select form-group field-ddl-gender">
                             <label for="ddl-gender" class="formbuilder-select-label">Gender</label>
                             <select class="form-control" name="ddl-gender" id="ddl-gender">
-                                <option selected="true" id="ddl-gender-0">Select Gender</option>
+                                <option selected id="ddl-gender-0">Select Gender</option>
                                 <option value="Male" id="ddl-gender-1">Male</option>
                                 <option value="Female" id="ddl-gender-2">Female</option>
                                 <option value="Other non-binary" id="ddl-gender-3">Other non-binary</option>
@@ -468,9 +474,11 @@ $countries = array(
                         <div class="formbuilder-select form-group field-ddl-nationality">
                             <label for="ddl-nationality" class="formbuilder-select-label">Where are you from?</label>
                             <select class="form-control" name="ddl-nationality" id="ddl-nationality">
-                                <option selected="true" id="ddl-nationality-0">Select Country</option>
+                                <option selected id="ddl-nationality-0">Select Country</option>
                                 <?php foreach ($countries as $key => $value) { ?>
-                                    <option value="<?php echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php echo esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
+                                    <option value="<?php
+                                    echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php
+                                        esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
                                 <?php } ?>
                             </select>
                         </div>
@@ -478,13 +486,14 @@ $countries = array(
                     <fieldset>
                         <legend>LC Information</legend>
                         <div class="formbuilder-select form-group field-ddl-region">
-                            <label for="ddl-region" class="formbuilder-select-label required">
+                            <label for="ddl_region" class="formbuilder-select-label required">
                                 IFSA Region
                             </label>
-                            <select class="form-control" name="field_209" id="field_209">
+                            <select class="form-control" name="ddl_region" id="ddl_region">
                                 <option selected="true" value="" id="ddl-region-0">Select Region</option>
                                 <?php
-                                global $wpdb;
+                                global
+                                $wpdb;
                                 $custom_post_type = 'regions'; // define your custom post type slug here
                                 // A sql query to return all post titles
                                 $results = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM {$wpdb->posts} WHERE post_type = %s and post_status = 'publish'", $custom_post_type), ARRAY_A);
@@ -501,8 +510,8 @@ $countries = array(
                             <span id="ifsa_region-error"></span>
                         </div>
                         <div class="formbuilder-select form-group field-ddl-lc">
-                            <label for="ddl-lc" class="formbuilder-select-label required">IFSA Committee</label>
-                            <select class="form-control" name="field_213" id="field_213">
+                            <label for="ddl_lc" class="formbuilder-select-label required">IFSA Committee</label>
+                            <select class="form-control" name="ddl-lc" id="ddl_lc">
                                 <option selected="true" value="" id="ddl-lc-0">Select Committee</option>
 
                             </select>
@@ -512,11 +521,12 @@ $countries = array(
                         <label for="ddl-terms" class="formbuilder-radio-group-label required">Terms and Conditions</label>
                         <div class="radio-group">
                             <div class="formbuilder-radio-inline">
-                                <p class="description" tabindex="0">Check IFSA <a href="../terms">terms &amp;
+                                <p class="description" tabindex="0">Check IFSA <!--suppress HtmlUnknownTarget -->
+                                    <a href="../terms">terms &amp;
                                         conditions</a>
                                     and <a href="https://ifsa.net/privacy-policy">Privacy Policy</a>
                                 </p>
-                                <input name="ddl-terms" access="false" id="ddl-terms-0" required="required"
+                                <input name="ddl-terms" id="ddl-terms-0" required="required"
                                        aria-required="true" value="yes" type="checkbox">
                                 <label for="ddl-terms-0">I agree to the terms and conditions and
                                     privacy policy</label>
@@ -532,6 +542,7 @@ $countries = array(
 
                 <input type="submit" class="button" id="register-button" value="Register">
                 <div id="ifsa-loading-register" style="display:none;">
+                    <!--suppress HtmlRequiredAltAttribute -->
                     <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
                          title="loading"/>
                 </div>
@@ -544,12 +555,12 @@ $countries = array(
 
     </form>
     <p class="register-success" style="display:none">
-    <h3 class="ifsa_multistep_form-heading-h3 ifsa_multistep_form-heading fusion-responsive-typography-calculated"
-        data-fontsize="26" data-lineheight="46.8px" style="--fontSize:26; line-height: 1.8;display:none;">
-        Thank you for registering to the IFSA website! You received a confirmation email and now need to wait for your LC to confirm your account</h3>
-    <aside class="bp-feedback bp-messages info">
-        <span class="bp-icon" aria-hidden="true"></span>
-        <p class="register-success-p" style="text-align: center;"></p>
-    </aside>
-    </p>
+        <h3 class="ifsa_multistep_form-heading-h3 ifsa_multistep_form-heading fusion-responsive-typography-calculated"
+            data-fontsize="26" data-lineheight="46.8px" style="--fontSize:26; line-height: 1.8;display:none;">
+            Thank you for registering to the IFSA website! You received a confirmation email and now need to wait for your LC to confirm your account</h3>
+        <aside class="bp-feedback bp-messages info">
+            <span class="bp-icon" aria-hidden="true"></span>
+            <p class="register-success-p" style="text-align: center;"></p>
+        </aside>
+<!--    </p>-->
 </div>

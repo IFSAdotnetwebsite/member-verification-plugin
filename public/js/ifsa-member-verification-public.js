@@ -1,12 +1,12 @@
 jQuery( document ).ready( function() {
-	jQuery('#field_213 option:first').text('Select Committee');
-	jQuery('#field_209 option:first').text('Select Region');
+	jQuery('#ddl_lc option:first').text('Select Committee');
+	jQuery('#ddl_region option:first').text('Select Region');
 	jQuery('#field_4 option').eq(1).remove();  
 	jQuery('#field_8 option').eq(1).remove(); 
 	jQuery('#field_4 option:first').text('Select Gender');
 	jQuery('#field_8 option:first').text('Select Nationality');
 
-	jQuery( '#field_213' ).prop( 'disabled', true );
+	jQuery( '#ddl_lc' ).prop( 'disabled', true );
 	var modal = document.getElementById( 'myModal' );
 	var modal_remove = document.getElementById( 'myModal_remove' );
 
@@ -230,8 +230,8 @@ jQuery( document ).ready( function() {
 		} );
 	} );
 
-	jQuery( document ).on( 'change', '#field_209', function() {
-		jQuery( '#field_213' ).prop( 'disabled', false );
+	jQuery( document ).on( 'change', '#ddl_region', function() {
+		jQuery( '#ddl_lc' ).prop( 'disabled', false );
 
 		var reasonID = jQuery( this ).val();
 		var data = {
@@ -242,7 +242,7 @@ jQuery( document ).ready( function() {
 
 		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 		jQuery.post( ajaxurl, data, function( response ) {
-			jQuery( '#field_213' ).html( response );
+			jQuery( '#ddl_lc' ).html( response );
 		} );
 	} );
 } );
@@ -541,8 +541,8 @@ jQuery( document ).ready( function() {
 			var isifsaMember = localStorage.getItem( 'isifsaMember' );
 			var graduateday  = $( '#datepicker' ).val();
 
-			var field_209 = $( '#field_209' ).val();
-			var field_213 = $( '#field_213' ).val();
+			var ddl_region = $( '#ddl_region' ).val();
+			var ddl_lc = $( '#ddl_lc' ).val();
 
 			localStorage.setItem( 'universityname', universityname );
 			localStorage.setItem( 'country', country );
@@ -579,7 +579,7 @@ jQuery( document ).ready( function() {
 				return false;
 			}
 
-			if (field_209 == '' || field_209 == null) {
+			if (ddl_region == '' || ddl_region == null) {
 				$( '#ifsa_region-error' ).css( { 'visibility': 'visible', 'animation': 'fadein 1s linear' } );
 				$( '#ifsa_region-error' ).html( 'Please select region' );
 				return false;
@@ -614,8 +614,8 @@ jQuery( document ).ready( function() {
 				new_user_password : newUserPassword,
 				new_user_fname: newUserfname,
 				new_user_lname: newUserlname,
-				field_209: field_209,
-				field_213:field_213,
+				ddl_region: ddl_region,
+				ddl_lc:ddl_lc,
 				ddlgender: ddlgender,
 				ddlnationality: ddlnationality
 
