@@ -422,86 +422,92 @@ $countries = array(
             <div class="layout-wrap">
                 <p class="register-message" style="display:none"></p>
                 <div class="rendered-form">
-                    <div class="formbuilder-text form-group field-txt-username">
-                        <label for="txt-username" class="formbuilder-text-label required">Username</label>
-                        <input type="text" class="form-control" name="txt-username" access="false" id="txt-username"
-                               required="required" aria-required="true">
-                        <span id="ifsa_username-error"></span>
-                    </div>
-                    <div class="formbuilder-text form-group field-txt-email">
-                        <label for="txt-email" class="formbuilder-text-label required">Email</label>
-                        <input type="email" class="form-control" name="txt-email" access="false" id="txt-email"
-                               required="required" aria-required="true">
-                        <span id="ifsa_email-error"></span>
-                    </div>
-                    <div class="formbuilder-text form-group field-txt-password">
-                        <label for="txt-password" class="formbuilder-text-label required">Password</label>
-                        <input type="password" class="form-control" name="txt-password" access="false" id="txt-password"
-                               required="required" aria-required="true">
-                        <span id="ifsa_password-error"></span>
-                    </div>
-                    <div class="formbuilder-text form-group field-txt-name">
-                        <label for="txt-name" class="formbuilder-text-label required">Name</label>
-                        <input type="text" class="form-control" name="txt-name" access="false" id="txt-name"
-                               required="required" aria-required="true">
-                        <span id="ifsa_fname-error"></span>
-                    </div>
-                    <div class="formbuilder-text form-group field-txt-surname">
-                        <label for="txt-surname" class="formbuilder-text-label required">Surname</label>
-                        <input type="text" class="form-control" name="txt-surname" access="false" id="txt-surname"
-                               required="required" aria-required="true">
-                        <span id="ifsa_lname-error"></span>
-                    </div>
-                    <div class="formbuilder-select form-group field-ddl-region">
-                        <label for="ddl-region" class="formbuilder-select-label required">
-                            IFSA Region
-                        </label>
-                        <select class="form-control" name="field_209" id="field_209">
-                            <option selected="true" value="" id="ddl-region-0">Select Region</option>
-                            <?php
-                            global $wpdb;
-                            $custom_post_type = 'regions'; // define your custom post type slug here
-                            // A sql query to return all post titles
-                            $results = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM {$wpdb->posts} WHERE post_type = %s and post_status = 'publish'", $custom_post_type), ARRAY_A);
-                            // Return null if we found no results
-                            if (!$results) {
-                                return;
-                            }
-                            foreach ($results as $index => $post) {
-                                echo $htmlregion = '<option value="' . esc_attr($post['ID'], 'Ifsa_Member_Verification') . '">' . $post['post_title'] . '</option>';
-                            }
-                            ?>
+                    <fieldset>
+                        <legend>Personal Information</legend>
+                        <div class="formbuilder-text form-group field-txt-name">
+                            <label for="txt-name" class="formbuilder-text-label required">First Name</label>
+                            <input type="text" class="form-control" name="txt-name" access="false" id="txt-name"
+                                   required="required" aria-required="true">
+                            <span id="ifsa_fname-error"></span>
+                        </div>
+                        <div class="formbuilder-text form-group field-txt-surname">
+                            <label for="txt-surname" class="formbuilder-text-label required">Last Name</label>
+                            <input type="text" class="form-control" name="txt-surname" access="false" id="txt-surname"
+                                   required="required" aria-required="true">
+                            <span id="ifsa_lname-error"></span>
+                        <div class="formbuilder-text form-group field-txt-username">
+                            <label for="txt-username" class="formbuilder-text-label required">Username (nickname)</label>
+                            <input type="text" class="form-control" name="txt-username" access="false" id="txt-username"
+                                   required="required" aria-required="true">
+                            <span id="ifsa_username-error"></span>
+                        </div>
+                        <div class="formbuilder-text form-group field-txt-email">
+                            <label for="txt-email" class="formbuilder-text-label required">Email</label>
+                            <input type="email" class="form-control" name="txt-email" access="false" id="txt-email"
+                                   required="required" aria-required="true">
+                            <span id="ifsa_email-error"></span>
+                        </div>
+                        <div class="formbuilder-text form-group field-txt-password">
+                            <label for="txt-password" class="formbuilder-text-label required">Password</label>
+                            <input type="password" class="form-control" name="txt-password" access="false" id="txt-password"
+                                   required="required" aria-required="true">
+                            <span id="ifsa_password-error"></span>
+                        </div>
+                        </div>
+                        <div class="formbuilder-select form-group field-ddl-gender">
+                            <label for="ddl-gender" class="formbuilder-select-label">Gender</label>
+                            <select class="form-control" name="ddl-gender" id="ddl-gender">
+                                <option selected="true" id="ddl-gender-0">Select Gender</option>
+                                <option value="Male" id="ddl-gender-1">Male</option>
+                                <option value="Female" id="ddl-gender-2">Female</option>
+                                <option value="Other non-binary" id="ddl-gender-3">Other non-binary</option>
+                                <option value="Prefer not to say" id="ddl-gender-4">Prefer not to say</option>
+                            </select>
+                            <span id="ifsa_lc-error"></span>
+                        </div>
+                        <div class="formbuilder-select form-group field-ddl-nationality">
+                            <label for="ddl-nationality" class="formbuilder-select-label">Where are you from?</label>
+                            <select class="form-control" name="ddl-nationality" id="ddl-nationality">
+                                <option selected="true" id="ddl-nationality-0">Select Country</option>
+                                <?php foreach ($countries as $key => $value) { ?>
+                                    <option value="<?php echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php echo esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>LC Information</legend>
+                        <div class="formbuilder-select form-group field-ddl-region">
+                            <label for="ddl-region" class="formbuilder-select-label required">
+                                IFSA Region
+                            </label>
+                            <select class="form-control" name="field_209" id="field_209">
+                                <option selected="true" value="" id="ddl-region-0">Select Region</option>
+                                <?php
+                                global $wpdb;
+                                $custom_post_type = 'regions'; // define your custom post type slug here
+                                // A sql query to return all post titles
+                                $results = $wpdb->get_results($wpdb->prepare("SELECT ID, post_title FROM {$wpdb->posts} WHERE post_type = %s and post_status = 'publish'", $custom_post_type), ARRAY_A);
+                                // Return null if we found no results
+                                if (!$results) {
+                                    return;
+                                }
+                                foreach ($results as $index => $post) {
+                                    echo $htmlregion = '<option value="' . esc_attr($post['ID'], 'Ifsa_Member_Verification') . '">' . $post['post_title'] . '</option>';
+                                }
+                                ?>
 
-                        </select>
-                        <span id="ifsa_region-error"></span>
-                    </div>
-                    <div class="formbuilder-select form-group field-ddl-lc">
-                        <label for="ddl-lc" class="formbuilder-select-label required">IFSA Committee</label>
-                        <select class="form-control" name="field_213" id="field_213">
-                            <option selected="true" value="" id="ddl-lc-0">Select Committee</option>
+                            </select>
+                            <span id="ifsa_region-error"></span>
+                        </div>
+                        <div class="formbuilder-select form-group field-ddl-lc">
+                            <label for="ddl-lc" class="formbuilder-select-label required">IFSA Committee</label>
+                            <select class="form-control" name="field_213" id="field_213">
+                                <option selected="true" value="" id="ddl-lc-0">Select Committee</option>
 
-                        </select>
-                    </div>
-                    <div class="formbuilder-select form-group field-ddl-gender">
-                        <label for="ddl-gender" class="formbuilder-select-label">Gender</label>
-                        <select class="form-control" name="ddl-gender" id="ddl-gender">
-                            <option selected="true" id="ddl-gender-0">Select Gender</option>
-                            <option value="Male" id="ddl-gender-1">Male</option>
-                            <option value="Female" id="ddl-gender-2">Female</option>
-                            <option value="Other non-binary" id="ddl-gender-3">Other non-binary</option>
-                            <option value="Prefer not to say" id="ddl-gender-4">Prefer not to say</option>
-                        </select>
-                        <span id="ifsa_lc-error"></span>
-                    </div>
-                    <div class="formbuilder-select form-group field-ddl-nationality">
-                        <label for="ddl-nationality" class="formbuilder-select-label">Where are you from?</label>
-                        <select class="form-control" name="ddl-nationality" id="ddl-nationality">
-                            <option selected="true" id="ddl-nationality-0">Select Country</option>
-                            <?php foreach ($countries as $key => $value) { ?>
-                                <option value="<?php echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php echo esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
-                            <?php } ?>
-                        </select>
-                    </div>
+                            </select>
+                        </div>
+                    </fieldset>
                     <div class="formbuilder-radio-group form-group field-ddl-terms">
                         <label for="ddl-terms" class="formbuilder-radio-group-label required">Terms and Conditions</label>
                         <div class="radio-group">
