@@ -302,3 +302,13 @@ table.dataTable.display tbody td .cls-reject{
 cls-remove{
    color:red;
 }
+
+/*styling of fieldsets in registration form*/
+.ifsa_multistep_form-main-continer fieldset {
+   border-style: solid;
+   padding:8pt;
+   margin-top: 15pt
+}
+.ifsa_multistep_form-main-continer fieldset legend{
+   font-style: italic
+}
