@@ -100,7 +100,6 @@ class Ifsa_Member_Verification_Admin {
 				<td>
 					<?php
 					$dropdown_value   = get_the_author_meta( 'ifsa_committee', $user->ID );
-					$ifsa_user_status = get_the_author_meta( 'user_active_status', $user->ID );
 					?>
 					<select name="ifsa_committee" id="ifsa_committee">
 						<option value="">--Select Committee--</option>
