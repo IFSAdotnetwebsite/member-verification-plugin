@@ -343,19 +343,11 @@ class Ifsa_Member_Verification_Public {
 				<tbody>
 				<?php
 				foreach ( $res as $memberlistresult ) {
-					
-					$args          = array(
-						'field'   => 'Name',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Name          = bp_get_profile_field_data( $args );
-					$args1         = array(
-						'field'   => 'Surname',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Surname       = bp_get_profile_field_data( $args1 );
+
 					$the_user      = get_user_by( 'id', $memberlistresult->user_id ); // 54 is a user ID
 					$email         = $the_user->user_email;
+                    $Name          = $the_user->first_name;
+                    $Surname       = $the_user->last_name;
 					$profileURL    = get_bloginfo( 'url' ) . '/members/' . bp_core_get_username($memberlistresult->user_id) . '/profile/';
 					$renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
 					if ( $renew_request == '1' ) {
@@ -465,22 +457,12 @@ class Ifsa_Member_Verification_Public {
 				<tbody>
 				<?php
 				foreach ( $res as $memberlistresult ) {
-					// global $bp;
-					
-					$args     = array(
-						'field'   => 'Name',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Name     = bp_get_profile_field_data( $args );
-					$args1    = array(
-						'field'   => 'Surname',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Surname  = bp_get_profile_field_data( $args1 );
-					$the_user = get_user_by( 'id', $memberlistresult->user_id ); // 54 is a user ID
+					$the_user = get_user_by( 'id', $memberlistresult->user_id );
 					$email    = $the_user->user_email;
+                    $Name          = $the_user->first_name;
+                    $Surname       = $the_user->last_name;
 
-						$renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
+                    $renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
 					if ( $renew_request == '1' ) {
 						$renew_request = 'Renewal';
 					} else {
