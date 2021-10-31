@@ -44,8 +44,12 @@ class Ifsa_Member_Verification_Admin {
 	 * @var    string $version The current version of this plugin.
 	 */
 	private $version;
-	
-	/**
+
+    private array $admin_notices = array();
+    // This is a system to avoid running the user update action twice
+    private bool $user_updated;
+
+    /**
 	 * Initialize the class and set its properties.
 	 *
 	 * @param string $plugin_name The name of this plugin.
@@ -54,8 +58,8 @@ class Ifsa_Member_Verification_Admin {
 	public function __construct( $plugin_name, $version ) {
 		$this->plugin_name = $plugin_name;
 		$this->version     = $version;
+        $this->user_updated = false;
 	}
-	
 	/**
 	 * Register the stylesheets for the admin area.
 	 *
@@ -95,15 +99,17 @@ class Ifsa_Member_Verification_Admin {
         $user_committee   = get_the_author_meta( 'ifsa_committee', $user->ID );
         $ifsa_member_type = $this->get_ifsa_member_type($user->ID);
         $ifsa_member_status = $this->get_ifsa_member_status($user->ID );
+        add_action('admin_notices', 'ifsa_test_message');
 		
 		?>
-
+        <h2> IFSA Member Verification </h2>
+        <p class="description"> Current user status is <?php echo "LC Id: {$user_committee}, member type: {$ifsa_member_type}, status: {$ifsa_member_status}" ?></p>
 		<table class="form-table">
 			<tr>
 				<th><label for="ifsa_committee">User Committee</label></th>
 				<td>
 					<select name="ifsa_committee" id="ifsa_committee">
-						<option value="">--Select Committee--</option>
+						<option value="">--No Committee--</option>
 						<?php foreach ( $committees_list as $lc ) { ?>
 							<option value="<?php echo esc_attr( $lc->term_id ); ?>" <?php if ( $lc->term_id == $user_committee ) {
 								echo 'selected';
@@ -117,38 +123,30 @@ class Ifsa_Member_Verification_Admin {
 				<th><label for="ifsa_member_type">User type</label></th>
 				<td>
 					<select name="ifsa_member_type" id="ifsa_member_type">
-						<option value="none">None</option>
-						<option value="lc_member" <?php if ( $ifsa_member_type === 'lc_member' ) {
-							echo 'selected';
-						} ?>>LC Member
+						<option value="none" <?php if ( $ifsa_member_type === 'none' ) {echo 'selected';} ?>>--None--</option>
+						<option value="lc_member" <?php if ( $ifsa_member_type === 'lc_member' ) {echo 'selected';} ?>>LC Member
 						</option>
-						<option value="lc_admin"  <?php echo 'selected';  if ( $ifsa_member_type === 'lc_admin' ) {
-							echo 'selected';
-						} ?>>LC Admin
+						<option value="lc_admin"  <?php if ( $ifsa_member_type === 'lc_admin' ) { echo 'selected';} ?>>LC Admin
 						</option>
 					</select>
 				</td>
 			</tr>
             <tr class="ifsa_admin_member_status">
 <!--                TODO hide this with JS if user is not an lc_member-->
-                <th>User status</th>
+                <th rowspan="2">User status</th>
                 <td>
-                    <input type="radio" name="ifsa_member_status" value="verified" id="ifsa_member_status_approved" <?php if($ifsa_member_status=="approved"){echo 'checked';}?>>
+                    <input type="radio" name="ifsa_member_status" value="verified" id="ifsa_member_status_verified" <?php if($ifsa_member_status=="verified"){echo 'checked';}?>>
                     <label for="ifsa_member_status_verified">The User is a verified IFSA member</label>
-                </td>
 
-                <td>
-                    <input type="radio" name="ifsa_member_status" value="not_verified" id="ifsa_member_status_rejected" <?php if($ifsa_member_status!="approved"){echo 'checked';}?>>
-                    <label for="ifsa_member_status_rejected">The User is <strong>NOT</strong> a verified approved member</label>
                 </td>
             </tr>
-<!--            <tr>-->
-<!--                <th></th>-->
-<!--                <td>-->
-<!--                    <input type="checkbox" id="ifsa_update_paidmembershippro" name="ifsa_update_paidmembershippro" checked>-->
-<!--                    <label for="ifsa_update_paidmembershippro">Sync paid PaidmembershipPro level with the member verification (default yes)</label>-->
-<!--                </td>-->
-<!--            </tr>-->
+            <tr>
+                <td>
+                    <input type="radio" name="ifsa_member_status" value="not_verified" id="ifsa_member_status_not_verified" <?php if($ifsa_member_status=="not_verified"){echo 'checked';}?>>
+                    <label for="ifsa_member_status_not_verified">The User is <strong>NOT</strong> a verified  member</label>
+                </td>
+            </tr>
+
 		</table>
 		<?php
 	}
@@ -186,7 +184,7 @@ class Ifsa_Member_Verification_Admin {
      * @return string
      */
     function get_ifsa_member_status($user_id): string{
-        $user_status = get_user_meta($user_id, 'ifsa_active_status', true);
+        $user_status = get_user_meta($user_id, 'user_active_status', true);
         if ($user_status=='true'){
             return 'verified';
         }
@@ -203,11 +201,18 @@ class Ifsa_Member_Verification_Admin {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return ;
 		}
-
+        // If this hook has been already fired just return
+        if ($this->user_updated){
+            return ;
+        }
         // Take inputs from the form
         $lc = $this->get_post_var('ifsa_committee', false);
-        $ifsa_member_type = $this->get_post_var('ifsa_member_type');
+        $ifsa_member_type = $this->get_post_var('ifsa_member_type', false);
         $ifsa_member_status = $this->get_post_var('ifsa_member_status');
+        if (!$lc || !$ifsa_member_type ){
+            // IFSA member verification post variable are no set
+            return ;
+        }
         // Current values in the database
         $old_lc = get_user_meta($user_id, "ifsa_commmittee", true);
         $old_ifsa_member_type = $this->get_ifsa_member_type($user_id);
@@ -221,10 +226,11 @@ class Ifsa_Member_Verification_Admin {
 
         // Conditions that needs to remove the user
         // Note member_type 'none' or status not verified are assumed to be practically the same
-        if ($old_lc != $lc ||
+        if (($old_lc != $lc ||
             $ifsa_member_type != $old_ifsa_member_type ||
             $ifsa_member_type == 'none' ||
-            ($ifsa_member_status == "not_verified" && $ifsa_member_status != $old_ifsa_member_status)
+            ($ifsa_member_status == "not_verified" && $ifsa_member_status != $old_ifsa_member_status) )&&
+            $old_lc != "" // If the LC is empty means that it was never a member so no need to remove
         ){
             $this->remove_member($user_id, $ifsa_member_type);
         }
@@ -239,6 +245,9 @@ class Ifsa_Member_Verification_Admin {
         {
             $this->make_member($user_id, $ifsa_member_type, $lc);
         }
+
+        $this->admin_message("Successfully update IFSA user membership", "notice-success");
+        $this->user_updated = true;
 
 	}
 
@@ -263,7 +272,7 @@ class Ifsa_Member_Verification_Admin {
      */
     function remove_member($user_id, $ifsa_member_type){
         if ($ifsa_member_type=='lc_member'){
-            $this->remove_lc_admin($user_id);
+            $this->remove_lc_member($user_id);
         }
         elseif ($ifsa_member_type == 'lc_admin'){
             $this->remove_lc_admin($user_id);
@@ -281,14 +290,10 @@ class Ifsa_Member_Verification_Admin {
                 array(
                     "meta_key" => "ifsa_committee",
                     "meta_value" => $lc_id,
-                    "fields" => "ID"
+                    "fields" => "ID",
+                    "role" => "lc_admin"
                 )
         );
-//        global $wpdb;
-//        $sql = $wpdb->prepare(
-//                "SELECT user_id FROM {$wpdb->prefix}usermeta WHERE meta_key = ifsa_committee AND meta_value = %s", $lc_id);
-//
-//        $res = $wpdb->get_col($sql);
 
         if (empty($query->get_results())){
             $this->admin_message("Error! No LC admin for {$lc_id}");
@@ -301,8 +306,6 @@ class Ifsa_Member_Verification_Admin {
         else{
             return $query->get_results()[0];
         }
-
-
     }
 
     /**
@@ -311,12 +314,20 @@ class Ifsa_Member_Verification_Admin {
      * @param string $notice_type accepts 'notice-error', 'notice-warning', 'notice-success'
      */
     function admin_message($message, string $notice_type = 'notice-error'){
-        $func = function () use ($message, $notice_type) {
-            echo "<div class='notice is-dismissible {$notice_type}'>
+         $notice = "<div class='notice is-dismissible {$notice_type}'>
                     {$message}
             </div>";
-        };
-        add_action('admin_notices', $func);
+
+        array_push($this->admin_notices, $notice);
+    }
+
+    /**
+     * Function called by the 'admin_notices' hook to actually show the notices
+     */
+    public function ifsa_show_admin_notices(){
+        foreach ($this->admin_notices as $notice){
+            echo $notice;
+        }
     }
 
     /**
@@ -360,7 +371,7 @@ class Ifsa_Member_Verification_Admin {
         // Update the ifsa_lc_member table
         global $wpdb;
 
-        $wpdb->insert($wpdb->prefix . 'ifsa_lc_member',
+        $res = $wpdb->insert($wpdb->prefix . 'ifsa_lc_member',
             array(
                 "user_id" => $user_id,
                 "lc_adminid" => $lc_admin,
@@ -371,6 +382,11 @@ class Ifsa_Member_Verification_Admin {
                 "source" => "Super Admin"
             )
         );
+
+        if($res != 1){
+            $this->admin_message("Unknown error during IFSA member creation");
+            return ;
+        }
 
         // Update metadata
         update_user_meta( $user_id, 'user_active_status', "true" );
@@ -403,7 +419,7 @@ class Ifsa_Member_Verification_Admin {
         // Update the ifsa_lc_member table
         global $wpdb;
 
-        $wpdb->update($wpdb->prefix . 'ifsa_lc_member',
+        $res = $wpdb->update($wpdb->prefix . 'ifsa_lc_member',
             array(
                 "action_date" => bp_core_current_time(),
                 "member_status" => IFSA_MEMBER_REMOVED_LEVEL,
@@ -427,7 +443,7 @@ class Ifsa_Member_Verification_Admin {
             }
         }
 
-        // Add user role
+        // Remove user role
         $user = get_user_by( 'id', $user_id );
         $user->remove_role( 'lc_member');
 
@@ -521,7 +537,7 @@ class Ifsa_Member_Verification_Admin {
     }
 
 
-    function log($log_action, $remark,$member_id){
+    function log($log_action, $remark, $member_id){
         global $wpdb;
         $ifsa_log = $wpdb->prefix . 'ifsa_log';
         $admin_id = get_current_user_id(); // This code must be run by an admin
@@ -826,7 +842,8 @@ class Ifsa_Member_Verification_Admin {
 
 	public function ifsa_hide_dashboard() {
 		if ( ! current_user_can( 'manage_options' ) && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
-			 wp_redirect(home_url()); exit;
+            // TODO fix this function! also non super admins should be able to access the dashboard
+//			 wp_redirect(home_url()); exit;
 		 }
 	   }
 
