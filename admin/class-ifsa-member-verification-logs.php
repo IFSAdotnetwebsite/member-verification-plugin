@@ -85,7 +85,7 @@ class Ifsa_List_Table extends WP_List_Table {
 			'remark'            => 'Remarks',
 			'logged_in_user_id' => 'LC Admin',
 			'member_id'         => 'LC member',
-			'action_date'       => 'Date Time',
+			'action_date'       => 'Date Time (UTC+0)',
 			'user_ip'           => 'IP',
 		);
 		
