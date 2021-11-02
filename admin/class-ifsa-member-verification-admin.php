@@ -117,7 +117,7 @@ class Ifsa_Member_Verification_Admin {
 				<th><label for="ifsa_committee">User Committee</label></th>
 				<td>
 					<select name="ifsa_committee" id="ifsa_committee">
-						<option value="">--No Committee--</option>
+						<option value="none">--No Committee--</option>
 						<?php foreach ( $committees_list as $lc ) { ?>
 							<option value="<?php echo esc_attr( $lc->term_id ); ?>" <?php if ( $lc->term_id == $lc_id ) {
 								echo 'selected';
@@ -137,6 +137,7 @@ class Ifsa_Member_Verification_Admin {
 						<option value="lc_admin"  <?php if ( $ifsa_member_type === 'lc_admin' ) { echo 'selected';} ?>>LC Admin
 						</option>
 					</select>
+                    <p class="description">Note a member with user type 'none' or no committee is considered to be the same of a non verified member </p>
 				</td>
 			</tr>
             <tr class="ifsa_admin_member_status">
@@ -209,15 +210,9 @@ class Ifsa_Member_Verification_Admin {
 		if ( ! current_user_can( 'manage_options' ) ) {
 			return ;
 		}
-//         The function will be called multiple times because the 'profile_update' hook is fired at least twice
-//         The ideal system would be that function runs only once, but since it since some code (probably from buddypress)
-//         reset the new user role is needed to re-run all the code, however to avoid double logging (to admin_notices and log table)
-//         the flag first_run is kept
-        if ($this->first_run){ $this->first_run = false;}
-
 
         // Take inputs from the form
-        $lc_id = intval($this->get_post_var('ifsa_committee', 0));
+        $lc_id = $this->get_post_var('ifsa_committee', 0);
         $ifsa_member_type = $this->get_post_var('ifsa_member_type', 0);
         $ifsa_member_status = $this->get_post_var('ifsa_member_status');
 
@@ -242,7 +237,7 @@ class Ifsa_Member_Verification_Admin {
             $ifsa_member_type != $old_ifsa_member_type ||
             $ifsa_member_type == 'none' ||
             ($ifsa_member_status == "not_verified" && $ifsa_member_status != $old_ifsa_member_status) )&&
-            $old_lc != "" // If the LC is empty means that it was never a member so no need to remove
+            $old_lc != "" // If the LC was empty means that it was never a member so no need to remove
         ){
             $res = $this->remove_member($user_id, $old_ifsa_member_type);
             if (is_wp_error($res)){return;}
@@ -265,8 +260,14 @@ class Ifsa_Member_Verification_Admin {
         $this->admin_message("Successfully update IFSA user membership.
          IFSA LC: {$lc_name}, status: {$ifsa_member_status}, type: {$ifsa_member_type}" , "notice-success");
 
+        //         The function will be called multiple times because the 'profile_update' hook is fired at least twice
+//         The ideal system would be that function runs only once, but since it since some code (probably from buddypress)
+//         reset the new user role is needed to re-run all the code, however to avoid double logging (to admin_notices and log table)
+//         the flag first_run is kept
+        if ($this->first_run){ $this->first_run = false;}
 
-	}
+
+    }
 
     /**
      * Return the LC name give the ID or empty string if it doesn't exist
@@ -275,6 +276,7 @@ class Ifsa_Member_Verification_Admin {
      */
     function get_lc_name($lc_id): string
     {
+        if ($lc_id == 'none'){return "";}
         $term_lc = get_term_by("ID", $lc_id, 'committee');
         if (!$term_lc){
             if ($lc_id != 0){ // LC Id can be 0 (eg. when creating a user) otherwise is a error
@@ -423,6 +425,7 @@ class Ifsa_Member_Verification_Admin {
      */
     function make_lc_member($user_id, $lc_id){
 
+        if ($lc_id=="none"){return true;} // No action to take if the LC is not set
         $lc_admin = $this->get_lc_admin($lc_id);
         if (is_wp_error($lc_admin)){return $lc_admin;}
 
