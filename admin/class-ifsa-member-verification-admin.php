@@ -45,9 +45,8 @@ class Ifsa_Member_Verification_Admin {
 	 */
 	private $version;
 
-    private array $admin_notices = array();
     // This is a flag to avoid logging action more than once.
-    private bool $first_run = true;
+    private $first_run = true;
 
     /**
 	 * Initialize the class and set its properties.
