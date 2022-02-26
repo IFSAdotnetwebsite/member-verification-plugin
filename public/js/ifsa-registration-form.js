@@ -1,12 +1,12 @@
 jQuery( document ).ready( function() {
-	jQuery('#field_213 option:first').text('Select Committee');
-	jQuery('#field_209 option:first').text('Select Region');
+	jQuery('#lc option:first').text('Select Committee');
+	jQuery('#ifsa_region option:first').text('Select Region');
 	jQuery('#field_4 option').eq(1).remove();  
 	jQuery('#field_8 option').eq(1).remove(); 
 	jQuery('#field_4 option:first').text('Select Gender');
 	jQuery('#field_8 option:first').text('Select Nationality');
 
-	jQuery( '#field_213' ).prop( 'disabled', true );
+	jQuery( '#lc' ).prop( 'disabled', true );
 	var modal = document.getElementById( 'myModal' );
 	var modal_remove = document.getElementById( 'myModal_remove' );
 
@@ -230,8 +230,8 @@ jQuery( document ).ready( function() {
 		} );
 	} );
 
-	jQuery( document ).on( 'change', '#field_209', function() {
-		jQuery( '#field_213' ).prop( 'disabled', false );
+	jQuery( document ).on( 'change', '#ifsa_region', function() {
+		jQuery( '#lc' ).prop( 'disabled', false );
 
 		var reasonID = jQuery( this ).val();
 		var data = {
@@ -242,7 +242,7 @@ jQuery( document ).ready( function() {
 
 		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
 		jQuery.post( ajaxurl, data, function( response ) {
-			jQuery( '#field_213' ).html( response );
+			jQuery( '#lc' ).html( response );
 		} );
 	} );
 } );
@@ -527,8 +527,8 @@ jQuery( document ).ready( function() {
 			var newUserfname = jQuery('#txt-name').val();
 			var newUserlname = jQuery('#txt-surname').val();
 			var newUserPassword = jQuery('#txt-password').val();
-			var ddlgender = jQuery('#ddl-gender').val();
-			var ddlnationality = jQuery('#ddl-nationality').val();
+			var gender = jQuery('#ddl-gender').val();
+			var nationality = jQuery('#ddl-nationality').val();
 			
 			var isChecked = $('#ddl-terms-0').prop('checked');
 				
@@ -541,9 +541,10 @@ jQuery( document ).ready( function() {
 			var isifsaMember = localStorage.getItem( 'isifsaMember' );
 			var graduateday  = $( '#datepicker' ).val();
 
-			var field_209 = $( '#field_209' ).val();
-			var field_213 = $( '#field_213' ).val();
+			var ifsa_region = $( '#ifsa_region' ).val();
+			var lc = $( '#lc' ).val();
 
+			// Consider remove this
 			localStorage.setItem( 'universityname', universityname );
 			localStorage.setItem( 'country', country );
 			localStorage.setItem( 'universityLevel', universityLevel );
@@ -579,7 +580,7 @@ jQuery( document ).ready( function() {
 				return false;
 			}
 
-			if (field_209 == '' || field_209 == null) {
+			if (ifsa_region == '' || ifsa_region == null) {
 				$( '#ifsa_region-error' ).css( { 'visibility': 'visible', 'animation': 'fadein 1s linear' } );
 				$( '#ifsa_region-error' ).html( 'Please select region' );
 				return false;
@@ -609,17 +610,22 @@ jQuery( document ).ready( function() {
 
 			var data = {
 				action: "register_user_front_end",
-				new_user_name : newUserName,
-				new_user_email : newUserEmail,
-				new_user_password : newUserPassword,
-				new_user_fname: newUserfname,
-				new_user_lname: newUserlname,
-				field_209: field_209,
-				field_213:field_213,
-				ddlgender: ddlgender,
-				ddlnationality: ddlnationality
-
-				
+				'_ajax_nonce': ifsa_vars.nonce,
+				user_name : newUserName,
+				user_email : newUserEmail,
+				user_password : newUserPassword,
+				user_first_name: newUserfname,
+				user_last_name: newUserlname,
+				ifsa_region: ifsa_region,
+				lc: lc,
+				gender: gender,
+				nationality: nationality,
+				utm_source: utm_source,
+				'universityname': universityname,
+				'country': country,
+				'universityLevel': universityLevel,
+				'courseTopic': courseTopic,
+				'graduateday': graduateday,
 			};
 			jQuery( '#ifsa-loading-register' ).css( 'display', 'inline-block' );
 			// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -722,7 +728,7 @@ jQuery( document ).ready( function() {
 			'action': 'download_csv',
 		};
 
-		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
+		// since 2.8    is always defined in the admin header and points to admin-ajax.php
 		jQuery.post( ajaxurl, data, function( response ) {
 			jQuery( this ).html( response );
 		} );

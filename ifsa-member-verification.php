@@ -37,8 +37,8 @@ define( 'IFSA_MEMBER_VERIFICATION_URL', plugin_dir_url( IFSA_MEMBER_VERIFICATION
  * This action is documented in includes/class-ifsa-member-verification-activator.php
  */
 function activate_ifsa_member_verification() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-ifsa-member-verification-activator.php';
-	Ifsa_Member_Verification_Activator::activate();
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-IFSA-member-verification-activator.php';
+	IFSA_Member_Verification_Activator::activate();
 }
 
 /**
@@ -77,7 +77,14 @@ function run_ifsa_member_verification() {
 	
 	$plugin = new Ifsa_Member_Verification();
 	$plugin->run();
-	
+
 }
 
 run_ifsa_member_verification();
+
+//function ifsa_debug(){
+//    $res = buddypress()->profile->field_types;
+//    $res;
+//}
+//
+//add_action('shutdown', 'ifsa_debug');
