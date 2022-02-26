@@ -157,6 +157,9 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ifsa_member_veri
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Ifsa_Member_Verification_Admin( $this->get_plugin_name(), $this->get_version() );
+
+        // Admin notices
+        $this->loader->add_action( 'admin_notices',  $plugin_admin,'ifsa_show_admin_notices');
 	
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -177,6 +180,7 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ifsa_member_veri
 		$this->loader->add_action('admin_init', $plugin_admin, 'ifsa_member_verification_email_settings');
 		$this->loader->add_action('admin_init', $plugin_admin, 'ifsa_member_verification_log_settings');
 		$this->loader->add_action( 'delete_user',  $plugin_admin,'ifsa_custom_remove_user', 10 );
+
 		
 		$this->loader->add_action('admin_init',  $plugin_admin,'ifsa_hide_dashboard');
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'export_csv_callback' );

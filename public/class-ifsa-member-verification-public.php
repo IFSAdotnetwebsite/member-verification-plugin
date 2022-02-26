@@ -343,19 +343,11 @@ class Ifsa_Member_Verification_Public {
 				<tbody>
 				<?php
 				foreach ( $res as $memberlistresult ) {
-					
-					$args          = array(
-						'field'   => 'Name',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Name          = bp_get_profile_field_data( $args );
-					$args1         = array(
-						'field'   => 'Surname',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Surname       = bp_get_profile_field_data( $args1 );
+
 					$the_user      = get_user_by( 'id', $memberlistresult->user_id ); // 54 is a user ID
 					$email         = $the_user->user_email;
+                    $Name          = $the_user->first_name;
+                    $Surname       = $the_user->last_name;
 					$profileURL    = get_bloginfo( 'url' ) . '/members/' . bp_core_get_username($memberlistresult->user_id) . '/profile/';
 					$renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
 					if ( $renew_request == '1' ) {
@@ -465,22 +457,12 @@ class Ifsa_Member_Verification_Public {
 				<tbody>
 				<?php
 				foreach ( $res as $memberlistresult ) {
-					// global $bp;
-					
-					$args     = array(
-						'field'   => 'Name',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Name     = bp_get_profile_field_data( $args );
-					$args1    = array(
-						'field'   => 'Surname',
-						'user_id' => $memberlistresult->user_id,
-					);
-					$Surname  = bp_get_profile_field_data( $args1 );
-					$the_user = get_user_by( 'id', $memberlistresult->user_id ); // 54 is a user ID
+					$the_user = get_user_by( 'id', $memberlistresult->user_id );
 					$email    = $the_user->user_email;
+                    $Name          = $the_user->first_name;
+                    $Surname       = $the_user->last_name;
 
-						$renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
+                    $renew_request = get_user_meta( $memberlistresult->user_id, 'ifsa_renew_request', true );
 					if ( $renew_request == '1' ) {
 						$renew_request = 'Renewal';
 					} else {
@@ -1787,20 +1769,20 @@ class Ifsa_Member_Verification_Public {
 				}
 			}
 			
-			if ( isset( $_POST['ddl_lc'] ) && ! empty( $_POST['ddl_lc'] ) ) {
+			if ( isset( $_POST['field_213'] ) && ! empty( $_POST['field_213'] ) ) {
 				
-				$ddl_lc = sanitize_text_field( $_POST['ddl_lc'] ); //initialize variable for ddl_lc
+				$field_213 = sanitize_text_field( $_POST['field_213'] ); //initialize variable for field_213
 				
 				$users = get_users(
 					array(
 						'meta_key'   => 'ifsa_committee',
-						'meta_value' => $ddl_lc,
+						'meta_value' => $field_213,
 					)
 				);
 			}
 			
-			if ( isset( $_POST['ddl_region'] ) && ! empty( $_POST['ddl_region'] ) ) {
-				$ddl_region = sanitize_text_field( $_POST['ddl_region'] ); // initialize variable for ddl_region
+			if ( isset( $_POST['field_209'] ) && ! empty( $_POST['field_209'] ) ) {
+				$field_209 = sanitize_text_field( $_POST['field_209'] ); // initialize variable for field_209
 			}
 			
 			$lcadmin = $users[0]->ID;
@@ -1819,7 +1801,7 @@ class Ifsa_Member_Verification_Public {
 			
 			$lcmembertable = $wpdb->prefix . 'ifsa_lc_member';
 			$query         = "INSERT INTO {$lcmembertable} ( user_id,lc_adminid, committee_id ,region_id, action_date, member_status,source) VALUES ( %d,%d, %s, %s, %s, %d,%s )";
-			$sql           = $wpdb->prepare( $query, $user_id, $lcadmin, $ddl_lc, $ddl_region, $lastupdated, 0, $source );
+			$sql           = $wpdb->prepare( $query, $user_id, $lcadmin, $field_213, $field_209, $lastupdated, 0, $source );
 			
 			$result = $wpdb->query( $sql );
 			
@@ -1833,8 +1815,8 @@ class Ifsa_Member_Verification_Public {
 			xprofile_set_field_data( 'Surname', $user_id, $new_user_last_name );
 			
 			
-			xprofile_set_field_data( 'IFSA Region', $user_id, $ddl_region );
-			xprofile_set_field_data( 'Local Committee', $user_id, $ddl_lc );
+			xprofile_set_field_data( 'IFSA Region', $user_id, $field_209 );
+			xprofile_set_field_data( 'Local Committee', $user_id, $field_213 );
 			//update_user_meta( $user_id, 'user_active_status', "no" );
 			$stepperForm = array();
 			if ( isset( $_COOKIE['stepperform'] ) && ! empty( $_COOKIE['stepperform'] ) ) {
