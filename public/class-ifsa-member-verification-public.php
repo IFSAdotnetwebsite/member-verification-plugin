@@ -1845,8 +1845,7 @@ class Ifsa_Member_Verification_Public
         foreach ($user_add_info as $field_name => $field_value){
             $return = xprofile_set_field_data($field_name, $user_id, $field_value);
             if(!$return){
-                echo "Error in creating xprofile fields";
-                wp_die();
+                error_log("Error in creating xprofile fields. Field name: $field_name, User id: $user_id, Field value: $field_value");
             }
         }
         // Update custom table for member verification
@@ -1874,12 +1873,14 @@ class Ifsa_Member_Verification_Public
         $res1 = $this->ifsa->send_ifsa_email('register_email_user', array(
             '{user_email}' => $user_data['user_email'],
             '{user_name}' => $user_data['first_name'],
+            '{user_fullname}' => $user_data['display_name'],
             '{lc_name}' => $user_add_info['Local Committee Name']
         ));
         // To LC admin
         $res2 = $this->ifsa->send_ifsa_email('register_email_lc_admin', array(
             '{lc_admin_email}' => get_userdata($lc_admin)->user_email,
             '{user_name}' => $user_data['first_name'],
+            '{user_fullname}' => $user_data['display_name'],
             '{lc_name}' => $user_add_info['Local Committee Name']
         ));
 

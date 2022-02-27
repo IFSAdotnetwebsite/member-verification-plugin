@@ -83,7 +83,7 @@ function run_ifsa_member_verification() {
 run_ifsa_member_verification();
 
 //function ifsa_debug(){
-//    $res = buddypress()->profile->field_types;
+//    $res = wp_mail('admin@ex.com', 'test', 'test');
 //    $res;
 //}
 //

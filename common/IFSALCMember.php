@@ -45,7 +45,8 @@ class IFSALCMember
         $this->email_default_replacements = array(
             '{user_name}' => "IFSA Member",
             '{lc_admin}' => "IFSA LC",
-            '{registration_link_invite}' => "", //TODO
+            '{registration_link_invite}' => home_url()."/member-register",
+            '{lc_dashboard_link}' => home_url()."/members/me/memberlist",
             '{reject_reason}' => "",
             '{date_before_expiration}' =>
                 $this->get_expiration_date()->modify("-{$days_off['date_before_expiration']} days"),
@@ -251,9 +252,8 @@ class IFSALCMember
         $email_defaults = IFSA_EMAILS[$email_name];
         $to = $this->replace_email($email_defaults['to'], $args);
         $subject = $this->replace_email(get_option($email_name."_subject", $email_defaults['subject']), $args);
-        $content = $this->replace_email(get_option($email_name, $email_defaults['subject']), $args);
+        $content = $this->replace_email(get_option($email_name, $email_defaults['content'] ?? $email_defaults['subject']), $args);
 
-        error_log("[IFSA debug]: email to: $to sub: $subject content: $content");
         $res = $this->send_email($to, $subject, $content);
 
         if(!$res) return new WP_Error("Error sending email");

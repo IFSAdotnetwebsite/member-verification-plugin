@@ -319,11 +319,15 @@ const IFSA_EMAILS = array(
     'register_email_user'=> array(
         'description'=>'Email sent to user on successful registration',
         'subject' => '[IFSA] Registered on the Website',
-        'to' => '{user_email}'
+        'to' => '{user_email}',
+        'content' => "Hi {user_name}, <br/> 
+                      you are succesfully registered on the IFSA website. Now need to wait that the Admin of {lc_name} verifies you."
     ),
     'register_email_lc_admin' => array(
         'description'=>'Email sent to LC Admin on user registration',
         'subject' => '[IFSA] New user verification pending',
-        'to' => '{lc_admin_email}'
+        'to' => '{lc_admin_email}',
+        'content' => "Hi {lc_name} team, <br/> 
+                      a new member: {user_fullname} registered on the website and is waiting to be verified. Go to {lc_dashboard_link} to verify them."
     )
 );
