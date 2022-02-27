@@ -268,3 +268,62 @@ const COUNTRY_LIST = array(
 );
 const GENDERS = array('Male', 'Female', 'Other non-binary', 'Prefer not to say');
 const UNI_LEVELS = array('Bachelor Degree', 'Master Degree', 'PhD');
+
+// list of email fields with their default values
+const IFSA_EMAILS = array(
+    'welcome_email_after_verify_member' => array(
+        'description'=>'Welcome Email after verify member',
+        'subject' => 'Successfully verified to IFSA',
+        'to' => '{$user_email}'
+    ),
+    'reminder_on_same_date_when_renewed' =>array(
+        'description'=>'Reminder on same date when renewed [if not renewed]',
+        'subject' => 'Reminder to renew',
+        'to' => '{$user_email}'
+    ),
+    'member_bulk_invite_for_join_the_community'=> array(
+        'description'=>'Member Bulk invite for join the community',
+        'subject' => 'Join IFSA',
+        'to' => '{$user_email}'
+    ),
+    'fifteen_days_after_expire_date'=> array(
+        'description'=>'15 days after member verification expire',
+        'subject' => 'IFSA member verification expired',
+        'to' => '{$user_email}'
+    ),
+    'reject_by_lc_admin_email_to_member'=> array(
+        'description'=>'Reject by LC Admin email to member',
+        'subject' => 'IFSA membership rejected',
+        'to' => '{$user_email}'
+    ),
+    'twentytwo_days_after_expire_date'=> array(
+        'description'=>'15 days after member verification expire',
+        'subject' => 'IFSA member verification expired',
+        'to' => '{$user_email}'
+    ),
+    'thirty_days_before_renewal_date'=> array(
+        'description'=>'30 days before member verification expire',
+        'subject' => 'IFSA member verification expired',
+        'to' => '{$user_email}'
+    ),
+    'thirty_days_after_expire_date'=> array(
+        'description'=>'30 days after member verification expire',
+        'subject' => 'IFSA member verification expired',
+        'to' => '{$user_email}'
+    ),
+    'remove_member_content'=> array(
+        'description'=>'LC Admin remove member',
+        'subject' => 'Account removed',
+        'to' => '{$user_email}'
+    ),
+    'register_email_user'=> array(
+        'description'=>'Email sent to user on successful registration',
+        'subject' => '[IFSA] Registered on the Website',
+        'to' => '{$user_email}'
+    ),
+    'register_email_lc_admin' => array(
+        'description'=>'Email sent to LC Admin on user registration',
+        'subject' => '[IFSA] New user verification pending',
+        'to' => '{$lc_admin_email}'
+    )
+);
