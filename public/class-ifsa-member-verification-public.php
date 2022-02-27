@@ -1779,7 +1779,7 @@ class Ifsa_Member_Verification_Public
     {
         check_ajax_referer("registration-form-ajax");
 
-        // Maps the ajax fields into Wordpress user fields and sanatize them
+        // Maps the ajax fields into Wordpress user fields and sanitize them
         $user_data = array(
             'user_login' => sanitize_text_field($_POST['user_name']),
             'user_email' => sanitize_email($_POST['user_email']),
@@ -1800,33 +1800,17 @@ class Ifsa_Member_Verification_Public
             } elseif (isset($user_id->errors['existing_user_login'])) {
                 echo 'User name already exist.';
             } else {
-                echo 'Error Occurred during sign up. Error:' . $user_id->get_error_message() . "If problem persists contact site admin";
+                echo 'Error Occurred during sign up. Message: ' . $user_id->get_error_message() . ". If problem persists contact site admin";
             }
             wp_die();
         }
 
         /** Basic user creation completed. Deal with IFSA specific part */
         
-        $lc_id = IFSAUtility::get_post_var('lc');
+        $lc_id = ifsa_utility()->get_post_var('lc');
         
-        // Map Xprofile_name => POST_name
-        
-        $user_add_info = array(
-                'IFSA Region' => 'ifsa_region',
-                'Gender' => 'gender',
-                'Nationality' => 'nationality',
-                'University Name' => 'universityname',
-                'University Country' => 'country',
-                'University Level' => 'universityLevel',
-                'Course Topic' => 'courseTopic',
-                'Graduation Day' => 'graduateday',
-            );
-        // uses get_post_var to sanitize the input
-        foreach ($user_add_info as $key => $ajax_value){
-            $user_add_info[$key] = IFSAUtility::get_post_var($ajax_value);
-        }
 
-        // Check Local Committee
+        /**  Check Local Committee */
         $lc_admin = $this->ifsa->get_lc_admin($lc_id);
         if(is_wp_error($lc_admin)){
             echo "Invalid LC. try again or contact website admin. Error: ".$lc_admin->get_error_code();
@@ -1836,15 +1820,45 @@ class Ifsa_Member_Verification_Public
         // Add LC id to user meta. This is used in the admin interface
         update_user_meta($user_id, 'ifsa_committee', $lc_id);
 
+        /** Buddypress profile */
+
+        $region_id = ifsa_utility()->get_post_var('ifsa_region');
+        // Map Xprofile_name => POST_name
+        $user_add_info = array(
+            'Gender' => 'gender',
+            'Nationality' => 'nationality',
+            'University Name' => 'universityname',
+            'University Country' => 'country',
+            'University Level' => 'universityLevel',
+            'Course Topic' => 'courseTopic',
+            'Graduation Day' => 'graduateday',
+        );
+        // uses get_post_var to sanitize the input
+        foreach ($user_add_info as $key => $ajax_value){
+            $user_add_info[$key] = ifsa_utility()->get_post_var($ajax_value);
+        }
+        // Add addition fields to profile
+
+        $user_add_info['Local Committee Name'] = $this->ifsa->get_lc_name($lc_id);
+        $user_add_info['IFSA Region'] = $this->ifsa->get_region_name($region_id);
+
+        foreach ($user_add_info as $field_name => $field_value){
+            $return = xprofile_set_field_data($field_name, $user_id, $field_value);
+            if(!$return){
+                echo "Error in creating xprofile fields";
+                wp_die();
+            }
+        }
         // Update custom table for member verification
         // differentiate email invites
-        $source = IFSAUtility::get_post_var('utm_source') == 'invite' ? "Invite" : "Website"; // default source is website
+        // Consider update this to use Wp_Query
+        $source = ifsa_utility()->get_post_var('utm_source') == 'invite' ? "Invite" : "Website"; // default source is website
 
         global $wpdb;
         $last_updated = bp_core_current_time();
 
         $query = "INSERT INTO {$this->ifsa->lc_member_table} ( user_id,lc_adminid, committee_id ,region_id, action_date, member_status,source) VALUES ( %d,%d, %s, %s, %s, %d,%s )";
-        $sql = $wpdb->prepare($query, $user_id, $lc_admin, $lc_id, $user_add_info['IFSA Region'], $last_updated, 0, $source);
+        $sql = $wpdb->prepare($query, $user_id, $lc_admin, $lc_id, $region_id, $last_updated, 0, $source);
 
         $result = $wpdb->query($sql);
 
@@ -1854,44 +1868,44 @@ class Ifsa_Member_Verification_Public
         }
 
 
-        // Add addition fields to profile
+        /** Email */
 
-        $user_add_info['Local Committee Name'] = $this->ifsa->get_lc_name($lc_id);
+        // To member
+        $res1 = $this->ifsa->send_ifsa_email('register_email_user', array(
+            '{$user_email}' => $user_data['user_email'],
+            '{$user_name}' => $user_data['first_name'],
+            '{$lc_name}' => $user_add_info['Local Committee Name']
+        ));
+        // To LC admin
+        $res2 = $this->ifsa->send_ifsa_email('register_email_lc_admin', array(
+            '{$lc_admin_email}' => get_userdata($lc_admin)->user_email,
+            '{$user_name}' => $user_data['first_name'],
+            '{$lc_name}' => $user_add_info['Local Committee Name']
+        ));
 
-        foreach ($user_add_info as $field_name => $field_value){
-            $return = xprofile_set_field_data($field_name, $user_id, $field_value);
-            if(!$return){
-                echo "Error in creting xprofile fields";
-                wp_die();
-            }
+        if(is_wp_error($res1) || is_wp_error($res2)){
+            echo "Error in sending email. Contact website administrator.";
+            wp_die();
         }
 
-        // Email
+        /** Log */
 
-        $subject = "Successfully Registered";
-
-        $author_obj = get_user_by('id', $user_id);
-        $to = $author_obj->user_email;
-
-        $message = 'You have successfully registered and should wait for the LC admin to verify';
-        $headers = array('Content-Type: text/html; charset=UTF-8');
-        //Here put your Validation and send mail
-        $sent = wp_mail($to, "$subject", $message, $headers);
-        if ($sent) {
-            update_user_meta($user_id, 'ifsa_registration_email', '1');
-        } else {
-            update_user_meta($user_id, 'ifsa_registration_email', '0');
-        }
+        $this->ifsa->log("user registered",
+            "Source: $source, LC: {$user_add_info['Local Committee Name']}", $user_id);
 
         echo 'success';
-
-        // need to log stuff
-
-        // refactor email send
 
         wp_die();
     }
 
+    function send_registration_email($user_email){
+        $subject = "Successfully Registered";
+
+        $message = 'You have successfully registered and should wait for the LC admin to verify';
+
+        $this->ifsa->send_email($user_email, $subject, $message);
+
+    }
     public function ifsa_lcadmin_banner()
     {
 

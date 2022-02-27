@@ -69,9 +69,9 @@
                 <label for="ifsa_universitylevel" class="required">University Level</label>
                 <select name="ifsa_universitylevel" id="ifsa_universitylevel">
                     <option value="">Select University Level</option>
-                    <?php foreach (UNI_LEVELS as $key => $value) { ?>
-                        <option value="$value">$value</option>
-                    <?php } ?>
+                    <?php foreach (UNI_LEVELS as $key => $value) {
+                        echo "<option value=\"$value\">$value</option>";
+                    } ?>
                 </select>
                 <span id="ifsa_universitylevel-error"></span>
                 <label for="ifsa_coursetopic">Course Topic</label>
@@ -203,9 +203,9 @@
                             <label for="ddl-gender" class="formbuilder-select-label">Gender</label>
                             <select class="form-control" name="ddl-gender" id="ddl-gender">
                                 <option value = "" selected="true" id="ddl-gender-0">Select Gender</option>
-                                <?php foreach (GENDERS as $key => $value) { ?>
-                                    <option value="$value">$value</option>
-                                <?php } ?>
+                                <?php foreach (GENDERS as $key => $value) {
+                                    echo "<option value=\"$value\">$value</option>";
+                                } ?>
                             </select>
                             <span id="ifsa_lc-error"></span>
                         </div>
