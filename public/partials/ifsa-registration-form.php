@@ -13,261 +13,6 @@
  *
  */
 
-/* The country list is from here https://stefangabos.github.io/world_countries/ which follows the IS0-3166 standard
-it takes the dataset "world" which includes all countries and territories */
-$countries = array(
-    "Afghanistan",
-    "Åland Islands",
-    "Albania",
-    "Algeria",
-    "American Samoa",
-    "Andorra",
-    "Angola",
-    "Anguilla",
-    "Antarctica",
-    "Antigua and Barbuda",
-    "Argentina",
-    "Armenia",
-    "Aruba",
-    "Australia",
-    "Austria",
-    "Azerbaijan",
-    "Bahamas",
-    "Bahrain",
-    "Bangladesh",
-    "Barbados",
-    "Belarus",
-    "Belgium",
-    "Belize",
-    "Benin",
-    "Bermuda",
-    "Bhutan",
-    "Bolivia (Plurinational State of)",
-    "Bonaire, Sint Eustatius and Saba",
-    "Bosnia and Herzegovina",
-    "Botswana",
-    "Bouvet Island",
-    "Brazil",
-    "British Indian Ocean Territory",
-    "Brunei Darussalam",
-    "Bulgaria",
-    "Burkina Faso",
-    "Burundi",
-    "Cabo Verde",
-    "Cambodia",
-    "Cameroon",
-    "Canada",
-    "Cayman Islands",
-    "Central African Republic",
-    "Chad",
-    "Chile",
-    "China",
-    "Christmas Island",
-    "Cocos (Keeling) Islands",
-    "Colombia",
-    "Comoros",
-    "Congo",
-    "Congo, Democratic Republic of the",
-    "Cook Islands",
-    "Costa Rica",
-    "Côte d'Ivoire",
-    "Croatia",
-    "Cuba",
-    "Curaçao",
-    "Cyprus",
-    "Czechia",
-    "Denmark",
-    "Djibouti",
-    "Dominica",
-    "Dominican Republic",
-    "Ecuador",
-    "Egypt",
-    "El Salvador",
-    "Equatorial Guinea",
-    "Eritrea",
-    "Estonia",
-    "Eswatini",
-    "Ethiopia",
-    "Falkland Islands (Malvinas)",
-    "Faroe Islands",
-    "Fiji",
-    "Finland",
-    "France",
-    "French Guiana",
-    "French Polynesia",
-    "French Southern Territories",
-    "Gabon",
-    "Gambia",
-    "Georgia",
-    "Germany",
-    "Ghana",
-    "Gibraltar",
-    "Greece",
-    "Greenland",
-    "Grenada",
-    "Guadeloupe",
-    "Guam",
-    "Guatemala",
-    "Guernsey",
-    "Guinea",
-    "Guinea-Bissau",
-    "Guyana",
-    "Haiti",
-    "Heard Island and McDonald Islands",
-    "Holy See",
-    "Honduras",
-    "Hong Kong",
-    "Hungary",
-    "Iceland",
-    "India",
-    "Indonesia",
-    "Iran (Islamic Republic of)",
-    "Iraq",
-    "Ireland",
-    "Isle of Man",
-    "Israel",
-    "Italy",
-    "Jamaica",
-    "Japan",
-    "Jersey",
-    "Jordan",
-    "Kazakhstan",
-    "Kenya",
-    "Kiribati",
-    "Korea (Democratic People's Republic of)",
-    "Korea, Republic of",
-    "Kuwait",
-    "Kyrgyzstan",
-    "Lao People's Democratic Republic",
-    "Latvia",
-    "Lebanon",
-    "Lesotho",
-    "Liberia",
-    "Libya",
-    "Liechtenstein",
-    "Lithuania",
-    "Luxembourg",
-    "Macao",
-    "Madagascar",
-    "Malawi",
-    "Malaysia",
-    "Maldives",
-    "Mali",
-    "Malta",
-    "Marshall Islands",
-    "Martinique",
-    "Mauritania",
-    "Mauritius",
-    "Mayotte",
-    "Mexico",
-    "Micronesia (Federated States of)",
-    "Moldova, Republic of",
-    "Monaco",
-    "Mongolia",
-    "Montenegro",
-    "Montserrat",
-    "Morocco",
-    "Mozambique",
-    "Myanmar",
-    "Namibia",
-    "Nauru",
-    "Nepal",
-    "Netherlands",
-    "New Caledonia",
-    "New Zealand",
-    "Nicaragua",
-    "Niger",
-    "Nigeria",
-    "Niue",
-    "Norfolk Island",
-    "North Macedonia",
-    "Northern Mariana Islands",
-    "Norway",
-    "Oman",
-    "Pakistan",
-    "Palau",
-    "Palestine, State of",
-    "Panama",
-    "Papua New Guinea",
-    "Paraguay",
-    "Peru",
-    "Philippines",
-    "Pitcairn",
-    "Poland",
-    "Portugal",
-    "Puerto Rico",
-    "Qatar",
-    "Réunion",
-    "Romania",
-    "Russian Federation",
-    "Rwanda",
-    "Saint Barthélemy",
-    "Saint Helena, Ascension and Tristan da Cunha",
-    "Saint Kitts and Nevis",
-    "Saint Lucia",
-    "Saint Martin (French part)",
-    "Saint Pierre and Miquelon",
-    "Saint Vincent and the Grenadines",
-    "Samoa",
-    "San Marino",
-    "Sao Tome and Principe",
-    "Saudi Arabia",
-    "Senegal",
-    "Serbia",
-    "Seychelles",
-    "Sierra Leone",
-    "Singapore",
-    "Sint Maarten (Dutch part)",
-    "Slovakia",
-    "Slovenia",
-    "Solomon Islands",
-    "Somalia",
-    "South Africa",
-    "South Georgia and the South Sandwich Islands",
-    "South Sudan",
-    "Spain",
-    "Sri Lanka",
-    "Sudan",
-    "Suriname",
-    "Svalbard and Jan Mayen",
-    "Sweden",
-    "Switzerland",
-    "Syrian Arab Republic",
-    "Taiwan, Province of China",
-    "Tajikistan",
-    "Tanzania, United Republic of",
-    "Thailand",
-    "Timor-Leste",
-    "Togo",
-    "Tokelau",
-    "Tonga",
-    "Trinidad and Tobago",
-    "Tunisia",
-    "Turkey",
-    "Turkmenistan",
-    "Turks and Caicos Islands",
-    "Tuvalu",
-    "Uganda",
-    "Ukraine",
-    "United Arab Emirates",
-    "United Kingdom of Great Britain and Northern Ireland",
-    "United States of America",
-    "United States Minor Outlying Islands",
-    "Uruguay",
-    "Uzbekistan",
-    "Vanuatu",
-    "Venezuela (Bolivarian Republic of)",
-    "Viet Nam",
-    "Virgin Islands (British)",
-    "Virgin Islands (U.S.)",
-    "Wallis and Futuna",
-    "Western Sahara",
-    "Yemen",
-    "Zambia",
-    "Zimbabwe",
-
-)
-
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
@@ -316,7 +61,7 @@ $countries = array(
                 <label for="ifsa_country" class="required"> University Country</label>
                 <select name="ifsa_country" id="ifsa_country">
                     <option value="">Select University Country</option>
-                    <?php foreach ($countries as $key =>  $value) { ?>
+                    <?php foreach (COUNTRY_LIST as $key =>  $value) { ?>
                         <option value="<?php echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php echo esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
                     <?php } ?>
                 </select>
@@ -324,9 +69,9 @@ $countries = array(
                 <label for="ifsa_universitylevel" class="required">University Level</label>
                 <select name="ifsa_universitylevel" id="ifsa_universitylevel">
                     <option value="">Select University Level</option>
-                    <option value="Bachelor Degree">Bachelor Degree</option>
-                    <option value="Master Degree">Master Degree</option>
-                    <option value="PhD">PhD</option>
+                    <?php foreach (UNI_LEVELS as $key => $value) {
+                        echo "<option value=\"$value\">$value</option>";
+                    } ?>
                 </select>
                 <span id="ifsa_universitylevel-error"></span>
                 <label for="ifsa_coursetopic">Course Topic</label>
@@ -457,11 +202,10 @@ $countries = array(
                         <div class="formbuilder-select form-group field-ddl-gender">
                             <label for="ddl-gender" class="formbuilder-select-label">Gender</label>
                             <select class="form-control" name="ddl-gender" id="ddl-gender">
-                                <option selected="true" id="ddl-gender-0">Select Gender</option>
-                                <option value="Male" id="ddl-gender-1">Male</option>
-                                <option value="Female" id="ddl-gender-2">Female</option>
-                                <option value="Other non-binary" id="ddl-gender-3">Other non-binary</option>
-                                <option value="Prefer not to say" id="ddl-gender-4">Prefer not to say</option>
+                                <option value = "" selected="true" id="ddl-gender-0">Select Gender</option>
+                                <?php foreach (GENDERS as $key => $value) {
+                                    echo "<option value=\"$value\">$value</option>";
+                                } ?>
                             </select>
                             <span id="ifsa_lc-error"></span>
                         </div>
@@ -469,7 +213,7 @@ $countries = array(
                             <label for="ddl-nationality" class="formbuilder-select-label">Where are you from?</label>
                             <select class="form-control" name="ddl-nationality" id="ddl-nationality">
                                 <option selected="true" id="ddl-nationality-0">Select Country</option>
-                                <?php foreach ($countries as $key => $value) { ?>
+                                <?php foreach (COUNTRY_LIST as $key => $value) { ?>
                                     <option value="<?php echo esc_attr($value, 'Ifsa_Member_Verification') ?>"><?php echo esc_html_e($value, 'Ifsa_Member_Verification') ?></option>
                                 <?php } ?>
                             </select>
@@ -481,7 +225,7 @@ $countries = array(
                             <label for="ddl-region" class="formbuilder-select-label required">
                                 IFSA Region
                             </label>
-                            <select class="form-control" name="field_209" id="field_209">
+                            <select class="form-control" name="ifsa_region" id="ifsa_region">
                                 <option selected="true" value="" id="ddl-region-0">Select Region</option>
                                 <?php
                                 global $wpdb;
@@ -502,7 +246,7 @@ $countries = array(
                         </div>
                         <div class="formbuilder-select form-group field-ddl-lc">
                             <label for="ddl-lc" class="formbuilder-select-label required">IFSA Committee</label>
-                            <select class="form-control" name="field_213" id="field_213">
+                            <select class="form-control" name="lc" id="lc">
                                 <option selected="true" value="" id="ddl-lc-0">Select Committee</option>
 
                             </select>

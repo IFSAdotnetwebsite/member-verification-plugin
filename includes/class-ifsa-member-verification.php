@@ -70,7 +70,7 @@ class Ifsa_Member_Verification {
 		if ( defined( 'IFSA_MEMBER_VERIFICATION_VERSION' ) ) {
 			$this->version = IFSA_MEMBER_VERIFICATION_VERSION;
 		} else {
-			$this->version = '1.0.0';
+			$this->version = '1.1.0';
 		}
 		$this->plugin_name = 'ifsa-member-verification';
 
@@ -78,6 +78,7 @@ class Ifsa_Member_Verification {
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
+        $this->define_utility_hooks();
 
 	}
 
@@ -233,6 +234,10 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ifsa_member_veri
 		$this->loader->add_action( 'bp_after_member_header',  $plugin_public,'ifsa_lcadmin_banner' );
 		
 	}
+
+    function define_utility_hooks(){
+        $this->loader->add_action( 'admin_notices',  ifsa_utility(),'ifsa_show_admin_notices');
+    }
 
 	/**
 	 * Run the loader to execute all of the hooks with WordPress.
