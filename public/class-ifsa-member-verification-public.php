@@ -149,7 +149,7 @@ class Ifsa_Member_Verification_Public
     /**
      * Function is used to create profile tab.
      *
-     * @return funciton It registeres the menus in the admin page
+     * @return void It registeres the menus in the admin page
      */
     public function ifsa_profile_tab_memberlist()
     {
@@ -160,6 +160,7 @@ class Ifsa_Member_Verification_Public
             $user = wp_get_current_user(); // getting & setting the current user
             $roles = ( array )$user->roles; // obtaining the role
 
+            // TODO: update this
             if ($roles[0] === 'lc_admin') {
 
                 bp_core_new_nav_item(

@@ -37,7 +37,7 @@ $editor_settings = array('media_buttons' => false,'quicktags'=>true, 'textarea_r
         $content = get_option($email_name, "");
         $subject_key = $email_name."_subject";
         $subject = get_option($subject_key) ;
-        $subject = $subject ? $subject: $email_defaults['subject'];
+        $subject = $subject ?: $email_defaults['subject'];
         ?>
         <div class="ifsc_member_admin_email-division">
             <h2 class="ifsc_member_admin_email-division_heading">
@@ -48,7 +48,7 @@ $editor_settings = array('media_buttons' => false,'quicktags'=>true, 'textarea_r
                 <?php echo "<input type =text value=\"$subject\" name =$subject_key id=$subject_key class=regular-text>" ?>
             </div>
             <div class="division-editor">
-                <?php wp_editor($content, $email_name."_content", $editor_settings)?>
+                <?php wp_editor($content, $email_name, $editor_settings)?>
             </div>
         </div>
     <?php } ?>

@@ -183,6 +183,7 @@ class Ifsa_Member_Verification_Admin
         <?php
     }
 
+    // TODO: move this to IFSALCMember
     /**
      * Returns the type of users for IFSA member verification
      * this can be 'lc_member', 'lc_admin' or 'none'
@@ -833,27 +834,10 @@ class Ifsa_Member_Verification_Admin
             'ifsa_member_verification_email_settings'
         );
 
-        //Registering the settings field and its value in the option table
-        register_setting('ifsa_member_verification_email_settings', 'welcome_email_after_verify_member', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'reminder_on_same_date_when_renewed', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'member_bulk_invite_for_join_the_community', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'fifteen_days_after_expire_date', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'reject_by_lc_admin_email_to_member', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'twentytwo_days_after_expire_date', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'thirty_days_before_renewal_date', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'thirty_days_after_expire_date', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'remove_member_content', array($this, 'sanitize_textarea_field'));
-
-
-        register_setting('ifsa_member_verification_email_settings', 'welcome_email_after_verify_member_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'reminder_on_same_date_when_renewed_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'member_bulk_invite_for_join_the_community_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'fifteen_days_after_expire_date_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'reject_by_lc_admin_email_to_member_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'twentytwo_days_after_expire_date_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'thirty_days_before_renewal_date_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'thirty_days_after_expire_date_subject', array($this, 'sanitize_textarea_field'));
-        register_setting('ifsa_member_verification_email_settings', 'remove_member_content_subject', array($this, 'sanitize_textarea_field'));
+        foreach (IFSA_EMAILS as $email_name => $emails){
+            register_setting('ifsa_member_verification_email_settings',$email_name,  array($this, 'sanitize_textarea_field'));
+            register_setting('ifsa_member_verification_email_settings',$email_name."_subject",  array($this, 'sanitize_textarea_field'));
+        }
 
 
     }

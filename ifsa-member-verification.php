@@ -3,10 +3,10 @@
 /**
  * @wordpress-plugin
  * Plugin Name:       IFSA Member Verification
- * Plugin URI:        #
+ * Plugin URI:        https://github.com/IFSAdotnetwebsite/member-verification-plugin
  * Description:       IFSA member verification allows to manage the verification of IFSA members and give them access to the private features on the website.
- * Version:           1.0.0
- * Author:            Multidots
+ * Version:           1.1.1
+ * Author:            Simone Massaro
  * Author URI:        #
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
