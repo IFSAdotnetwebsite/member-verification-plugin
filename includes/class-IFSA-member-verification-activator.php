@@ -80,6 +80,8 @@ class IFSA_Member_Verification_Activator {
 
         IFSA_Member_Verification_Activator::create_xprofile_fields();
 
+        // Create the member-register and member-renew pages
+
 	}
 
     /**
@@ -146,6 +148,16 @@ class IFSA_Member_Verification_Activator {
         IFSA_Member_Verification_Activator::insert_xprofile_options(UNI_LEVELS, $field_ids['University Level'] ?? NULL);
         // Gender
         IFSA_Member_Verification_Activator::insert_xprofile_options(GENDERS, $field_ids['Gender'] ?? NULL);
+
+        // Make the IFSA Region and Local Committee readonly
+        // Uses http://buddydev.com/plugins/bp-non-editable-profile-fields/ plugin
+        if(function_exists('bpne_field_helper')){
+            foreach (array('IFSA Region', 'Local Committee Name') as $field){
+                if(array_key_exists($field, $field_ids)){
+                    bpne_field_helper()->update_field_editing_preference($field_ids[$field], 'no');
+                }
+            }
+        }
 
     }
 
