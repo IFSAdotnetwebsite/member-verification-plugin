@@ -1872,19 +1872,19 @@ class Ifsa_Member_Verification_Public
 
         // To member
         $res1 = $this->ifsa->send_ifsa_email('register_email_user', array(
-            '{$user_email}' => $user_data['user_email'],
-            '{$user_name}' => $user_data['first_name'],
-            '{$lc_name}' => $user_add_info['Local Committee Name']
+            '{user_email}' => $user_data['user_email'],
+            '{user_name}' => $user_data['first_name'],
+            '{lc_name}' => $user_add_info['Local Committee Name']
         ));
         // To LC admin
         $res2 = $this->ifsa->send_ifsa_email('register_email_lc_admin', array(
-            '{$lc_admin_email}' => get_userdata($lc_admin)->user_email,
-            '{$user_name}' => $user_data['first_name'],
-            '{$lc_name}' => $user_add_info['Local Committee Name']
+            '{lc_admin_email}' => get_userdata($lc_admin)->user_email,
+            '{user_name}' => $user_data['first_name'],
+            '{lc_name}' => $user_add_info['Local Committee Name']
         ));
 
         if(is_wp_error($res1) || is_wp_error($res2)){
-            echo "Error in sending email. Contact website administrator.";
+            echo "Error in sending email. Contact website administrator. {$res1->get_error_code()} {$res2->get_error_code()}";
             wp_die();
         }
 
@@ -1898,14 +1898,6 @@ class Ifsa_Member_Verification_Public
         wp_die();
     }
 
-    function send_registration_email($user_email){
-        $subject = "Successfully Registered";
-
-        $message = 'You have successfully registered and should wait for the LC admin to verify';
-
-        $this->ifsa->send_email($user_email, $subject, $message);
-
-    }
     public function ifsa_lcadmin_banner()
     {
 

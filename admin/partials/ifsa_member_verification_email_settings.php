@@ -16,18 +16,19 @@ $editor_settings = array('media_buttons' => false,'quicktags'=>true, 'textarea_r
 
 ?>
 <section id="dynamic_variable">
-    <h3>Dynamic varibles used in email templates.</h3>
-<ol>
-<li><strong>{lc_member}</strong> - Shows LC Member First Name and Last Name. </li>
-<li><strong>{lc_admin}</strong> -  Shows LC Admin Display Name.  </li>
-<li><strong>{renew_date}</strong> -  Shows expiration date of membership.  </li>
-<li><strong>{lc_link}</strong> -  Shows registration invite link. </li>
-<li><strong>{15_days_after_date_expire}</strong> -  Shows date after 15 days of expiration date.  </li>
-<li><strong>{reject_reason}</strong> -  Shows the reason of rejection. </li>
-<li><strong>{22_days_after_date_expire}</strong> - Shows date after 22 days of expiration date. </li>
-<li><strong>{30_days_before_date}</strong> - Shows date before 30 days of expiration date.</li>
-<li><strong>{30_days_after_date}</strong> - Shows date after 30 days of expiration date.</li>
-</ol>
+    <h3>Dynamic variables used in email templates.</h3>
+    <ol>
+        <li><strong>{user_name}</strong> - Shows LC Member First Name and Last Name.</li>
+        <li><strong>{user_fullname}</strong> - Shows LC Member First Name and Last Name.</li>
+        <li><strong>{lc_name}</strong> - LC name.</li>
+        <li><strong>{renew_date}</strong> - Shows expiration date of membership.</li>
+        <li><strong>{lc_link}</strong> - Shows registration invite link.</li>
+        <li><strong>{15_days_after_date_expire}</strong> - Shows date after 15 days of expiration date.</li>
+        <li><strong>{reject_reason}</strong> - Shows the reason of rejection.</li>
+        <li><strong>{22_days_after_date_expire}</strong> - Shows date after 22 days of expiration date.</li>
+        <li><strong>{30_days_before_date}</strong> - Shows date before 30 days of expiration date.</li>
+        <li><strong>{30_days_after_date}</strong> - Shows date after 30 days of expiration date.</li>
+    </ol>
 
 </section>
 <div class="ifsc_member_admin_email_container">

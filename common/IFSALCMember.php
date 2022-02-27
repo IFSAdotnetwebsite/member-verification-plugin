@@ -43,19 +43,19 @@ class IFSALCMember
 
 
         $this->email_default_replacements = array(
-            '{$user_name}' => "IFSA Member",
-            '{$lc_admin}' => "IFSA LC",
-            '{$registration_link_invite}' => "", //TODO
-            '{$reject_reason}' => "",
-            '{$date_before_expiration}' =>
+            '{user_name}' => "IFSA Member",
+            '{lc_admin}' => "IFSA LC",
+            '{registration_link_invite}' => "", //TODO
+            '{reject_reason}' => "",
+            '{date_before_expiration}' =>
                 $this->get_expiration_date()->modify("-{$days_off['date_before_expiration']} days"),
-            '{$expiration_date}' =>
+            '{expiration_date}' =>
                 $this->get_expiration_date(),
-            '{$1_date_after_expiration}' =>
+            '{1_date_after_expiration}' =>
                 $this->get_expiration_date()->modify("+{$days_off['1_date_after_expiration']} days"),
-            '{$2_date_after_expiration}' =>
+            '{2_date_after_expiration}' =>
                 $this->get_expiration_date()->modify("+{$days_off['2_date_after_expiration']} days"),
-            '{$3_date_after_expiration}' =>
+            '{3_date_after_expiration}' =>
                 $this->get_expiration_date()->modify("+{$days_off['3_date_after_expiration']} days")
         );
     }
@@ -229,10 +229,10 @@ class IFSALCMember
 
     public function send_email($to, $subject, $message){
         $headers = array('Content-Type: text/html; charset=UTF-8');
-        $sent = wp_mail($to, "$subject", $message, $headers);
+        $sent = wp_mail($to, $subject, $message, $headers);
         if(!$sent){
             $this->message("Failed to send email: $to, $subject");
-            error_log("[membership verification] Failed to send email: $to, $subject");
+            error_log("[membership verification] Failed to send email: $to, $subject, $message");
         }
         return $sent;
     }
@@ -244,15 +244,16 @@ class IFSALCMember
      * @return void | WP_Error
      */
     public function send_ifsa_email($email_name, $args){
-        if(!array_key_exists('{$user_email}', $args) && !array_key_exists('{$lc_admin_email}', $args)){
+        if(!array_key_exists('{user_email}', $args) && !array_key_exists('{lc_admin_email}', $args)){
             return new WP_Error("Invalid arguments", "to email address is a required argument");
         }
 
         $email_defaults = IFSA_EMAILS[$email_name];
         $to = $this->replace_email($email_defaults['to'], $args);
         $subject = $this->replace_email(get_option($email_name."_subject", $email_defaults['subject']), $args);
-        $content = $this->replace_email(get_option($email_name, ''), $args);
+        $content = $this->replace_email(get_option($email_name, $email_defaults['subject']), $args);
 
+        error_log("[IFSA debug]: email to: $to sub: $subject content: $content");
         $res = $this->send_email($to, $subject, $content);
 
         if(!$res) return new WP_Error("Error sending email");
