@@ -46,8 +46,11 @@ class Ifsa_Member_Verification_Admin
      */
     private $version;
 
-    // This is a flag to avoid logging action more than once.
-    private $first_run = true;
+    /**
+     * Flag to avoid running the user_profile_fields actions more than once
+     * @var bool
+     */
+    private $first_run_user_prof_fields = true;
 
     /**
      * Initialize the class and set its properties.
@@ -224,6 +227,17 @@ class Ifsa_Member_Verification_Admin
      */
     public function ifsa_save_custom_user_profile_fields($user_id)
     {
+        //         The function will be called multiple times because the 'profile_update' hook is fired at least twice
+        //         The ideal system would be that function runs only once, but since it since some code (probably from buddypress)
+        //         reset the new user role is needed to re-run all the code, however to avoid double logging (to admin_notices and log table)
+        //         the flag first_run is kept
+        if ($this->first_run_user_prof_fields) {
+            $this->first_run_user_prof_fields = false;
+        }
+        else { // Run this only on the first time
+            return;
+        }
+
         // again do this only if you can
         if (!current_user_can('manage_options')) {
             return;
@@ -281,13 +295,6 @@ class Ifsa_Member_Verification_Admin
         $this->admin_message("Successfully update IFSA user membership.
          IFSA LC: {$lc_name}, status: {$ifsa_member_status}, type: {$ifsa_member_type}", "notice-success");
 
-        //         The function will be called multiple times because the 'profile_update' hook is fired at least twice
-//         The ideal system would be that function runs only once, but since it since some code (probably from buddypress)
-//         reset the new user role is needed to re-run all the code, however to avoid double logging (to admin_notices and log table)
-//         the flag first_run is kept
-        if ($this->first_run) {
-            $this->first_run = false;
-        }
 
 
     }
@@ -380,6 +387,7 @@ class Ifsa_Member_Verification_Admin
         }
     }
 
+    // TODO: migrate this to IFSAUtility
     /**
      * Utility function to show a message in the admin page
      * @param string $message The message
@@ -388,7 +396,7 @@ class Ifsa_Member_Verification_Admin
     function admin_message(string $message, string $notice_type = 'notice-error')
     {
         // This is the second time the plugin code is run so is assumed that no new logging is needed
-        if (!$this->first_run) {
+        if (!$this->first_run_user_prof_fields) {
             return;
         }
 
@@ -671,7 +679,7 @@ class Ifsa_Member_Verification_Admin
     function log($log_action, $remark, $member_id)
     {
         // This is the second time the plugin code is run so is assumed that no new logging is needed
-        if (!$this->first_run) {
+        if (!$this->first_run_user_prof_fields) {
             return;
         }
         global $wpdb;

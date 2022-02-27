@@ -1104,12 +1104,7 @@ class Ifsa_Member_Verification_Public
             $headers = array('Content-Type: text/html; charset=UTF-8');
 
             //Here put your Validation and send mail
-            $sent = wp_mail($to, "$subject", $message, $headers);
-            if ($sent) {
-                return true;
-            } else {
-                return false;
-            }
+            return wp_mail($to, "$subject", $message, $headers);
         }
     }
 
