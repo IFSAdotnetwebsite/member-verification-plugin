@@ -44,6 +44,10 @@ $editor_settings = array('media_buttons' => false,'quicktags'=>true, 'textarea_r
                 <?php echo $email_defaults['description']?>
             </h2>
             <div class="cls-email-subject">
+                <span>Email to:</span>
+                <span> <?php echo $email_defaults['to']?> </span>
+            </div>
+            <div class="cls-email-subject">
                 <span>Email Subject:</span>
                 <?php echo "<input type =text value=\"$subject\" name =$subject_key id=$subject_key class=regular-text>" ?>
             </div>
