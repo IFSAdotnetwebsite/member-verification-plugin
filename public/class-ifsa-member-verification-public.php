@@ -153,68 +153,58 @@ class Ifsa_Member_Verification_Public
      */
     public function ifsa_profile_tab_memberlist()
     {
+        $lc_admin_id = $this->ifsa->get_settings_lc_admin_id();
+        // add settings only to LC admins
+        if ($lc_admin_id ) {
+            global $bp;
+            bp_core_new_nav_item(
+                array(
+                    'name' => 'LC admin',
+                    'slug' => 'memberlist',
+                    'screen_function' => array($this, 'ifsa_memberlist_tab'),
+                    'position' => 1,
+                    'parent_url' => bp_core_get_user_domain($lc_admin_id)  . '/memberlist/',
+                    'parent_slug' => $bp->profile->slug,
+                    'default_subnav_slug' => 'approvalpending',
+                )
+            );
 
-        global $bp;
-        if (is_user_logged_in()) {
-            // check if there is a logged in user
-            $user = wp_get_current_user(); // getting & setting the current user
-            $roles = ( array )$user->roles; // obtaining the role
+            bp_core_new_subnav_item(
+                array(
+                    'name' => 'Active Member',
+                    'slug' => 'activemember',
+                    'parent_url' => bp_core_get_user_domain($lc_admin_id) . '/memberlist/',
+                    'parent_slug' => 'memberlist',
+                    'screen_function' => array($this, 'ifsa_activemember_screen'),
+                    'position' => 100
+                )
+            );
 
-            // TODO: update this
-            if ($roles[0] === 'lc_admin') {
+            bp_core_new_subnav_item(
+                array(
+                    'name' => 'Approval Pending',
+                    'slug' => 'approvalpending',
+                    'parent_url' => bp_core_get_user_domain($lc_admin_id) . '/memberlist/',
+                    'parent_slug' => 'memberlist',
+                    'screen_function' => array($this, 'ifsa_approvalpending_screen'),
+                    'position' => 40
+                )
+            );
 
-                bp_core_new_nav_item(
-                    array(
-                        'name' => 'LC admin',
-                        'slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_memberlist_tab'),
-                        'position' => 1,
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => $bp->profile->slug,
-                        'default_subnav_slug' => 'approvalpending',
-                    )
-                );
+            bp_core_new_subnav_item(
+                array(
+                    'name' => 'Export/Import Members',
+                    'slug' => 'importexport',
+                    'parent_url' => bp_core_get_user_domain($lc_admin_id) . '/memberlist/',
+                    'parent_slug' => 'memberlist',
+                    'screen_function' => array($this, 'ifsa_importexport_screen'),
+                    'position' => 100
+                )
+            );
 
-                bp_core_new_subnav_item(
-                    array(
-                        'name' => 'Active Member',
-                        'slug' => 'activemember',
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_activemember_screen'),
-                        'position' => 100,
-                        'user_has_access' => bp_is_my_profile(),
-                    )
-                );
-
-                bp_core_new_subnav_item(
-                    array(
-                        'name' => 'Approval Pending',
-                        'slug' => 'approvalpending',
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_approvalpending_screen'),
-                        'position' => 40,
-                        'user_has_access' => bp_is_my_profile(),
-                    )
-                );
-
-                bp_core_new_subnav_item(
-                    array(
-                        'name' => 'Export/Import Members',
-                        'slug' => 'importexport',
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_importexport_screen'),
-                        'position' => 100,
-                        'user_has_access' => bp_is_my_profile(),
-                    )
-                );
-
-            }
         }
-
     }
+
 
 
     /**
@@ -226,7 +216,7 @@ class Ifsa_Member_Verification_Public
     {
         // Add title and content here - last is to call the members plugin.php template.
         //add_action( 'bp_template_title', array( $this, 'ifsa_memberlis_title' ) );
-        add_action('bp_template_content', array($this, 'ifsa_memberlis_content'));
+        add_action('bp_template_content', array($this, 'ifsa_memberlist_content'));
         bp_core_load_template('buddypress/members/single/plugins');
     }
 
@@ -247,7 +237,7 @@ class Ifsa_Member_Verification_Public
      *
      * @return string
      */
-    public function ifsa_memberlis_content()
+    public function ifsa_memberlist_content()
     { ?>
         <h2>Approval Pending List</h2>
         <aside class="bp-feedback bp-messages ifsa-response" style="visibility: hidden;">
@@ -305,19 +295,22 @@ class Ifsa_Member_Verification_Public
     /**
      * Markup for the activemember screen content
      *
-     * @return markup
+     * @return void
      */
     public function activemember_screen_content()
     {
+
+        $lc_admin_id = $this->ifsa->get_settings_lc_admin_id();
+        if(!$lc_admin_id) return; // User cannot access this page
+
         global $wpdb;
-        $user_id = get_current_user_id();
-        $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$wpdb->prefix}IFSALCMember where lc_adminid = %d and member_status = 1", $user_id));
-        //$memberlistresults = $wpdb->get_results( $wpdb->prepare( "SELECT * from FROM {$lcmembertable} WHERE lc_adminid = $user_id" ) );
-        echo '<h2>Active Member List</h2>';
-        echo '<p>You can see list of all members who are currently active in your Local Committee.</p>';
-        if ($res || !is_wp_error($res)) {
+        $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$this->ifsa->lc_member_table} where lc_adminid = %d and member_status = 1", $lc_admin_id));
+
+         if ($res || !is_wp_error($res)) {
             ?>
 
+            <h2>Active Member List</h2>
+            <p>You can see list of all members who are currently active in your Local Committee.</p>
             <aside class="bp-feedback bp-messages ifsa-response-reject" style="visibility: hidden;">
                 <span class="bp-icon" aria-hidden="true"></span>
                 <p class="ifsa_reject_p"></p>
@@ -371,11 +364,11 @@ class Ifsa_Member_Verification_Public
                 <?php
                 foreach ($res as $memberlistresult) {
 
-                    $the_user = get_user_by('id', $memberlistresult->user_id); // 54 is a user ID
+                    $the_user = get_user_by('id', $memberlistresult->user_id);
                     $email = $the_user->user_email;
                     $Name = $the_user->first_name;
                     $Surname = $the_user->last_name;
-                    $profileURL = get_bloginfo('url') . '/members/' . bp_core_get_username($memberlistresult->user_id) . '/profile/';
+                    $profileURL = bp_core_get_user_domain($memberlistresult->user_id);
                     $renew_request = get_user_meta($memberlistresult->user_id, 'ifsa_renew_request', true);
                     if ($renew_request == '1') {
                         $renew_request = 'Renewal';
@@ -427,7 +420,15 @@ class Ifsa_Member_Verification_Public
      * @return markup
      */
     public function approvalpending_screen_content()
-    { ?>
+    {
+
+        $lc_admin_id = $this->ifsa->get_settings_lc_admin_id();
+        if(!$lc_admin_id) return; // User cannot access this page
+
+        global $wpdb;
+        $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM  {$this->ifsa->lc_member_table} where lc_adminid = %d and member_status = 0", $lc_admin_id));
+
+        if ($res || !is_wp_error($res)) {?>
         <aside class="bp-feedback bp-messages ifsa-response-approve" style="visibility: hidden;">
             <span class="bp-icon" aria-hidden="true"></span>
             <p class="ifsa_approve_p"></p>
@@ -437,13 +438,6 @@ class Ifsa_Member_Verification_Public
             <p class="ifsa_reject_p"></p>
         </aside>
         <p>The list of all pending requests for the local committee will be listed out here.</p>
-        <?php global $wpdb;
-        //$lcmembertable = $wpdb->prefix . 'IFSALCMember';
-        $user_id = get_current_user_id();
-        $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM  wp_ifsa_lc_member where lc_adminid = %d and member_status = 0", $user_id));
-        //$memberlistresults = $wpdb->get_results( $wpdb->prepare( "SELECT * from FROM {$lcmembertable} WHERE lc_adminid = $user_id" ) );
-        if ($res || !is_wp_error($res)) {
-            ?>
             <!-- The Modal -->
             <div id="myModal" class="modal">
 
@@ -573,7 +567,7 @@ class Ifsa_Member_Verification_Public
                 <div class="cls-seperator_div2">
                     <p>If you want to export active member from your assigned community.</p>
                     <?php $downloadurl = site_url('?action=download_csv_file');
-                    $downloadurl = ($downloadurl); ?>
+                    ?>
                     <p><a class="cls-seperator_download_user-btn" href="<?php echo esc_url($downloadurl); ?>">Download
                             Users</a></p>
                 </div>
@@ -623,6 +617,7 @@ class Ifsa_Member_Verification_Public
      */
     public function ifsa_approve_member_callback()
     {
+
         global $wpdb;
         // global $bp;
 

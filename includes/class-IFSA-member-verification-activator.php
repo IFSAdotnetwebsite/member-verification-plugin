@@ -36,7 +36,7 @@ class IFSA_Member_Verification_Activator {
 		global $table_prefix, $wpdb;
 		
 	//	$tblname        = 'IFSALCMember';
-		$ifsa_lc_member = $table_prefix . "IFSALCMember";
+		$ifsa_lc_member = $table_prefix . "ifsa_lc_member";
 		$ifsa_log       = $table_prefix . "ifsa_log";
 		#Check to see if the table exists already, if not, then create it
 		

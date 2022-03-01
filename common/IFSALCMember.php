@@ -33,7 +33,6 @@ class IFSALCMember
      * @return void
      */
     function setup_emails(){
-        // TODO update the admin interface to work with those options
         $days_off = array(
             'date_before_expiration' => get_option('date_before_expiration', 30),
             '1_date_after_expiration' => get_option('1_date_after_expiration', 15),
@@ -41,7 +40,7 @@ class IFSALCMember
             '3_date_after_expiration' => get_option('3_date_after_expiration', 30)
         );
 
-
+        // Consider to move emails to separate class
         $this->email_default_replacements = array(
             '{user_name}' => "IFSA Member",
             '{lc_admin}' => "IFSA LC",
@@ -59,6 +58,9 @@ class IFSALCMember
             '{3_date_after_expiration}' =>
                 $this->get_expiration_date()->modify("+{$days_off['3_date_after_expiration']} days")
         );
+
+        global $wpdb;
+        $this->lc_member_table = $wpdb->prefix."ifsa_lc_member";
     }
 
     /**
@@ -188,6 +190,61 @@ class IFSALCMember
         return $query->posts[0]->post_title;
     }
 
+    /**
+     * user is an LC admin
+     * @param $user_id
+     * @return bool
+     */
+    function is_lc_admin($user_id){
+        return $this->get_ifsa_member_type($user_id) == 'lc_admin';
+    }
+
+    /**
+     * Check is current user can edit the lc admin page
+     * Either super admin of owner of the page
+     * @return bool
+     */
+    function can_edit_lc_admin(){
+        return is_super_admin() || bp_is_my_profile();
+    }
+
+    /**
+     * If is an LC admin page and user can edit it return the LC admin ID
+     * otherwise false
+     * @return false|int
+     */
+    function get_settings_lc_admin_id(){
+        $user = bp_get_displayed_user();
+        if(isset($user)){
+            $user_id = $user->id;
+            if ($this->can_edit_lc_admin() && $this->is_lc_admin($user_id)) return $user_id;
+        } else {
+            return false;
+        }
+    }
+    /**
+     * Returns the type of users for IFSA member verification
+     * this can be 'lc_member', 'lc_admin' or 'none'
+     * Priority is given to `lc_admin`
+     * @param $user_id
+     * @return string
+     */
+    function get_ifsa_member_type($user_id): string
+    {
+        $user = get_userdata($user_id);
+        if ($user) {
+            $roles = $user->roles;
+            if (in_array('lc_admin', $roles)) {
+                return 'lc_admin';
+            } elseif (in_array('lc_member', $roles)) {
+                return 'lc_member';
+            } else {
+                return 'none';
+            }
+        } else {
+            return 'none';
+        }
+    }
     /**
      * IFSA Log
      * Log a message in IFSA Log table

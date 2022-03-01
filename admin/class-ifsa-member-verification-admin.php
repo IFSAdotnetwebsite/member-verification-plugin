@@ -476,7 +476,7 @@ class Ifsa_Member_Verification_Admin
             return $region_id;
         }
 
-        // Update the IFSALCMember table
+        // Update the ifsa_lc_member table
         global $wpdb;
 
         $lc_member_data = array(
@@ -491,16 +491,16 @@ class Ifsa_Member_Verification_Admin
 
         // Check if the user already in the table
         $sql_query = $wpdb->prepare(
-            "SELECT user_id from {$wpdb->prefix}IFSALCMember WHERE user_id = %s",
+            "SELECT user_id from {$wpdb->prefix}ifsa_lc_member WHERE user_id = %s",
             $user_id
         );
         $lc_members = $wpdb->get_col($sql_query);
 
         // If the user doesn't exist yet, insert it. Otherwise, updates the row.
         if (empty($lc_members)) {
-            $res = $wpdb->insert($wpdb->prefix . 'IFSALCMember', $lc_member_data);
+            $res = $wpdb->insert($wpdb->prefix . 'ifsa_lc_member', $lc_member_data);
         } else {
-            $res = $wpdb->update($wpdb->prefix . 'IFSALCMember', $lc_member_data,
+            $res = $wpdb->update($wpdb->prefix . 'ifsa_lc_member', $lc_member_data,
                 array(
                     "user_id" => $user_id
                 )
@@ -545,10 +545,10 @@ class Ifsa_Member_Verification_Admin
     function remove_lc_member($user_id)
     {
 
-        // Update the IFSALCMember table
+        // Update the ifsa_lc_member table
         global $wpdb;
 
-        $res = $wpdb->update($wpdb->prefix . 'IFSALCMember',
+        $res = $wpdb->update($wpdb->prefix . 'ifsa_lc_member',
             array(
                 "action_date" => bp_core_current_time(),
                 "member_status" => IFSA_MEMBER_REMOVED_LEVEL,
@@ -630,7 +630,7 @@ class Ifsa_Member_Verification_Admin
         // Check if there is any user connected to this LC admin, if so doesn't remove the lc admin account
         global $wpdb;
         $sql_query = $wpdb->prepare(
-            "SELECT user_id from {$wpdb->prefix}IFSALCMember WHERE lc_adminid = %i",
+            "SELECT user_id from {$wpdb->prefix}ifsa_lc_member WHERE lc_adminid = %i",
             $user_id
         );
         $lc_members = $wpdb->get_col($sql_query);
@@ -980,7 +980,7 @@ class Ifsa_Member_Verification_Admin
     public function ifsa_custom_remove_user($user_id)
     {
         global $wpdb;
-        $removefromdb = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}IFSALCMember WHERE user_id = %d", $user_id));
+        $removefromdb = $wpdb->query($wpdb->prepare("DELETE FROM {$wpdb->prefix}ifsa_lc_member WHERE user_id = %d", $user_id));
 
     }
 
