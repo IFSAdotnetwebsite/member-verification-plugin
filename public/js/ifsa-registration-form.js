@@ -282,30 +282,10 @@ jQuery( document ).ready( function() {
 
 		$( '#ifsa_form_2-btn' ).click( function() {
 
-			if ( $.trim( $( '#ifsa_universityname' ).val() ).length == 0 ) {
-
-				$( '#ifsa_universityname-error' ).html( 'Please add university name');
-				//$( '#ifsa_form_2-btn' ).hide();
-				$("#ifsa_form_2-btn").prop('disabled', true);
-			} else if ( $.trim( $( '#ifsa_country' ).val() ).length == 0 ) {
-
-				$( '#ifsa_country-error' ).html( 'Please select country' );
-				//$( '#ifsa_form_2-btn' ).hide();
-				$("#ifsa_form_2-btn").prop('disabled', true);
-			} else if ( $.trim( $( '#ifsa_universitylevel' ).val() ).length == 0 ) {
-
-				$( '#ifsa_universitylevel-error').html( 'Please select university level' );
-				//$( '#ifsa_form_2-btn' ).hide();
-				$("#ifsa_form_2-btn").prop('disabled', true);
-			}
-			
-			else {
-
-				$( '#ifsa_form_2' ).css( { 'opacity': '0', 'visibility': 'hidden' } );
-				$( '#ifsa_form_3' ).css( {  'opacity': '1','visibility': 'visible', 'animation': 'fadein 1s linear' } );
-				$("#ifsa_form_2-btn").prop('disabled', false);
-			}
-		} );
+			$('#ifsa_form_2').css({'opacity': '0', 'visibility': 'hidden'});
+			$('#ifsa_form_3').css({'opacity': '1', 'visibility': 'visible', 'animation': 'fadein 1s linear'});
+			$("#ifsa_form_2-btn").prop('disabled', false);
+		});
 
 		$( '#ifsa_form_2-btn-back' ).click( function() {
 			$("#form_1_toggle-yes").prop('checked', false);

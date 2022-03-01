@@ -55,10 +55,10 @@
                 <?php echo get_option('ifsa_step_2_description'); ?>
             </p>
             <div class="ifsa_multistep_form-options">
-                <label for="ifsa_universityname" class="required">University Name</label>
+                <label for="ifsa_universityname">University Name</label>
                 <input id="ifsa_universityname" name="ifsa_universityname" type="text">
                 <span id="ifsa_universityname-error"></span>
-                <label for="ifsa_country" class="required"> University Country</label>
+                <label for="ifsa_country"> University Country</label>
                 <select name="ifsa_country" id="ifsa_country">
                     <option value="">Select University Country</option>
                     <?php foreach (COUNTRY_LIST as $key =>  $value) { ?>
@@ -66,7 +66,7 @@
                     <?php } ?>
                 </select>
                 <span id="ifsa_country-error"></span>
-                <label for="ifsa_universitylevel" class="required">University Level</label>
+                <label for="ifsa_universitylevel">University Level</label>
                 <select name="ifsa_universitylevel" id="ifsa_universitylevel">
                     <option value="">Select University Level</option>
                     <?php foreach (UNI_LEVELS as $key => $value) {
