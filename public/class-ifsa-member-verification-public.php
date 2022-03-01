@@ -836,11 +836,11 @@ class Ifsa_Member_Verification_Public
     {
         //global $wpdb;
 
-        if (isset($_POST['nonce']) && !empty($_POST['nonce'])) {
-            if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
-                die('Security Check Failed');
-            }
-        }
+//        if (isset($_POST['nonce']) && !empty($_POST['nonce'])) {
+//            if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
+//                die('Security Check Failed');
+//            }
+//        }
         if (isset($_POST['reasonID']) && !empty($_POST['reasonID'])) {
             $reasonID = sanitize_text_field($_POST['reasonID']);
         }
@@ -1773,7 +1773,9 @@ class Ifsa_Member_Verification_Public
      */
     public function ifsa_register_user_front_end()
     {
-        check_ajax_referer("registration-form-ajax");
+        // Explain why the nonce is not checked?
+        // is there a good reason?
+        //check_ajax_referer("registration-form-ajax");
 
         // Maps the ajax fields into Wordpress user fields and sanitize them
         $user_data = array(
