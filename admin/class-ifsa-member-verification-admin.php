@@ -17,7 +17,11 @@
 require_once plugin_dir_path(__FILE__) . 'class-ifsa-member-verification-logs.php';
 
 /**
- * Main class to handle all the methods of plugin
+ * Admin interface of the plugin
+ *
+ * This is taking care of two aspects:
+ * - create/edit IFSA LC user profile fields from the super admin interface
+ * - manage the settings page for the plugin
  *
  * @package    Ifsa_Member_Verification
  * @subpackage Ifsa_Member_Verification/admin
@@ -86,12 +90,9 @@ class Ifsa_Member_Verification_Admin
         wp_enqueue_script('jquery-ui-datepicker');
     }
 
-
-
-    /* Omit closing PHP tag to avoid "Headers already sent" issues. */
-
     /**
      * Function to register custom user profile fields for IFSA member
+     * in the admin interface for user creation/editing
      */
     public function ifsa_custom_user_profile_fields($user)
     {
@@ -110,9 +111,9 @@ class Ifsa_Member_Verification_Admin
             $ifsa_member_status = "not_verified";
         } else {
             $lc_id = intval(get_the_author_meta('ifsa_committee', $user->ID));
-            $lc_name = $this->get_lc_name($lc_id);
-            $ifsa_member_type = $this->get_ifsa_member_type($user->ID);
-            $ifsa_member_status = $this->get_ifsa_member_status($user->ID);
+            $lc_name = ifsa_lc()->get_lc_name($lc_id);
+            $ifsa_member_type = ifsa_lc()->get_ifsa_member_type($user->ID);
+            $ifsa_member_status = ifsa_lc()->get_ifsa_member_status($user->ID);
         }
 
 
@@ -183,59 +184,20 @@ class Ifsa_Member_Verification_Admin
         <?php
     }
 
-    // TODO: move this to IFSALCMember
-    /**
-     * Returns the type of users for IFSA member verification
-     * this can be 'lc_member', 'lc_admin' or 'none'
-     * @param $user_id
-     * @return string
-     */
-    function get_ifsa_member_type($user_id): string
-    {
-        $user = get_userdata($user_id);
-        if ($user) {
-            $roles = (array)$user->roles;
-            //LC Member is first so in case a user is both member and admin (this should not happen!) the type is member
-            if (in_array('lc_member', $roles)) {
-                return 'lc_member';
-            } elseif (in_array('lc_admin', $roles)) {
-                return 'lc_admin';
-            } else {
-                return 'none';
-            }
-        } else {
-            return 'none';
-        }
-    }
 
-    /**
-     * Check if member is verified
-     * @param $user_id
-     * @return string
-     */
-    function get_ifsa_member_status($user_id): string
-    {
-        $user_status = get_user_meta($user_id, 'user_active_status', true);
-        if ($user_status == 'true') {
-            return 'verified';
-        } else {
-            return "not_verified";
-        }
-    }
 
     /**
      * Save data the IFSA custom user profile fields
      */
     public function ifsa_save_custom_user_profile_fields($user_id)
     {
-        //         The function will be called multiple times because the 'profile_update' hook is fired at least twice
-        //         The ideal system would be that function runs only once, but since it since some code (probably from buddypress)
-        //         reset the new user role is needed to re-run all the code, however to avoid double logging (to admin_notices and log table)
-        //         the flag first_run is kept
+//                 The function will be called multiple times because the 'profile_update' hook is fired at least twice
+//                 The ideal system would be that function runs only once, but since it since some code (probably from buddypress)
+//                 reset the new user role is needed to re-run all the code, however to avoid double logging (to admin_notices and log table)
+//                 the flag first_run is kept
         if ($this->first_run_user_prof_fields) {
             $this->first_run_user_prof_fields = false;
-        }
-        else { // Run this only on the first time
+        } else { // Run this only on the first time
             return;
         }
 
@@ -245,9 +207,9 @@ class Ifsa_Member_Verification_Admin
         }
 
         // Take inputs from the form
-        $lc_id = $this->get_post_var('ifsa_committee', 0);
-        $ifsa_member_type = $this->get_post_var('ifsa_member_type', 0);
-        $ifsa_member_status = $this->get_post_var('ifsa_member_status');
+        $lc_id = ifsa_utility()->get_post_var('ifsa_committee', 0);
+        $ifsa_member_type = ifsa_utility()->get_post_var('ifsa_member_type', 0);
+        $ifsa_member_status = ifsa_utility()->get_post_var('ifsa_member_status');
 
         if (!$lc_id || !$ifsa_member_type) {
             // IFSA member verification post variable are no set
@@ -255,8 +217,8 @@ class Ifsa_Member_Verification_Admin
         }
         // Current values in the database
         $old_lc = intval(get_the_author_meta("ifsa_committee", $user_id));
-        $old_ifsa_member_type = $this->get_ifsa_member_type($user_id);
-        $old_ifsa_member_status = $this->get_ifsa_member_status($user_id);
+        $old_ifsa_member_type = ifsa_lc()->get_ifsa_member_type($user_id);
+        $old_ifsa_member_status = ifsa_lc()->get_ifsa_member_status($user_id);
 
         // Since the verified status doesn't make sense for LCs, it is artificially added here. Maybe a hack.
         if ($ifsa_member_type == "lc_admin" && $ifsa_member_type == $old_ifsa_member_type) {
@@ -272,7 +234,7 @@ class Ifsa_Member_Verification_Admin
                 ($ifsa_member_status == "not_verified" && $ifsa_member_status != $old_ifsa_member_status)) &&
             $old_lc != "" // If the LC was empty means that it was never a member so no need to remove
         ) {
-            $res = $this->remove_member($user_id, $old_ifsa_member_type);
+            $res = ifsa_lc()->remove_member($user_id, $old_ifsa_member_type);
             if (is_wp_error($res)) {
                 return;
             }
@@ -285,435 +247,24 @@ class Ifsa_Member_Verification_Admin
                 $ifsa_member_type != $old_ifsa_member_type ||
                 $ifsa_member_status != $old_ifsa_member_status)
         ) {
-            $res = $this->make_member($user_id, $ifsa_member_type, $lc_id);
+            $res = ifsa_lc()->make_member($user_id, $ifsa_member_type, $lc_id);
             if (is_wp_error($res)) {
                 return;
             }
         }
 
         // The message is shown also if no action is taken, maybe not the best idea
-        $lc_name = $this->get_lc_name($lc_id);
-        $this->admin_message("Successfully update IFSA user membership.
+        $lc_name = ifsa_lc()->get_lc_name($lc_id);
+        ifsa_utility()->admin_message("Successfully update IFSA user membership.
          IFSA LC: {$lc_name}, status: {$ifsa_member_status}, type: {$ifsa_member_type}", "notice-success");
 
 
-
-    }
-
-    /**
-     * Return the LC name give the ID or empty string if it doesn't exist
-     * @param $lc_id
-     * @return string The LC Name
-     */
-    function get_lc_name($lc_id): string
-    {
-        if ($lc_id == 'none') {
-            return "";
-        }
-        $term_lc = get_term_by("ID", $lc_id, 'committee');
-        if (!$term_lc) {
-            if ($lc_id != 0) { // LC Id can be 0 (eg. when creating a user) otherwise is a error
-                error_log("Unknown LC Id");
-                $this->admin_message("Error in LC Id. get in touch with website admin");
-            }
-
-            return "";
-        }
-        return $term_lc->name;
-    }
-
-    /**
-     * Helper function that call the correct make function depending on member type
-     * @param $user_id
-     * @param $ifsa_member_type
-     * @param $lc_id
-     * @return bool|WP_Error
-     */
-    function make_member($user_id, $ifsa_member_type, $lc_id)
-    {
-        if ($ifsa_member_type == 'lc_member') {
-            return $this->make_lc_member($user_id, $lc_id);
-        } elseif ($ifsa_member_type == 'lc_admin') {
-            return $this->make_lc_admin($user_id, $lc_id);
-        } else {
-            return true; // Take no action if member type is none
-        }
-    }
-
-    /**
-     * Helper function that call the correct remove function depending on member type
-     * @param $user_id
-     * @param $ifsa_member_type
-     * @return bool|WP_Error
-     */
-    function remove_member($user_id, $ifsa_member_type)
-    {
-        if ($ifsa_member_type == 'lc_member') {
-            return $this->remove_lc_member($user_id);
-        } elseif ($ifsa_member_type == 'lc_admin') {
-            return $this->remove_lc_admin($user_id);
-        } else {
-            return true; // Take no action if member type is none
-        }
-    }
-
-    /**
-     * Returns the id of the admin for the given LC. In case of no or multiple admins shows an error and return WP_Error
-     * @param $lc_id
-     * @return int|WP_Error
-     */
-    function get_lc_admin($lc_id)
-    {
-
-        $query = new WP_User_Query(
-            array(
-                "meta_key" => "ifsa_committee",
-                "meta_value" => $lc_id,
-                "fields" => "ID",
-                "role" => "lc_admin"
-            )
-        );
-
-        if (empty($query->get_results())) {
-            $lc_name = $this->get_lc_name($lc_id);
-            $this->admin_message("IFSA Member verification: Error! No LC admin for {$lc_name}");
-            return new WP_Error("No LC Admin");
-        }
-        if (count($query->get_results()) > 1) {
-            $lc_name = $this->get_lc_name($lc_id);
-            $this->admin_message("IFSA Member verification: Error! More than 1 LC Admin fo {$lc_name}");
-            return new WP_Error("More than 1 LC Admin");
-        } else {
-            return $query->get_results()[0];
-        }
-    }
-
-    // TODO: migrate this to IFSAUtility
-    /**
-     * Utility function to show a message in the admin page
-     * @param string $message The message
-     * @param string $notice_type accepts 'notice-error', 'notice-warning', 'notice-success'
-     */
-    function admin_message(string $message, string $notice_type = 'notice-error')
-    {
-        // This is the second time the plugin code is run so is assumed that no new logging is needed
-        if (!$this->first_run_user_prof_fields) {
-            return;
-        }
-
-        $notice = "<div class='notice is-dismissible {$notice_type}'>
-                    {$message}
-            </div>";
-
-//      Technically the transient could expire before is read, but still the plugin work even if the message system breaks
-//      by using the transient (instead of options api) an unnecessary write to the database is avoided.
-//      The 200 sec is an arbitrary number.
-        $notices = get_transient('ifsa_member_verification_admin_notices');
-        $notices = $notices ? $notices : array();
-        array_push($notices, $notice);
-        set_transient('ifsa_member_verification_admin_notices', $notices, 200);
-    }
-
-    /**
-     * Function called by the 'admin_notices' hook to actually show the notices
-     */
-    public function ifsa_show_admin_notices()
-    {
-        $notices = get_transient('ifsa_member_verification_admin_notices');
-        $notices = $notices ? $notices : array();
-        foreach ($notices as $notice) {
-            echo $notice;
-        }
-        delete_transient('ifsa_member_verification_admin_notices');
-    }
-
-    /**
-     * Return the region id associated with a given LC
-     * @param $lc_id
-     * @return int|WP_Error
-     */
-    function get_region($lc_id)
-    {
-        $args = array(
-            'post_type' => 'regions',
-            'tax_query' => array(
-                array(
-                    'taxonomy' => 'committee',
-                    'field' => 'term_id',
-                    'terms' => $lc_id
-                )
-            )
-        );
-        $query = new WP_Query($args);
-        // Safety check that the number of regions is correct
-        $n_regions = count($query->posts);
-        if ($n_regions != 1) {
-            $this->admin_message("Error! An LC can be only in one region. {$lc_id} si in {$n_regions}");
-            return new WP_Error();
-        }
-        return $query->posts[0]->ID;
-    }
-
-    /**
-     * Makes the user an LC member
-     * @param $user_id
-     * @param $lc_id
-     * @return bool|int|WP_Error
-     */
-    function make_lc_member($user_id, $lc_id)
-    {
-
-        if ($lc_id == "none") {
-            return true;
-        } // No action to take if the LC is not set
-        $lc_admin = $this->get_lc_admin($lc_id);
-        if (is_wp_error($lc_admin)) {
-            return $lc_admin;
-        }
-
-        $region_id = $this->get_region($lc_id);
-        if (is_wp_error($region_id)) {
-            return $region_id;
-        }
-
-        // Update the ifsa_lc_member table
-        global $wpdb;
-
-        $lc_member_data = array(
-            "user_id" => $user_id,
-            "lc_adminid" => $lc_admin,
-            "committee_id" => $lc_id,
-            "region_id" => $region_id,
-            "action_date" => bp_core_current_time(),
-            "member_status" => IFSA_LC_MEMBER_LEVEL,
-            "source" => "Super Admin"
-        );
-
-        // Check if the user already in the table
-        $sql_query = $wpdb->prepare(
-            "SELECT user_id from {$wpdb->prefix}ifsa_lc_member WHERE user_id = %s",
-            $user_id
-        );
-        $lc_members = $wpdb->get_col($sql_query);
-
-        // If the user doesn't exist yet, insert it. Otherwise, updates the row.
-        if (empty($lc_members)) {
-            $res = $wpdb->insert($wpdb->prefix . 'ifsa_lc_member', $lc_member_data);
-        } else {
-            $res = $wpdb->update($wpdb->prefix . 'ifsa_lc_member', $lc_member_data,
-                array(
-                    "user_id" => $user_id
-                )
-            );
-        }
-
-
-        if ($res != 1) {
-            $this->admin_message("Unknown error during IFSA member creation");
-            return new WP_Error();
-        }
-
-        // Update metadata
-        update_user_meta($user_id, 'user_active_status', "true");
-
-        // Set the LC
-        update_user_meta($user_id, 'ifsa_committee', $lc_id);
-
-        // Update PMPro membership
-        if (function_exists('pmpro_changeMembershipLevel')) {
-            $memberLevel = pmpro_changeMembershipLevel(IFSA_LC_MEMBER_LEVEL, $user_id);
-            if ($memberLevel == true) {
-                update_user_meta($user_id, 'membership_assigned', IFSA_LC_MEMBER_LEVEL);
-            }
-        }
-
-        // Add user role
-        $user = get_user_by('id', $user_id);
-        $user->add_role('lc_member');
-
-        // Log the action
-        $this->log("Super Admin approved", "Super Admin made LC Member", $user_id);
-
-        return true;
-    }
-
-    /**
-     * Removes a user from the LC verified status
-     * @param $user_id
-     * @return bool|WP_Error
-     */
-    function remove_lc_member($user_id)
-    {
-
-        // Update the ifsa_lc_member table
-        global $wpdb;
-
-        $res = $wpdb->update($wpdb->prefix . 'ifsa_lc_member',
-            array(
-                "action_date" => bp_core_current_time(),
-                "member_status" => IFSA_MEMBER_REMOVED_LEVEL,
-                "source" => "Super Admin"
-            ),
-            array(
-                "user_id" => $user_id
-            )
-        );
-
-        if (!$res) {
-            return new WP_Error("Error LC member remove");
-        }
-
-        // Update metadata
-        update_user_meta($user_id, 'user_active_status', "no");
-
-        // No need to change the LC
-
-        // Update PMPro membership
-        if (function_exists('pmpro_changeMembershipLevel')) {
-            $memberLevel = pmpro_changeMembershipLevel(IFSA_NO_MEMBERSHIP_LEVEL, $user_id);
-            if ($memberLevel == true) {
-                update_user_meta($user_id, 'membership_assigned', IFSA_NO_MEMBERSHIP_LEVEL);
-            }
-        }
-
-        // Remove user role
-        $user = get_user_by('id', $user_id);
-        $user->remove_role('lc_member');
-
-        // Log the action
-        $this->log("Super Admin Removed", "Super Admin removed LC Member", $user_id);
-
-        // Think of sending an email to notify user of the change
-        return true;
-    }
-
-    /**
-     * Make the user an LC admin
-     * @param $user_id
-     * @param $lc_id
-     * @return bool | WP_Error
-     */
-    function make_lc_admin($user_id, $lc_id)
-    {
-
-        // Update metadata
-        update_user_meta($user_id, 'user_active_status', "true");
-
-        // Set the LC
-        update_user_meta($user_id, 'ifsa_committee', $lc_id);
-
-        // Update PMPro membership
-        if (function_exists('pmpro_changeMembershipLevel')) {
-            $memberLevel = pmpro_changeMembershipLevel(IFSA_LC_ADMIN_LEVEL, $user_id);
-            if ($memberLevel == true) {
-                update_user_meta($user_id, 'membership_assigned', IFSA_LC_ADMIN_LEVEL);
-            }
-        }
-
-        // Add user role
-        $user = get_user_by('id', $user_id);
-        $user->add_role('lc_admin');
-
-        $this->log("Super Admin approved", "made LC Admin", $user_id);
-
-        return true;
-
-    }
-
-    /**
-     * Remove the LC admin for a user
-     * @param $user_id
-     * @return bool|WP_Error
-     */
-    function remove_lc_admin($user_id)
-    {
-        // Check if there is any user connected to this LC admin, if so doesn't remove the lc admin account
-        global $wpdb;
-        $sql_query = $wpdb->prepare(
-            "SELECT user_id from {$wpdb->prefix}ifsa_lc_member WHERE lc_adminid = %i",
-            $user_id
-        );
-        $lc_members = $wpdb->get_col($sql_query);
-        if (!empty($lc_members)) {
-            $this->admin_message("Error! Cannot remove LC admin as there are still users connected to it");
-            return new WP_Error("Cannot remove LC");
-        }
-
-        // Update metadata
-        update_user_meta($user_id, 'user_active_status', "no");
-
-        // No removal of LC from metadata
-
-        // Update PMPro membership
-        if (function_exists('pmpro_changeMembershipLevel')) {
-            $memberLevel = pmpro_changeMembershipLevel(IFSA_NO_MEMBERSHIP_LEVEL, $user_id);
-            if ($memberLevel == true) {
-                update_user_meta($user_id, 'membership_assigned', IFSA_NO_MEMBERSHIP_LEVEL);
-            }
-        }
-
-        // Add user role
-        $user = get_user_by('id', $user_id);
-        $user->remove_role('lc_admin');
-
-        $this->log("Super Admin removed", "removed LC Admin", $user_id);
-        return true;
-
-    }
-
-    /**
-     * Return a sanitized post variable or default
-     * @param $var
-     * @param $default
-     * @return mixed
-     */
-    function get_post_var($var, string $default = "")
-    {
-        if (isset($_POST[$var]) && !empty($_POST[$var])) {
-            return sanitize_text_field($_POST[$var]);
-        } else {
-            return $default;
-        }
-    }
-
-
-    function log($log_action, $remark, $member_id)
-    {
-        // This is the second time the plugin code is run so is assumed that no new logging is needed
-        if (!$this->first_run_user_prof_fields) {
-            return;
-        }
-        global $wpdb;
-        $ifsa_log = $wpdb->prefix . 'ifsa_log';
-        $admin_id = get_current_user_id(); // This code must be run by an admin
-        $action_time = current_time($type = "mysql");
-
-        if (isset($_SERVER['REMOTE_ADDR']) && !empty(sanitize_text_field($_SERVER['REMOTE_ADDR']))) {
-            $user_ip = sanitize_text_field($_SERVER['REMOTE_ADDR']);
-        } else {
-            $user_ip = "";
-        }
-
-        $res = $wpdb->insert($ifsa_log,
-            array(
-                "log_action" => $log_action,
-                "remark" => $remark,
-                "logged_in_user_id" => $admin_id,
-                "member_id" => $member_id,
-                "user_ip" => $user_ip,
-                "action_date" => $action_time
-            )
-        );
-
-        if (!$res) {
-            error_log("Error in saving log");
-            $this->admin_message("Unknown error while saving logs, contact web admin");
-        }
     }
 
 
     /**
      * Function to load  Plugin
+     * TODO: understand what this is doing
      */
     public function ifsa_load_plugin()
     {
@@ -834,9 +385,9 @@ class Ifsa_Member_Verification_Admin
             'ifsa_member_verification_email_settings'
         );
 
-        foreach (IFSA_EMAILS as $email_name => $emails){
-            register_setting('ifsa_member_verification_email_settings',$email_name,  array($this, 'sanitize_textarea_field'));
-            register_setting('ifsa_member_verification_email_settings',$email_name."_subject",  array($this, 'sanitize_textarea_field'));
+        foreach (IFSA_EMAILS as $email_name => $emails) {
+            register_setting('ifsa_member_verification_email_settings', $email_name, array($this, 'sanitize_textarea_field'));
+            register_setting('ifsa_member_verification_email_settings', $email_name . "_subject", array($this, 'sanitize_textarea_field'));
         }
 
 
@@ -888,7 +439,7 @@ class Ifsa_Member_Verification_Admin
     <?php }
 
     /**
-     * Funciotn to register Region custom  post type
+     * Function to register Region custom  post type
      */
     public function ifsa_register_regions()
     {
@@ -932,7 +483,7 @@ class Ifsa_Member_Verification_Admin
 
 
     /**
-     * Funciton to Register Custom Taxonomy
+     * Function to Register Custom Taxonomy
      */
     public function ifsa_region_taxonomy()
     {

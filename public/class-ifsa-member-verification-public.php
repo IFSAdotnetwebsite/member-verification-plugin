@@ -10,8 +10,8 @@
  * @since      1.0.0
  */
 
-require_once plugin_dir_path(__FILE__) . "../common/IFSALCMember.php";
-require_once plugin_dir_path(__FILE__) . "../common/IFSAUtility.php";
+require_once plugin_dir_path(__FILE__) . "../includes/IFSALCMember.php";
+require_once plugin_dir_path(__FILE__) . "../includes/IFSAUtility.php";
 
 /**
  * The public-facing functionality of the plugin.
@@ -46,11 +46,6 @@ class Ifsa_Member_Verification_Public
      * @var    string $version The current version of this plugin.
      */
     private $version;
-    /**
-     * Instance of IFSALCMember class
-     * @var IFSALCMember
-     */
-    private $ifsa;
 
     /**
      * Initialize the class and set its properties.
@@ -64,12 +59,9 @@ class Ifsa_Member_Verification_Public
         $this->plugin_name = $plugin_name;
         $this->version = $version;
 
-        $this->ifsa = new IFSALCMember();
-
         // Short code declaration
         add_shortcode('ifsa-multistep-form', array($this, 'ifsa_multistep_form'));
         add_shortcode('ifsa-renewal-form', array($this, 'ifsa_renewal_form'));
-        add_shortcode('trial', array($this, 'table_trial'));
 
     }
 
@@ -137,449 +129,16 @@ class Ifsa_Member_Verification_Public
             )
         );
 
-        // Add nonce to the script for ajax security
-        wp_localize_script("ifsa-registration-form", "ifsa_vars",
-            array('nonce' => wp_create_nonce('registration-form-ajax'))
-        );
 
         wp_enqueue_script('ifsa-script', '//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js', array('jquery'), $this->version, false);
         wp_enqueue_script('jquery-ui-datepicker');
     }
 
-    /**
-     * Function is used to create profile tab.
-     *
-     * @return void It registeres the menus in the admin page
-     */
-    public function ifsa_profile_tab_memberlist()
-    {
-        $lc_admin_id = $this->ifsa->get_settings_lc_admin_id();
-        // add settings only to LC admins
-        if ($lc_admin_id ) {
-            global $bp;
-            bp_core_new_nav_item(
-                array(
-                    'name' => 'LC admin',
-                    'slug' => 'memberlist',
-                    'screen_function' => array($this, 'ifsa_memberlist_tab'),
-                    'position' => 1,
-                    'parent_url' => bp_core_get_user_domain($lc_admin_id)  . '/memberlist/',
-                    'parent_slug' => $bp->profile->slug,
-                    'default_subnav_slug' => 'approvalpending',
-                )
-            );
-
-            bp_core_new_subnav_item(
-                array(
-                    'name' => 'Active Member',
-                    'slug' => 'activemember',
-                    'parent_url' => bp_core_get_user_domain($lc_admin_id) . '/memberlist/',
-                    'parent_slug' => 'memberlist',
-                    'screen_function' => array($this, 'ifsa_activemember_screen'),
-                    'position' => 100
-                )
-            );
-
-            bp_core_new_subnav_item(
-                array(
-                    'name' => 'Approval Pending',
-                    'slug' => 'approvalpending',
-                    'parent_url' => bp_core_get_user_domain($lc_admin_id) . '/memberlist/',
-                    'parent_slug' => 'memberlist',
-                    'screen_function' => array($this, 'ifsa_approvalpending_screen'),
-                    'position' => 40
-                )
-            );
-
-            bp_core_new_subnav_item(
-                array(
-                    'name' => 'Export/Import Members',
-                    'slug' => 'importexport',
-                    'parent_url' => bp_core_get_user_domain($lc_admin_id) . '/memberlist/',
-                    'parent_slug' => 'memberlist',
-                    'screen_function' => array($this, 'ifsa_importexport_screen'),
-                    'position' => 100
-                )
-            );
-
-        }
-    }
-
-
-
-    /**
-     * Function for the IFSA member list tab
-     *
-     * @return funciton it fires the actions on the perticular hooks
-     */
-    public function ifsa_memberlist_tab()
-    {
-        // Add title and content here - last is to call the members plugin.php template.
-        //add_action( 'bp_template_title', array( $this, 'ifsa_memberlis_title' ) );
-        add_action('bp_template_content', array($this, 'ifsa_memberlist_content'));
-        bp_core_load_template('buddypress/members/single/plugins');
-    }
-
-
-    /**
-     * Function for the member list title
-     *
-     * @return string
-     */
-    public function ifsa_memberlis_title()
-    {
-        echo 'Active Member List';
-
-    }
-
-    /**
-     * Function for the IFSA member list content
-     *
-     * @return string
-     */
-    public function ifsa_memberlist_content()
-    { ?>
-        <h2>Approval Pending List</h2>
-        <aside class="bp-feedback bp-messages ifsa-response" style="visibility: hidden;">
-            <span class="bp-icon" aria-hidden="true"></span>
-            <p class="ifsa_active_p"></p>
-        </aside>
-
-    <?php }
-
-    /**
-     * Function for the IFSA active member list tab
-     *
-     * @return markup
-     */
-    public function ifsa_activemember_screen()
-    {
-        add_action('bp_template_content', array($this, 'activemember_screen_content'));
-        bp_core_load_template(apply_filters('bp_core_template_plugin', 'members/single/plugins'));
-    }
-
-    /**
-     * Function for the IFSA approval pending list tab
-     *
-     * @return markup
-     */
-    public function ifsa_approvalpending_screen()
-    {
-        //	add_action( 'bp_template_title', array( $this, 'ifsa_approvalpending_title' ) );
-        add_action('bp_template_content', array($this, 'approvalpending_screen_content'));
-        bp_core_load_template(apply_filters('bp_core_template_plugin', 'members/single/plugins'));
-    }
-
-    /**
-     * Function for the member list title
-     *
-     * @return string
-     */
-    public function ifsa_approvalpending_title()
-    {
-        echo 'Approval Pending List';
-    }
-
-
-    /**
-     * Function for the IFSA import export tab
-     *
-     * @return markup
-     */
-    public function ifsa_importexport_screen()
-    {
-        add_action('bp_template_content', array($this, 'importexport_screen_content'));
-        bp_core_load_template(apply_filters('bp_core_template_plugin', 'members/single/plugins'));
-    }
-
-    /**
-     * Markup for the activemember screen content
-     *
-     * @return void
-     */
-    public function activemember_screen_content()
-    {
-
-        $lc_admin_id = $this->ifsa->get_settings_lc_admin_id();
-        if(!$lc_admin_id) return; // User cannot access this page
-
-        global $wpdb;
-        $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM {$this->ifsa->lc_member_table} where lc_adminid = %d and member_status = 1", $lc_admin_id));
-
-         if ($res || !is_wp_error($res)) {
-            ?>
-
-            <h2>Active Member List</h2>
-            <p>You can see list of all members who are currently active in your Local Committee.</p>
-            <aside class="bp-feedback bp-messages ifsa-response-reject" style="visibility: hidden;">
-                <span class="bp-icon" aria-hidden="true"></span>
-                <p class="ifsa_reject_p"></p>
-            </aside>
-            <!-- The Modal -->
-            <div id="myModal_remove" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close-r">&times;</span>
-                    <div class="ul_reason">
-                        <p>Please select reason:</p>
-                        <input type="radio" id="membership_expire" name="reason"
-                               value="Your LC Membership has expired.">
-                        <label for="membership_expire">LC membership expired</label></br>
-                        <input type="radio" id="never_member" name="reason" value="You have never been an LC Member">
-                        <label for="You have never been an LC Member">The applicant user has never been an LC
-                            member</label></br>
-                        <input type="radio" id="other" name="reason" value="other">
-
-                        <label for="other">Other - open answer</label><br/>
-                        <input type="text" id="other_reason" maxlength="100" hidden="true"/>
-                        <a href="javascript:void(0)" row-id="" data-id="" id="final_remove"
-                           class="final_remove">Confirm</a>
-                        <div id="ifsa-loading-remove" style="display:none;">
-                            <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
-                                 title="loading"/>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <table id="table_id" class="display">
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Source</th>
-                    <th>Status</th>
-                    <th>Member Type</th>
-                    <th>Verification date</th>
-                    <th>Profile Link</th>
-                    <th>Action</th>
-
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($res as $memberlistresult) {
-
-                    $the_user = get_user_by('id', $memberlistresult->user_id);
-                    $email = $the_user->user_email;
-                    $Name = $the_user->first_name;
-                    $Surname = $the_user->last_name;
-                    $profileURL = bp_core_get_user_domain($memberlistresult->user_id);
-                    $renew_request = get_user_meta($memberlistresult->user_id, 'ifsa_renew_request', true);
-                    if ($renew_request == '1') {
-                        $renew_request = 'Renewal';
-                    } else {
-                        $renew_request = 'New';
-                    }
-                    ?>
-
-                    <tr>
-                        <td data-title="First Name"><?php echo esc_html_e($Name, 'Ifsa_Member_Verification'); ?></td>
-                        <td data-title="Last Name"><?php echo esc_html_e($Surname, 'Ifsa_Member_Verification'); ?></td>
-                        <td data-title="Email"><?php echo esc_html_e($email, 'Ifsa_Member_Verification'); ?></td>
-                        <td data-title="Source"><?php echo esc_html_e($memberlistresult->source, 'Ifsa_Member_Verification'); ?></td>
-                        <td data-title="Status"> Approved</td>
-                        <td data-title="Member Type"> <?php echo esc_html_e($renew_request, 'Ifsa_Member_Verification'); ?></td>
-
-                        <td data-title="Verification date"><?php
-                            $memberlistresult->action_date = date('F j, Y', strtotime($memberlistresult->action_date));
-                            echo esc_html_e(date('F j, Y', strtotime($memberlistresult->action_date)), 'Ifsa_Member_Verification'); ?></td>
-                        <td data-title="Profile Link"><a href="<?php echo esc_url($profileURL); ?>">Profile</a></td>
-                        <td data-title="Action">
-                            <div
-                                    class="<?php echo esc_attr('cls-action-remove' . $memberlistresult->id, 'Ifsa_Member_Verification') . ''; ?>">
-                                <a href="javascript:void(0)"
-                                   row-id="<?php echo esc_html_e($memberlistresult->id, 'Ifsa_Member_Verification'); ?>"
-                                   data-id="<?php echo esc_html_e($memberlistresult->user_id, 'Ifsa_Member_Verification'); ?>"
-                                   class="cls-remove">Remove </a>
-
-                            </div>
-                            <div
-                                    id="<?php echo esc_attr('ifsa-loading-' . $memberlistresult->id . '', 'Ifsa_Member_Verification'); ?>"
-                                    style="display:none;">
-                                <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
-                                     title="loading"/>
-                            </div>
-                        </td>
-                    </tr>
-
-                <?php } ?>
-
-                </tbody>
-            </table>
-        <?php }
-    }
-
-    /**
-     * Markup for the pending approval screen content
-     *
-     * @return markup
-     */
-    public function approvalpending_screen_content()
-    {
-
-        $lc_admin_id = $this->ifsa->get_settings_lc_admin_id();
-        if(!$lc_admin_id) return; // User cannot access this page
-
-        global $wpdb;
-        $res = $wpdb->get_results($wpdb->prepare("SELECT * FROM  {$this->ifsa->lc_member_table} where lc_adminid = %d and member_status = 0", $lc_admin_id));
-
-        if ($res || !is_wp_error($res)) {?>
-        <aside class="bp-feedback bp-messages ifsa-response-approve" style="visibility: hidden;">
-            <span class="bp-icon" aria-hidden="true"></span>
-            <p class="ifsa_approve_p"></p>
-        </aside>
-        <aside class="bp-feedback bp-messages ifsa-response-reject" style="visibility: hidden;">
-            <span class="bp-icon" aria-hidden="true"></span>
-            <p class="ifsa_reject_p"></p>
-        </aside>
-        <p>The list of all pending requests for the local committee will be listed out here.</p>
-            <!-- The Modal -->
-            <div id="myModal" class="modal">
-
-                <!-- Modal content -->
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <div class="ul_reason">
-                        <p>Please select reason:</p>
-                        <input type="radio" id="membership_expire" name="reason"
-                               value="Your LC Membership has expired.">
-                        <label for="membership_expire">LC membership expired</label></br>
-                        <input type="radio" id="never_member" name="reason" value="You have never been an LC Member">
-                        <label for="You have never been an LC Member">The applicant user has never been an LC
-                            member</label></br>
-                        <input type="radio" id="other" name="reason" value="other">
-
-                        <label for="other">Other - open answer</label><br/>
-                        <input type="text" id="other_reason" maxlength="100" hidden="true"/>
-                        <a href="javascript:void(0)" row-id="" data-id="" id="final_reject"
-                           class="final_reject">Confirm</a>
-                        <div id="ifsa-loading-reject" style="display:none;">
-                            <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
-                                 title="loading"/>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-            <table id="table_id" class="display">
-                <thead>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Source</th>
-                    <th>Member Type</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php
-                foreach ($res as $memberlistresult) {
-                    $the_user = get_user_by('id', $memberlistresult->user_id);
-                    $email = $the_user->user_email;
-                    $Name = $the_user->first_name;
-                    $Surname = $the_user->last_name;
-
-                    $renew_request = get_user_meta($memberlistresult->user_id, 'ifsa_renew_request', true);
-                    if ($renew_request == '1') {
-                        $renew_request = 'Renewal';
-                    } else {
-                        $renew_request = 'New';
-                    }
-                    ?>
-
-                    <tr>
-                        <td data-title="First Name"><?php echo esc_html_e($Name, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Last Name"> <?php echo esc_html_e($Surname, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Email"><?php echo esc_html_e($email, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Source"><?php echo esc_html_e($memberlistresult->source, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Member Type"> <?php echo esc_html_e($renew_request, 'Ifsa_Member_Verification'); ?></td>
-
-                        <?php if ($memberlistresult->member_status == 0 && $memberlistresult->reason == '') { ?>
-                            <td data-title="Action">
-                                <div class="<?php echo esc_attr_e('cls-action-' . $memberlistresult->id . ''); ?>"><a
-                                            href="javascript:void(0)"
-                                            row-id="<?php echo esc_attr_e($memberlistresult->id); ?>"
-                                            data-id="<?php echo esc_attr_e($memberlistresult->user_id); ?>"
-                                            class="cls-reject">Reject </a> <a href="javascript:void(0)"
-                                                                              row-id="<?php echo esc_attr_e($memberlistresult->id); ?>"
-                                                                              data-id="<?php echo esc_attr_e($memberlistresult->user_id); ?>"
-                                                                              class="cls-approve">
-                                        Approve</a></div>
-                                <div id="<?php echo esc_attr_e('ifsa-loading-' . $memberlistresult->id . ''); ?>"
-                                     style="display:none;">
-                                    <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
-                                         title="loading"/>
-                                </div>
-                            </td>
-                        <?php } else if ($memberlistresult->member_status == 0 && $memberlistresult->reason != '') {
-                            ?>
-                            <td data-title="Action"> Rejected</td>
-                        <?php } else if ($memberlistresult->member_status == 1 && $memberlistresult->reason == '') {
-                            ?>
-                            <td data-title="Action"> Approved</td>
-                        <?php } ?>
-                    </tr>
-
-                <?php } ?>
-
-                </tbody>
-            </table>
-        <?php }
-    }
-
-    /**
-     * Import export screen content
-     *
-     * @return markup
-     */
-    public function importexport_screen_content()
-    {
-        ?>
-        <div class="cls-seperator">
-            <h2>Export & Import Members</h2>
-            <div class="cls-seperator_body">
-                <div class="cls-seperator_div1">
-                    <p> If you want to add bulk member in your assigned community then please upload here.</p>
-                    <div class="form-group div_import">
-                        <label for="bulk_upload_file">Upload CSV</label>
-                        <input type="file" id="bulk_upload_file" name="import_file" require="required"/>
-                        <input type="button" id="bulk_upload" class="button" name="butimport" value="Import"/>
-                        <div id="ifsa-loading-import" style="display:none;">
-                            <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
-                                 title="loading"/>
-                        </div>
-                        <span class="cls-total-record"></span>
-                    </div>
-                    <div class="cls-sample-download" style="margin-top:20px;">
-                        <p><strong><a
-                                        href="<?php echo esc_url(IFSA_MEMBER_VERIFICATION_HOME . '/sample_import.csv'); ?>">Click
-                                    here</a> for sample file download.</strong></p>
-
-                    </div>
-                </div>
-                <div class="cls-seperator_div2">
-                    <p>If you want to export active member from your assigned community.</p>
-                    <?php $downloadurl = site_url('?action=download_csv_file');
-                    ?>
-                    <p><a class="cls-seperator_download_user-btn" href="<?php echo esc_url($downloadurl); ?>">Download
-                            Users</a></p>
-                </div>
-            </div>
-        </div>
-    <?php }
 
 
     /**
      * Call back function for the [ifsa-multistep-form] shortcode markup
      *
-     * @return markup
      */
     public function ifsa_multistep_form()
     {
@@ -598,8 +157,6 @@ class Ifsa_Member_Verification_Public
 
     /**
      * Call back function for the [ifsa-renewal-form] shortcode markup
-     *
-     * @return markup
      */
     public function ifsa_renewal_form()
     {
@@ -610,251 +167,30 @@ class Ifsa_Member_Verification_Public
         return ob_get_clean();
     }
 
+
+
+
     /**
-     * Call back funciton for the IFSA member approval
+     * Ajax callback to get LC list for a region
      *
-     * @return string it gives the message on successfull approval
-     */
-    public function ifsa_approve_member_callback()
-    {
-
-        global $wpdb;
-        // global $bp;
-
-        $lastupdated = bp_core_current_time();
-
-        $lcmembertable = $wpdb->prefix . 'ifsa_lc_member';
-
-        if (isset($_POST['nonce']) && !empty($_POST['nonce'])) {
-            if (!wp_verify_nonce(sanitize_text_field($_POST['nonce']), 'ajax-nonce')) {
-                die('Security Check Failed');
-            }
-        }
-
-        if (isset($_POST['rowid']) && !empty($_POST['rowid'])) {
-            $rowid = sanitize_text_field($_POST['rowid']);
-        }
-        if (isset($_POST['member_id']) && !empty($_POST['member_id'])) {
-            $memberid = sanitize_text_field($_POST['member_id']);
-        }
-
-        $result = $wpdb->query($wpdb->prepare("UPDATE {$lcmembertable} SET member_status = '1', action_date = %s WHERE id = %d AND user_id = %d", $lastupdated, $rowid, $memberid)); // WPCS: unprepared SQL ok.
-
-        $getname = $this->ifsa_get_fullname($memberid);
-        $fname = $getname['fname'];
-        $lname = $getname['lname'];
-
-        if (empty($result) || is_wp_error($result)) {
-            echo 'error';
-            wp_die();
-        }
-
-        $remark = "LC admin has Approved LC Member - " . $fname . ' ' . $lname;
-        $log_action = "Approve member";
-        $email_key = 'welcome_email_after_verify_member';
-
-        $this->ifsa_generate_log($memberid, $email_key, $log_action, $remark, $lastupdated, $reason = '');
-
-        //$wpdb->query( $wpdb->prepare( "UPDATE {$lcmembertable} member_status = 1, WHERE user_id = %d AND ", $user_id ) );
-        $user = get_user_by('id', $memberid);
-        // Add role
-        $user->add_role('lc_member');
-        update_user_meta($memberid, 'user_active_status', "true");
-        if (function_exists('pmpro_changeMembershipLevel')) {
-            $memberLevel = pmpro_changeMembershipLevel(1, $memberid);
-            if ($memberLevel == true) {
-                update_user_meta($memberid, 'membership_assigned', 1);
-            }
-
-        }
-        $lcadminid = get_current_user_id();
-        update_user_meta($memberid, 'lc_adminid', $lcadminid);
-        update_user_meta($memberid, 'approved_date', $lastupdated);
-
-
-        $end = date('Y-m-d h:i:s', strtotime('+1 years'));
-
-        $expiry_settings = get_option('ifsa_general_setting_date_field', true);
-        if (isset($expiry_settings) && !empty($expiry_settings)) {
-            $end = date('Y-m-d h:i:s', strtotime($expiry_settings));
-        }
-        $after_30 = !empty (get_option('after_30')) ? get_option('after_30') : '30';
-        $after_21 = !empty (get_option('after_21')) ? get_option('after_21') : '21';
-        $after_15 = !empty (get_option('after_15')) ? get_option('after_15') : '15';
-        $before_30 = !empty (get_option('before_30')) ? get_option('before_30') : '30';
-        $next_yr_valid = !empty (get_option('next_yr_valid')) ? get_option('next_yr_valid') : '60';
-
-
-        $member_expire_after_15 = date('Y-m-d h:i:s', strtotime($end . ' + ' . $after_15 . ' days'));
-        $member_expire_after_22 = date('Y-m-d h:i:s', strtotime($end . ' + ' . $after_21 . ' days'));
-        $member_expire_after_30 = date('Y-m-d h:i:s', strtotime($end . ' + ' . $after_30 . ' days'));
-        $member_expire_before_30 = date('Y-m-d h:i:s', strtotime($end . ' - ' . $before_30 . ' days'));
-
-
-        update_user_meta($memberid, 'member_expire_date', $end);
-        update_user_meta($memberid, 'member_expire_after_15', $member_expire_after_15);
-        update_user_meta($memberid, 'member_expire_after_22', $member_expire_after_22);
-        update_user_meta($memberid, 'member_expire_after_30', $member_expire_after_30);
-        update_user_meta($memberid, 'member_expire_before_30', $member_expire_before_30);
-
-        echo 'success';
-        wp_die();
-    }
-
-    /**
-     * Call back function for member rejection
-     *
-     * @return string Gives message of successfull regection
-     */
-    public function ifsa_reject_member_callback()
-    {
-        global $wpdb;
-        //global $bp;
-        $lastupdated = bp_core_current_time();
-        $lcmembertable = $wpdb->prefix . 'ifsa_lc_member';
-
-        if (isset($_POST['nonce']) && !empty($_POST['nonce'])) {
-            if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
-                die('Security Check Failed');
-            }
-        }
-
-        if (isset($_POST['member_id']) && !empty($_POST['member_id'])) {
-            $memberid = sanitize_text_field($_POST['member_id']);
-        }
-
-        if (isset($_POST['rowid']) && !empty($_POST['rowid'])) {
-            $rowid = sanitize_text_field($_POST['rowid']);
-        }
-
-        if (isset($_POST['reason']) && !empty($_POST['reason'])) {
-            $reason = sanitize_text_field($_POST['reason']);
-        }
-
-
-        $result = $wpdb->query($wpdb->prepare("UPDATE {$lcmembertable} SET member_status = '4', action_date = %s, reason = %s WHERE id = %d AND user_id = %d", $lastupdated, $reason, $rowid, $memberid));
-
-        if (empty($result) || is_wp_error($result)) {
-            echo 'error';
-            wp_die();
-        }
-
-        $user = new WP_User($memberid);
-        // Remove all user roles after registration
-        foreach ($user->roles as $role) {
-            //$user->remove_role( $role );
-        }
-
-
-        if (function_exists('pmpro_changeMembershipLevel')) {
-            $memberLevel = pmpro_changeMembershipLevel(1, $memberid);
-            if ($memberLevel == true) {
-                update_user_meta($memberid, 'membership_assigned', 0);
-            }
-
-        }
-
-        $getname = $this->ifsa_get_fullname($memberid);
-        $fname = $getname['fname'];
-        $lname = $getname['lname'];
-
-        $remark = "LC admin has rejected LC Member - " . $fname . ' ' . $lname . '<br/>' . 'Reason: ' . $reason;
-        $action = "Reject Member";
-        $email_key = 'reject_by_lc_admin_email_to_member';
-
-        $this->ifsa_generate_log($memberid, $email_key, $action, $remark, $lastupdated, $reason);
-
-        echo 'success';
-        wp_die();
-    }
-
-    /**
-     * Function to remove the member and update the memeber status
-     */
-    public function ifsa_remove_member_callback()
-    {
-        $lastupdated = bp_core_current_time();
-        global $wpdb;
-        //global $bp;
-        $lcmembertable = $wpdb->prefix . 'ifsa_lc_member';
-
-        if (isset($_POST['nonce']) && !empty($_POST['nonce'])) {
-            if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
-                die('Security Check Failed');
-            }
-        }
-
-        if (isset($_POST['member_id']) && !empty($_POST['member_id'])) {
-            $memberid = sanitize_text_field($_POST['member_id']);
-        }
-
-        if (isset($_POST['rowid']) && !empty($_POST['rowid'])) {
-            $rowid = sanitize_text_field($_POST['rowid']);
-        }
-
-        if (isset($_POST['reason']) && !empty($_POST['reason'])) {
-            $reason = sanitize_text_field($_POST['reason']);
-        }
-
-        $result = $wpdb->query($wpdb->prepare("UPDATE {$wpdb->prefix}ifsa_lc_member SET member_status = '3', action_date = %s, reason = %s WHERE id = %d AND user_id = %d", $lastupdated, $reason, $rowid, $memberid));
-
-        if (empty($result) || is_wp_error($result)) {
-            echo 'error';
-            wp_die();
-        }
-
-        $user = new WP_User($memberid);
-
-        // Remove all user roles after registration
-        foreach ($user->roles as $role) {
-            $user->remove_role($role);
-        }
-
-        $getname = $this->ifsa_get_fullname($memberid);
-        $fname = $getname['fname'];
-        $lname = $getname['lname'];
-
-        $remark = "LC admin has removed LC Member - " . $fname . ' ' . $lname . '<br/>' . 'Reason: ' . $reason;;
-        $action = "Remove Member";
-        $email_key = 'remove_by_lc_admin_email_to_member';
-
-        $this->ifsa_generate_log($memberid, $email_key, $action, $remark, $lastupdated, $reason);
-        update_user_meta($memberid, 'user_active_status', "no");
-        update_user_meta($memberid, 'user_state', 3);
-
-        echo 'success';
-        wp_die();
-    }
-
-
-    /**
-     * Call back function to list the region
-     *
-     * @return markup
+     * Note is not checking nonce as there is no action done on the server
      */
     public function ifsa_ifsa_list_region_callback()
     {
-        //global $wpdb;
-
-//        if (isset($_POST['nonce']) && !empty($_POST['nonce'])) {
-//            if (!wp_verify_nonce($_POST['nonce'], 'ajax-nonce')) {
-//                die('Security Check Failed');
-//            }
-//        }
-        if (isset($_POST['reasonID']) && !empty($_POST['reasonID'])) {
-            $reasonID = sanitize_text_field($_POST['reasonID']);
+        if (isset($_POST['region']) && !empty($_POST['region'])) {
+            $region = sanitize_text_field($_POST['region']);
         }
 
-        $committeelist = wp_get_object_terms($reasonID, 'committee');
+        $committee_list = wp_get_object_terms($region, 'committee');
 
         // Return null if we found no results
-        if (!$committeelist) {
+        if (!$committee_list) {
             return;
         }
 
         // HTML for our select printing post titles as loop
         $output = "";
-        foreach ($committeelist as $index) {
+        foreach ($committee_list as $index) {
             $output .= '<option value="' . $index->term_id . '">' . $index->name . '</option>';
         }
 
@@ -1809,7 +1145,7 @@ class Ifsa_Member_Verification_Public
         
 
         /**  Check Local Committee */
-        $lc_admin = $this->ifsa->get_lc_admin($lc_id);
+        $lc_admin = ifsa_lc()->get_lc_admin($lc_id);
         if(is_wp_error($lc_admin)){
             echo "Invalid LC. try again or contact website admin. Error: ".$lc_admin->get_error_code();
             wp_die();
@@ -1837,8 +1173,8 @@ class Ifsa_Member_Verification_Public
         }
         // Add addition fields to profile
 
-        $user_add_info['Local Committee Name'] = $this->ifsa->get_lc_name($lc_id);
-        $user_add_info['IFSA Region'] = $this->ifsa->get_region_name($region_id);
+        $user_add_info['Local Committee Name'] = ifsa_lc()->get_lc_name($lc_id);
+        $user_add_info['IFSA Region'] = ifsa_lc()->get_region_name($region_id);
 
         foreach ($user_add_info as $field_name => $field_value){
             $return = xprofile_set_field_data($field_name, $user_id, $field_value);
@@ -1854,7 +1190,7 @@ class Ifsa_Member_Verification_Public
         global $wpdb;
         $last_updated = bp_core_current_time();
 
-        $query = "INSERT INTO {$this->ifsa->lc_member_table} ( user_id,lc_adminid, committee_id ,region_id, action_date, member_status,source) VALUES ( %d,%d, %s, %s, %s, %d,%s )";
+        $query = "INSERT INTO {ifsa_lc()->lc_member_table} ( user_id,lc_adminid, committee_id ,region_id, action_date, member_status,source) VALUES ( %d,%d, %s, %s, %s, %d,%s )";
         $sql = $wpdb->prepare($query, $user_id, $lc_admin, $lc_id, $region_id, $last_updated, 0, $source);
 
         $result = $wpdb->query($sql);
@@ -1868,14 +1204,14 @@ class Ifsa_Member_Verification_Public
         /** Email */
 
         // To member
-        $res1 = $this->ifsa->send_ifsa_email('register_email_user', array(
+        $res1 = ifsa_lc()->send_ifsa_email('register_email_user', array(
             '{user_email}' => $user_data['user_email'],
             '{user_name}' => $user_data['first_name'],
             '{user_fullname}' => $user_data['display_name'],
             '{lc_name}' => $user_add_info['Local Committee Name']
         ));
         // To LC admin
-        $res2 = $this->ifsa->send_ifsa_email('register_email_lc_admin', array(
+        $res2 = ifsa_lc()->send_ifsa_email('register_email_lc_admin', array(
             '{lc_admin_email}' => get_userdata($lc_admin)->user_email,
             '{user_name}' => $user_data['first_name'],
             '{user_fullname}' => $user_data['display_name'],
@@ -1889,7 +1225,7 @@ class Ifsa_Member_Verification_Public
 
         /** Log */
 
-        $this->ifsa->log("user registered",
+        ifsa_lc()->log("user registered",
             "Source: $source, LC: {$user_add_info['Local Committee Name']}", $user_id);
 
         echo 'success';

@@ -51,7 +51,8 @@ class IFSAUtility
     function admin_message(string $message, string $notice_type = 'notice-error')
     {
         // This is the second time the plugin code is run so is assumed that no new logging is needed
-        if (!$this->first_run) {
+        // Run only in the admin area
+        if (!$this->first_run || !is_admin()) {
             return;
         }
 
@@ -71,7 +72,7 @@ class IFSAUtility
     /**
      * Function called by the 'admin_notices' hook to actually show the notices
      */
-    public function ifsa_show_admin_notices()
+    public function show_admin_notices()
     {
         $notices = get_transient('ifsa_member_verification_admin_notices');
         $notices = $notices ? $notices : array();
@@ -79,6 +80,19 @@ class IFSAUtility
             echo $notice;
         }
         delete_transient('ifsa_member_verification_admin_notices');
+    }
+
+    /**
+     * Empty div with nonce
+     * @param string $action nonce action
+     * @return string
+     */
+    function insert_nonce(string $action): string
+    {
+        /* Create Nonce */
+        $nonce = esc_attr(wp_create_nonce( $action ));
+        /* Output empty div. */
+        return "<div id='$action' data-nonce='$nonce' ></div>";
     }
 }
 

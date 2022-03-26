@@ -104,30 +104,33 @@ class Ifsa_Member_Verification {
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ifsa-member-verification-loader.php';
+		require_once IFSA_MEMBER_VERIFICATION_PATH. 'includes/class-ifsa-member-verification-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-ifsa-member-verification-i18n.php';
+		require_once IFSA_MEMBER_VERIFICATION_PATH . 'includes/class-ifsa-member-verification-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-ifsa-member-verification-admin.php';
+		require_once IFSA_MEMBER_VERIFICATION_PATH . 'admin/class-ifsa-member-verification-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-ifsa-member-verification-public.php';
+		require_once IFSA_MEMBER_VERIFICATION_PATH . 'public/class-ifsa-member-verification-public.php';
+        require_once IFSA_MEMBER_VERIFICATION_PATH . 'public/class-IFSALCAdmin.php';
+        require_once IFSA_MEMBER_VERIFICATION_PATH . 'public/class-IFSAPublicForms.php';
 
-/**
- * Constant file
- */
-require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ifsa_member_verification_constant.php';
-		$this->loader = new Ifsa_Member_Verification_Loader();
+        /**
+         * Constant file
+         */
+        require_once IFSA_MEMBER_VERIFICATION_PATH . 'includes/ifsa_member_verification_constant.php';
+
+        $this->loader = new Ifsa_Member_Verification_Loader();
 
 	}
 
@@ -160,7 +163,6 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ifsa_member_veri
 		$plugin_admin = new Ifsa_Member_Verification_Admin( $this->get_plugin_name(), $this->get_version() );
 
         // Admin notices
-        $this->loader->add_action( 'admin_notices',  $plugin_admin,'ifsa_show_admin_notices');
 	
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
@@ -200,43 +202,57 @@ require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/ifsa_member_veri
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Ifsa_Member_Verification_Public( $this->get_plugin_name(), $this->get_version() );
 
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-		$this->loader->add_action( 'bp_setup_nav', $plugin_public, 'ifsa_profile_tab_memberlist' );
-		$this->loader->add_action( 'wp_ajax_ifsa_approve_member', $plugin_public,'ifsa_approve_member_callback' );
-		$this->loader->add_action( 'wp_ajax_ifsa_reject_member', $plugin_public,'ifsa_reject_member_callback' );
-		$this->loader->add_action( 'wp_ajax_ifsa_remove_member', $plugin_public,'ifsa_remove_member_callback' );
-		$this->loader->add_action( 'wp_ajax_nopriv_ifsa_list_region', $plugin_public,'ifsa_ifsa_list_region_callback' );
-		$this->loader->add_action( 'wp_ajax_ifsa_list_region', $plugin_public,'ifsa_ifsa_list_region_callback' );
-		$this->loader->add_action( 'wp_ajax_file_upload', $plugin_public, 'file_upload_callback' );
-		$this->loader->add_action( 'wp_ajax_nopriv_file_upload',  $plugin_public,'file_upload_callback' );
-		$this->loader->add_action( 'init', $plugin_public, 'download_csv_callback' );
-		//$this->loader->add_action( 'wp_ajax_nopriv_download_csv',  $plugin_public,'download_csv_callback' );
-		$this->loader->add_action( 'bp_after_profile_loop_content', $plugin_public, 'ifsa_memebership_expire_callback' );
-		$this->loader->add_action( 'ifsa_cron_job', $plugin_public, 'ifsa_cron_job_callback' );
-		$this->loader->add_action( 'bp_after_has_profile_parse_args',  $plugin_public,'ifsa_bpfr_hide_profile_field_group' );
-		$this->loader->add_action( 'wp_ajax_ifsa_renew_request', $plugin_public, 'ifsa_ifsa_renew_request' );
-		$this->loader->add_action( 'wp_ajax_ifsa_renew_request_profile', $plugin_public, 'ifsa_ifsa_renew_request' );
+        $public_forms = new IFSAPublicForms($this->version);
 
-		$this->loader->add_action( 'weekl_member_list_callback', $plugin_public, 'weekl_member_list_callback' );
-		$this->loader->add_action( 'ifsa_membership_start', $plugin_public, 'ifsa_membership_start' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $public_forms, 'enqueue_styles' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $public_forms, 'enqueue_scripts' );
 
-		$this->loader->add_filter( 'bp_nouveau_feedback_messages', $plugin_public,'ifsa_change_nouveau_string', 20, 1 );
+        $this->loader->add_action( 'wp_ajax_ifsa_list_region', $public_forms,'list_regions' );
+        // Renew requests makes sense only if you are logged in
+//        $this->loader->add_action( 'wp_ajax_ifsa_renew_request', $public_forms, 'ifsa_ifsa_renew_request' );
+        // Registration only if you are not logged in
+        $this->loader->add_action('wp_ajax_nopriv_register_user_front_end',  $public_forms,'ifsa_register_user_front_end_callback', 0);
 
-		$this->loader->add_filter( 'login_redirect', $plugin_public, 'ifsa_redirect_to_profile', 100, 3 );
 
-		//$this->loader->add_action('after_setup_theme',$plugin_public, 'ifsa_remove_admin_bar');
-	//	$this->loader->add_action('bp_before_registration_submit_buttons',$plugin_public, 'ifsa_add_to_registration', 36);
-		$this->loader->add_action('wp_ajax_register_user_front_end',  $plugin_public,'ifsa_register_user_front_end', 0);
-		$this->loader->add_action('wp_ajax_nopriv_register_user_front_end', $plugin_public, 'ifsa_register_user_front_end');
-		$this->loader->add_action( 'bp_after_member_header',  $plugin_public,'ifsa_lcadmin_banner' );
+        $lc_admin = new IFSALCAdmin($this->version);
+
+        $this->loader->add_action( 'wp_enqueue_scripts', $lc_admin, 'enqueue_styles' );
+        $this->loader->add_action( 'wp_enqueue_scripts', $lc_admin, 'enqueue_scripts' );
+
+		$this->loader->add_action( 'bp_setup_nav', $lc_admin, 'ifsa_profile_tab_member_list' );
+		$this->loader->add_action( 'wp_ajax_ifsa_approve_member', $lc_admin,'ifsa_approve_member_callback' );
+		$this->loader->add_action( 'wp_ajax_ifsa_reject_member', $lc_admin,'ifsa_reject_member_callback' );
+		$this->loader->add_action( 'wp_ajax_ifsa_remove_member', $lc_admin,'ifsa_remove_member_callback' );
+
+		$this->loader->add_action( 'wp_ajax_file_upload', $lc_admin, 'file_upload_callback' );
+		$this->loader->add_action( 'init', $lc_admin, 'download_csv_callback' );
+
+        $this->loader->add_action( 'bp_after_member_header',  $lc_admin,'ifsa_lcadmin_banner' );
+
+//		$this->loader->add_action( 'bp_after_profile_loop_content', $public_forms, 'ifsa_memebership_expire_callback' );
+		// Keep this?
+//        $this->loader->add_action( 'bp_after_has_profile_parse_args',  $public_forms,'ifsa_bpfr_hide_profile_field_group' );
+
+//        $this->loader->add_action( 'ifsa_cron_job', $public_forms, 'ifsa_cron_job_callback' );
+//
+//
+//		$this->loader->add_action( 'weekl_member_list_callback', $public_forms, 'weekl_member_list_callback' );
+//		$this->loader->add_action( 'ifsa_membership_start', $public_forms, 'ifsa_membership_start' );
+//
+//		$this->loader->add_filter( 'bp_nouveau_feedback_messages', $public_forms,'ifsa_change_nouveau_string', 20, 1 );
+//
+//		$this->loader->add_filter( 'login_redirect', $public_forms, 'ifsa_redirect_to_profile', 100, 3 );
+//
+//		//$this->loader->add_action('after_setup_theme',$public_forms, 'ifsa_remove_admin_bar');
+//	//	$this->loader->add_action('bp_before_registration_submit_buttons',$public_forms, 'ifsa_add_to_registration', 36);
+//
+//		$this->loader->add_action( 'bp_after_member_header',  $public_forms,'ifsa_lcadmin_banner' );
 		
 	}
 
     function define_utility_hooks(){
-        $this->loader->add_action( 'admin_notices',  ifsa_utility(),'ifsa_show_admin_notices');
+        $this->loader->add_action( 'admin_notices',  ifsa_utility(),'show_admin_notices');
     }
 
 	/**

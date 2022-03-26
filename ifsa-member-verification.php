@@ -52,11 +52,8 @@ function deactivate_ifsa_member_verification() {
 
 register_activation_hook( __FILE__, 'activate_ifsa_member_verification' );
 register_deactivation_hook( __FILE__, 'deactivate_ifsa_member_verification' );
+// Do we want this?
 add_filter( 'bp_core_signup_send_activation_key', '__return_false' );
-function wpse27856_set_content_type(){
-    return "text/html";
-}
-add_filter( 'wp_mail_content_type','wpse27856_set_content_type' );
 
 /**
  * The core plugin class that is used to define internationalization,

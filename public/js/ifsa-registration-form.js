@@ -233,11 +233,10 @@ jQuery( document ).ready( function() {
 	jQuery( document ).on( 'change', '#ifsa_region', function() {
 		jQuery( '#lc' ).prop( 'disabled', false );
 
-		var reasonID = jQuery( this ).val();
+		var region = jQuery( this ).val();
 		var data = {
 			'action': 'ifsa_list_region',
-			'nonce': ifsa_script_vars.nonce,
-			'reasonID': reasonID
+			'region': region
 		};
 
 		// since 2.8 ajaxurl is always defined in the admin header and points to admin-ajax.php
@@ -585,12 +584,14 @@ jQuery( document ).ready( function() {
 
 
 			};
+
+			// TODO removed unesed cookies
 			var json_str = JSON.stringify( stepperForm );
 			setCookie( 'stepperform', json_str, 1 );
 
 			var data = {
 				action: "register_user_front_end",
-				'_ajax_nonce': ifsa_vars.nonce,
+				'_ajax_nonce': $( '#register_user_front_end' ).data( 'nonce' ),
 				user_name : newUserName,
 				user_email : newUserEmail,
 				user_password : newUserPassword,

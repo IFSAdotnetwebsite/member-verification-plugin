@@ -269,6 +269,13 @@ const COUNTRY_LIST = array(
 const GENDERS = array('Male', 'Female', 'Other non-binary', 'Prefer not to say');
 const UNI_LEVELS = array('Bachelor Degree', 'Master Degree', 'PhD');
 
+const IFSA_VERIFIED = 1;
+const IFSA_PENDING = 0;
+
+
+global $wpdb;
+define("IFSA_LC_MEMBER_TABLE", $wpdb->prefix . 'ifsa_lc_member');
+
 // list of email fields with their default values
 const IFSA_EMAILS = array(
     'welcome_email_after_verify_member' => array(
