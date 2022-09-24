@@ -312,8 +312,8 @@ class Ifsa_Member_Verification_Admin
         $term_lc = get_term_by("ID", $lc_id, 'committee');
         if (!$term_lc) {
             if ($lc_id != 0) { // LC Id can be 0 (eg. when creating a user) otherwise is a error
-                error_log("Unknown LC Id");
-                $this->admin_message("Error in LC Id. get in touch with website admin");
+                error_log("Unknown LC Id $lc_id");
+                $this->admin_message("Error in LC Id, cannot find committee with id: $lc_id. get in touch with website admin");
             }
 
             return "";
