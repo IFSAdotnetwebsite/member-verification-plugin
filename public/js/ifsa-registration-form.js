@@ -57,6 +57,19 @@ jQuery( document ).ready( function() {
 		}
 	} );
 
+	jQuery( '#approval_member_table' ).dataTable( {
+		preDrawCallback: function (settings) {
+			var api = new jQuery.fn.dataTable.Api(settings);
+			var pagination = jQuery(this)
+				.closest('.dataTables_wrapper')
+				.find('.dataTables_paginate');
+			pagination.toggle(api.page.info().pages > 1);
+		},
+		"language": {
+			"emptyTable":     "No records found"
+		}
+	} );
+
 // When the user clicks the button, open the modal 
 //jQuery( '.cls-remove' ).click( function() {
 	jQuery(document).on('click', '.cls-remove', function(e) {

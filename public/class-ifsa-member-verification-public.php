@@ -146,72 +146,99 @@ class Ifsa_Member_Verification_Public
         wp_enqueue_script('jquery-ui-datepicker');
     }
 
+
+    function get_settings_lc_admin_id(){
+        $user = bp_get_displayed_user();
+        if(isset($user)){
+            $user_id = $user->id;
+            if ((is_super_admin() || bp_is_my_profile()) && ($this->get_ifsa_member_type($user_id) == 'lc_admin')) return $user_id;
+        }
+        return false;
+    }
+
+    function get_ifsa_member_type($user_id): string
+    {
+        $user = get_userdata($user_id);
+        if ($user) {
+            $roles = $user->roles;
+            if (in_array('lc_admin', $roles)) {
+                return 'lc_admin';
+            } elseif (in_array('lc_member', $roles)) {
+                return 'lc_member';
+            }
+        }
+        return 'none';
+    }
+
+    function new_nav_item($args): void
+    {
+        $item = bp_core_new_nav_item($args);
+        if (!$item){
+            error_log("issue creating bp_core_nav_items with args");
+        }
+    }
+
     /**
      * Function is used to create profile tab.
      *
-     * @return funciton It registeres the menus in the admin page
+     * @return void It registeres the menus in the admin page
      */
     public function ifsa_profile_tab_memberlist()
     {
 
-        global $bp;
-        if (is_user_logged_in()) {
-            // check if there is a logged in user
-            $user = wp_get_current_user(); // getting & setting the current user
-            $roles = ( array )$user->roles; // obtaining the role
+        $lc_admin_id = $this->get_settings_lc_admin_id();
 
-            if ($roles[0] === 'lc_admin') {
+        if ($lc_admin_id) {
+            global $bp;
 
-                bp_core_new_nav_item(
-                    array(
-                        'name' => 'LC admin',
-                        'slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_memberlist_tab'),
-                        'position' => 1,
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => $bp->profile->slug,
-                        'default_subnav_slug' => 'approvalpending',
-                    )
-                );
+            $this->new_nav_item(
+                array(
+                    'name' => 'LC admin',
+                    'slug' => 'memberlist',
+                    'screen_function' => array($this, 'ifsa_memberlist_tab'),
+                    'position' => 1,
+                    'default_subnav_slug' => 'memberlist',
+                )
+            );
 
-                bp_core_new_subnav_item(
-                    array(
-                        'name' => 'Active Member',
-                        'slug' => 'activemember',
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_activemember_screen'),
-                        'position' => 100,
-                        'user_has_access' => bp_is_my_profile(),
-                    )
-                );
 
-                bp_core_new_subnav_item(
-                    array(
-                        'name' => 'Approval Pending',
-                        'slug' => 'approvalpending',
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_approvalpending_screen'),
-                        'position' => 40,
-                        'user_has_access' => bp_is_my_profile(),
-                    )
-                );
-
-                bp_core_new_subnav_item(
-                    array(
-                        'name' => 'Export/Import Members',
-                        'slug' => 'importexport',
-                        'parent_url' => bp_loggedin_user_domain() . '/memberlist/',
-                        'parent_slug' => 'memberlist',
-                        'screen_function' => array($this, 'ifsa_importexport_screen'),
-                        'position' => 100,
-                        'user_has_access' => bp_is_my_profile(),
-                    )
-                );
-
-            }
-        }
+//            bp_core_new_subnav_item(
+//                array(
+//                    'name' => 'Active Member',
+//                    'slug' => 'activemember',
+//                    'parent_url' => bp_loggedin_user_domain() . 'memberlist/',
+//                    'parent_slug' => 'memberlist',
+//                    'screen_function' => array($this, 'ifsa_activemember_screen'),
+//                    'default_subnav_slug' => 'activemember',
+//                    'position' => 10
+//                )
+//            );
+//
+//            bp_core_new_subnav_item(
+//                array(
+//                    'name' => 'Approval Pending',
+//                    'slug' => 'approvalpending',
+//                    'parent_url' => bp_loggedin_user_domain() . 'memberlist/',
+//                    'parent_slug' => 'memberlist',
+//                    'screen_function' => array($this, 'ifsa_approvalpending_screen'),
+//                    'position' => 40,
+//                    'default_subnav_slug' => 'approvalpending',
+//                )
+//            );
+//
+//            bp_core_new_subnav_item(
+//                array(
+//                    'name' => 'Export/Import Members',
+//                    'slug' => 'importexport',
+//                    'parent_url' => bp_loggedin_user_domain() . 'memberlist/',
+//                    'parent_slug' => 'memberlist',
+//                    'screen_function' => array($this, 'ifsa_importexport_screen'),
+//                    'position' => 100,
+//                    'default_subnav_slug' => 'importexport',
+//                )
+//            );
+//
+       }
 
     }
 
@@ -246,15 +273,11 @@ class Ifsa_Member_Verification_Public
      *
      * @return string
      */
-    public function ifsa_memberlis_content()
-    { ?>
-        <h2>Approval Pending List</h2>
-        <aside class="bp-feedback bp-messages ifsa-response" style="visibility: hidden;">
-            <span class="bp-icon" aria-hidden="true"></span>
-            <p class="ifsa_active_p"></p>
-        </aside>
-
-    <?php }
+    public function ifsa_memberlis_content(){
+        $this->activemember_screen_content();
+        $this->approvalpending_screen_content();
+        $this->importexport_screen_content();
+    }
 
     /**
      * Function for the IFSA active member list tab
@@ -275,6 +298,7 @@ class Ifsa_Member_Verification_Public
     public function ifsa_approvalpending_screen()
     {
         //	add_action( 'bp_template_title', array( $this, 'ifsa_approvalpending_title' ) );
+        # here fix #5
         add_action('bp_template_content', array($this, 'approvalpending_screen_content'));
         bp_core_load_template(apply_filters('bp_core_template_plugin', 'members/single/plugins'));
     }
@@ -472,7 +496,8 @@ class Ifsa_Member_Verification_Public
                 </div>
 
             </div>
-            <table id="table_id" class="display">
+            <h2> Members pending approvals </h2>
+            <table id="approval_member_table" class="display">
                 <thead>
                 <tr>
                     <th>First Name</th>
@@ -500,24 +525,24 @@ class Ifsa_Member_Verification_Public
                     ?>
 
                     <tr>
-                        <td data-title="First Name"><?php echo esc_html_e($Name, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Last Name"> <?php echo esc_html_e($Surname, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Email"><?php echo esc_html_e($email, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Source"><?php echo esc_html_e($memberlistresult->source, 'ifsa-member-verification'); ?></td>
-                        <td data-title="Member Type"> <?php echo esc_html_e($renew_request, 'Ifsa_Member_Verification'); ?></td>
+                        <td data-title="First Name"><?php  esc_html_e($Name, 'ifsa-member-verification'); ?></td>
+                        <td data-title="Last Name"> <?php esc_html_e($Surname, 'ifsa-member-verification'); ?></td>
+                        <td data-title="Email"><?php esc_html_e($email, 'ifsa-member-verification'); ?></td>
+                        <td data-title="Source"><?php esc_html_e($memberlistresult->source, 'ifsa-member-verification'); ?></td>
+                        <td data-title="Member Type"> <?php esc_html_e($renew_request, 'Ifsa_Member_Verification'); ?></td>
 
                         <?php if ($memberlistresult->member_status == 0 && $memberlistresult->reason == '') { ?>
                             <td data-title="Action">
-                                <div class="<?php echo esc_attr_e('cls-action-' . $memberlistresult->id . ''); ?>"><a
+                                <div class="<?php esc_attr_e('cls-action-' . $memberlistresult->id . ''); ?>"><a
                                             href="javascript:void(0)"
-                                            row-id="<?php echo esc_attr_e($memberlistresult->id); ?>"
-                                            data-id="<?php echo esc_attr_e($memberlistresult->user_id); ?>"
+                                            row-id="<?php esc_attr_e($memberlistresult->id); ?>"
+                                            data-id="<?php esc_attr_e($memberlistresult->user_id); ?>"
                                             class="cls-reject">Reject </a> <a href="javascript:void(0)"
-                                                                              row-id="<?php echo esc_attr_e($memberlistresult->id); ?>"
-                                                                              data-id="<?php echo esc_attr_e($memberlistresult->user_id); ?>"
+                                                                              row-id="<?php esc_attr_e($memberlistresult->id); ?>"
+                                                                              data-id="<?php esc_attr_e($memberlistresult->user_id); ?>"
                                                                               class="cls-approve">
                                         Approve</a></div>
-                                <div id="<?php echo esc_attr_e('ifsa-loading-' . $memberlistresult->id . ''); ?>"
+                                <div id="<?php esc_attr_e('ifsa-loading-' . $memberlistresult->id . ''); ?>"
                                      style="display:none;">
                                     <img src="<?php echo esc_url(site_url() . '/wp-admin/images/loading.gif'); ?>"
                                          title="loading"/>
@@ -594,7 +619,7 @@ class Ifsa_Member_Verification_Public
         if (!(is_user_logged_in())) {
             include_once plugin_dir_path(__FILE__) . 'partials/ifsa-registration-form.php';
         } else {
-            echo "<script>location.href = window.location.origin</script>";
+            echo "<script>location.href = window.location.origin</script>"; # where to fix #4
         }
 
         return ob_get_clean();
